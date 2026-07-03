@@ -20,6 +20,8 @@ export function MobileTabs({ activeTab, onChange }: MobileTabsProps) {
           key={tab.id}
           type="button"
           role="tab"
+          id={`tab-${tab.id}`}
+          aria-controls={`panel-${tab.id}`}
           aria-selected={activeTab === tab.id}
           onClick={() => onChange(tab.id)}
         >

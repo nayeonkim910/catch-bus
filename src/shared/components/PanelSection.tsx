@@ -2,14 +2,12 @@ import type { ReactNode } from 'react'
 
 type SectionHeadingProps = {
   children: ReactNode
-  action?: string
 }
 
-export function SectionHeading({ children, action }: SectionHeadingProps) {
+export function SectionHeading({ children }: SectionHeadingProps) {
   return (
     <div className="mb-4 flex min-h-8 items-center justify-between">
       <h2 className="m-0 text-[17px] font-bold text-slate-900">{children}</h2>
-      {action && <button className="cursor-pointer bg-transparent px-2 py-1.5 text-brand">{action}</button>}
     </div>
   )
 }
