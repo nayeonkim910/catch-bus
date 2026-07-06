@@ -16,7 +16,7 @@ export function FavoritesPanel({ activeTab, favorites, arrivals }: FavoritesPane
         <div className="shrink-0">
           <SectionHeading>즐겨찾기</SectionHeading>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
+        <div className="hover-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain">
           {favorites.length > 0 ? (
             <div className="space-y-3 pb-1">
               {favorites.map((favorite) => (

@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
 import { useFavorites } from './features/favorites/useFavorites'
 import { DashboardShell } from './features/layout/DashboardShell'
+import type { ArrivalStatus } from './features/details/types'
 import { selectedStation as initialStation, stationArrivals } from './shared/mock/busData'
-import type { BusStation } from './shared/types/bus'
-import type { BusArrival } from './shared/types/bus'
+import type { BusArrival, BusStation } from './shared/types/bus'
 import { getStationArrivals } from './lib/busApi'
 import type { MobileTab } from './shared/types/navigation'
 
@@ -11,7 +11,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<MobileTab>('map')
   const [station, setStation] = useState<BusStation>(initialStation)
   const [arrivalState, setArrivalState] = useState<{
-    status: 'loading' | 'success' | 'error'
+    status: ArrivalStatus
     arrivals: BusArrival[]
     error: string | null
   }>({ status: 'success', arrivals: stationArrivals, error: null })
