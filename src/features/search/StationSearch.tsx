@@ -6,9 +6,10 @@ import { useStationSearch } from './useStationSearch'
 
 type StationSearchProps = {
   onSelect: (station: BusStation) => void
+  floating?: boolean
 }
 
-export function StationSearch({ onSelect }: StationSearchProps) {
+export function StationSearch({ onSelect, floating = false }: StationSearchProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { query, searchState, setQuery, submitSearch, resetResults } = useStationSearch()
   const isOpen = searchState.status !== 'idle'
@@ -37,7 +38,10 @@ export function StationSearch({ onSelect }: StationSearchProps) {
   }
 
   return (
-    <div className="relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)] lg:ml-6 lg:w-[min(420px,calc(100%-48px))]" ref={containerRef}>
+    <div
+      className={`relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)] ${floating ? 'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[calc(var(--left-panel)+16px)] lg:ml-0 lg:w-[min(420px,calc(100vw-var(--left-panel)-190px))]' : 'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]'}`}
+      ref={containerRef}
+    >
       <form
         className="flex h-10.5 items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 text-slate-700 shadow-[0_2px_8px_rgb(15_23_42/5%)] focus-within:border-brand focus-within:ring-2 focus-within:ring-blue-100 sm:h-11 sm:px-4 lg:h-12"
         onSubmit={handleSubmit}

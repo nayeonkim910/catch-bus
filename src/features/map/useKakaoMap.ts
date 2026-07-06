@@ -100,6 +100,17 @@ export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
     map.relayout()
   }, [activeTab, map])
 
+  useEffect(() => {
+    const container = containerRef.current
+    if (!map || !container) return
+
+    // 하단 상세 패널로 지도 영역 높이가 바뀌면 현재 컨테이너 크기에 맞춰 다시 그린다.
+    const resizeObserver = new ResizeObserver(() => map.relayout())
+    resizeObserver.observe(container)
+
+    return () => resizeObserver.disconnect()
+  }, [map])
+
   return {
     containerRef,
     map,

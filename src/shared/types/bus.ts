@@ -93,6 +93,7 @@ export type Favorite = {
   stationName: string
   routeId: string
   routeName: string
+  routeTypeCode: number
   destinationName: string
   stationOrder: number
 }

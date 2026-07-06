@@ -11,6 +11,7 @@ export function createFavorite(station: BusStation, arrival: BusArrival): Favori
     stationName: station.name,
     routeId: arrival.routeId,
     routeName: arrival.routeName,
+    routeTypeCode: arrival.routeTypeCode,
     destinationName: arrival.destinationName,
     stationOrder: arrival.stationOrder,
   }
