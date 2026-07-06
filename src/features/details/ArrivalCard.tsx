@@ -1,4 +1,5 @@
 import { StarIcon } from '../../shared/components/Icons'
+import { RouteBadge } from '../../shared/components/RouteBadge'
 import { RouteProgress } from '../../shared/components/RouteProgress'
 import type { BusArrival } from '../../shared/types/bus'
 import { formatArrivalTime } from '../../shared/utils/arrival'
@@ -18,7 +19,7 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="rounded-md bg-blue-600 px-2 py-1 text-sm font-bold text-white">{arrival.routeName}</span>
+            <RouteBadge routeName={arrival.routeName} routeTypeCode={arrival.routeTypeCode} />
             <span className="truncate text-sm font-semibold text-slate-700">{arrival.destinationName} 방면</span>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import type { BusArrival, Favorite } from '../../shared/types/bus'
 import { RouteProgress } from '../../shared/components/RouteProgress'
+import { RouteBadge } from '../../shared/components/RouteBadge'
 import { formatArrivalTime } from '../../shared/utils/arrival'
 
 type FavoriteCardProps = {
@@ -14,7 +15,7 @@ export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
     <article className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="rounded-md bg-blue-600 px-2 py-1 text-sm font-bold text-white">{favorite.routeName}</span>
+          <RouteBadge routeName={favorite.routeName} routeTypeCode={favorite.routeTypeCode} />
           <span className="truncate text-sm font-semibold text-slate-700">{favorite.destinationName} 방면</span>
         </div>
         <strong className="shrink-0 text-lg text-brand">{formatArrivalTime(first?.arrivalSeconds ?? null)}</strong>
