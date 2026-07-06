@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useFavorites } from './features/favorites/useFavorites'
 import { DashboardShell } from './features/layout/DashboardShell'
 import { selectedStation as initialStation, stationArrivals } from './shared/mock/busData'
@@ -18,7 +18,7 @@ function App() {
   const arrivalRequestRef = useRef<AbortController | null>(null)
   const { favorites, isFavorite, toggleFavorite } = useFavorites()
 
-  async function loadStationArrivals(nextStation: BusStation) {
+  const loadStationArrivals = useCallback(async (nextStation: BusStation) => {
     arrivalRequestRef.current?.abort()
     const controller = new AbortController()
     arrivalRequestRef.current = controller
@@ -36,13 +36,16 @@ function App() {
         error: error instanceof Error ? error.message : '도착정보를 불러오지 못했습니다.',
       })
     }
-  }
+  }, [])
 
-  function handleStationSelect(nextStation: BusStation) {
-    setStation(nextStation)
-    setActiveTab('details')
-    void loadStationArrivals(nextStation)
-  }
+  const handleStationSelect = useCallback(
+    (nextStation: BusStation) => {
+      setStation(nextStation)
+      setActiveTab('details')
+      void loadStationArrivals(nextStation)
+    },
+    [loadStationArrivals],
+  )
 
   return (
     <DashboardShell
