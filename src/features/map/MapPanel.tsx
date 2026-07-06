@@ -57,7 +57,7 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
         aria-label="버스 정류장 지도"
       />
 
-      <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2">
+      <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2 lg:top-20">
         <button
           type="button"
           className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm disabled:cursor-wait disabled:text-slate-400"

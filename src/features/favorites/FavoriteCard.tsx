@@ -2,7 +2,7 @@ import type { BusArrival, Favorite } from '../../shared/types/bus'
 import { RouteProgress } from '../../shared/components/RouteProgress'
 import { RouteBadge } from '../../shared/components/RouteBadge'
 import { formatArrivalTime } from '../../shared/utils/arrival'
-import { useRouteTimeline } from '../routes/useRouteTimeline'
+import { useRouteStationData } from '../routes/useRouteStationData'
 
 type FavoriteCardProps = {
   favorite: Favorite
@@ -11,7 +11,7 @@ type FavoriteCardProps = {
 
 export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
   const first = arrival?.first
-  const routeTimeline = useRouteTimeline(
+  const routeStationData = useRouteStationData(
     favorite.routeId,
     favorite.stationId,
     favorite.stationOrder,
@@ -33,7 +33,7 @@ export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
         destinationStationName={favorite.stationName}
         remainingStops={first?.remainingStops ?? null}
         routeTypeCode={favorite.routeTypeCode}
-        stationNames={routeTimeline.data}
+        stationNames={routeStationData.data?.timeline}
       />
       <p className="mt-2 text-right text-xs text-slate-500">
         {first?.remainingStops != null ? `${first.remainingStops}정거장 전` : '위치 정보 없음'}

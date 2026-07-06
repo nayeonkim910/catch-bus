@@ -12,7 +12,7 @@ type FavoritesPanelProps = {
 export function FavoritesPanel({ activeTab, favorites, arrivals }: FavoritesPanelProps) {
   return (
     <aside className={`${activeTab === 'favorites' ? 'flex' : 'hidden'} h-full min-h-0 min-w-0 flex-col overflow-hidden bg-canvas lg:flex lg:border-r lg:border-slate-200`} id="panel-favorites" role="tabpanel" aria-label="즐겨찾기 패널">
-      <section className="flex min-h-0 flex-1 flex-col p-4 sm:p-5 lg:p-6 lg:px-5">
+      <section className="flex min-h-0 flex-1 flex-col p-4 sm:p-5 lg:px-5 lg:pt-24 lg:pb-6">
         <div className="shrink-0">
           <SectionHeading>즐겨찾기</SectionHeading>
         </div>

@@ -49,7 +49,7 @@ function createTimeline(
   return [...emptySlots, ...visibleStations.map((station) => station.name)]
 }
 
-export function useRouteTimeline(
+export function useRouteStationData(
   routeId: string,
   targetStationId: string,
   targetStationOrder: number,
@@ -59,11 +59,13 @@ export function useRouteTimeline(
     queryFn: ({ signal }) => getRouteStations(routeId, signal),
     staleTime: ROUTE_CACHE_DURATION_MS,
     gcTime: ROUTE_CACHE_DURATION_MS,
-    select: (response) =>
-      createTimeline(
+    select: (response) => ({
+      stations: response.data.stations,
+      timeline: createTimeline(
         response.data.stations,
         targetStationId,
         targetStationOrder,
       ),
+    }),
   })
 }

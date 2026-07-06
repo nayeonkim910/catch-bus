@@ -35,10 +35,10 @@ export function DashboardShell({
   onRetryArrivals,
 }: DashboardShellProps) {
   return (
-    <div className="h-dvh min-h-0 overflow-hidden bg-canvas lg:[--left-panel:300px] xl:[--left-panel:clamp(300px,24vw,388px)]">
+    <div className="relative h-dvh min-h-0 overflow-hidden bg-canvas lg:[--left-panel:300px] xl:[--left-panel:clamp(300px,24vw,388px)]">
       <AppHeader onStationSelect={onStationSelect} />
       <MobileTabs activeTab={activeTab} onChange={onTabChange} />
-      <div className="h-[calc(100dvh-116px)] min-h-0 lg:grid lg:h-[calc(100dvh-80px)] lg:grid-cols-[var(--left-panel)_minmax(0,1fr)]">
+      <div className="h-[calc(100dvh-116px)] min-h-0 lg:grid lg:h-dvh lg:grid-cols-[var(--left-panel)_minmax(0,1fr)]">
         <FavoritesPanel
           activeTab={activeTab}
           favorites={favorites}
