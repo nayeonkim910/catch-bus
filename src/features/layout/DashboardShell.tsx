@@ -27,7 +27,7 @@ export function DashboardShell({ activeTab, station, arrivals, favorites, onTabC
       <MobileTabs activeTab={activeTab} onChange={onTabChange} />
       <div className="h-[calc(100dvh-116px)] min-h-0 lg:grid lg:h-[calc(100dvh-80px)] lg:grid-cols-[var(--left-panel)_minmax(400px,1fr)_var(--right-panel)]">
         <FavoritesPanel activeTab={activeTab} favorites={favorites} arrivals={arrivals} />
-        <MapPanel activeTab={activeTab} />
+        <MapPanel activeTab={activeTab} station={station} onStationSelect={onStationSelect} />
         <DetailsPanel activeTab={activeTab} station={station} arrivals={arrivals} isFavorite={isFavorite} onToggleFavorite={onToggleFavorite} arrivalStatus={arrivalStatus} arrivalError={arrivalError} onRetryArrivals={onRetryArrivals} />
       </div>
     </div>

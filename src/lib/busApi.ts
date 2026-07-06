@@ -33,8 +33,17 @@ type ApiResponse<T> = {
 
 type ErrorResponse = {
   error?: {
+    code?: string
     message?: string
   }
+}
+
+function getRequestErrorMessage(payload: ErrorResponse | null) {
+  if (payload?.error?.code === 'UPSTREAM_ERROR') {
+    return '공공 버스 API 응답이 지연되고 있습니다. 잠시 후 다시 시도해 주세요.'
+  }
+
+  return payload?.error?.message ?? '버스정보 요청에 실패했습니다.'
 }
 
 function getApiConfig() {
@@ -69,7 +78,7 @@ async function requestBusApi<T>(
 
   if (!response.ok) {
     const errorPayload = payload as ErrorResponse | null
-    throw new Error(errorPayload?.error?.message ?? '버스정보 요청에 실패했습니다.')
+    throw new Error(getRequestErrorMessage(errorPayload))
   }
 
   return payload as T
@@ -120,7 +129,13 @@ export function getNearbyStations(
     'nearby-stations',
     { latitude: String(latitude), longitude: String(longitude) },
     signal,
-  )
+  ).then((payload) => {
+    if (!Array.isArray(payload?.data?.stations)) {
+      throw new Error('근처 정류장 응답 형식이 올바르지 않습니다.')
+    }
+
+    return payload
+  })
 }
 
 export function searchBusRoutes(query: string, signal?: AbortSignal) {
