@@ -67,6 +67,7 @@ export type ArrivalVehicle = {
   arrivalSeconds: number | null
   remainingStops: number | null
   currentStationName: string | null
+  currentStationSequence: number | null
   stateCode: number | null
   isLowFloor: boolean | null
   remainingSeats?: number | null
