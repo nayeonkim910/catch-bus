@@ -37,7 +37,7 @@ export function useCurrentLocationMarker(
 type UseStationMarkersParams = {
   map: kakao.maps.Map | null
   stations: BusStation[] | undefined
-  selectedStationId: string
+  selectedStationId: string | null
   onStationSelect: (station: BusStation) => void
 }
 

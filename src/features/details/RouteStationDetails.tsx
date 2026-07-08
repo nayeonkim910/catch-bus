@@ -8,7 +8,7 @@ type RouteStationDetailsProps = {
   stations: RouteStation[] | undefined
   targetStationId: string
   targetStationOrder: number
-  currentStationName: string | null
+  currentStationSequence: number | null
   routeTypeCode: number
   isLoading: boolean
 }
@@ -17,7 +17,7 @@ type RouteStationItemProps = {
   station: RouteStation
   targetStationId: string
   targetStationOrder: number
-  currentStationName: string | null
+  currentStationSequence: number | null
   accentColor: string
   targetRef: RefObject<HTMLLIElement | null>
 }
@@ -26,13 +26,14 @@ function RouteStationItem({
   station,
   targetStationId,
   targetStationOrder,
-  currentStationName,
+  currentStationSequence,
   accentColor,
   targetRef,
 }: RouteStationItemProps) {
   const isTarget =
     station.id === targetStationId && station.sequence === targetStationOrder
-  const isCurrent = station.name === currentStationName
+  // 정류장명은 중복될 수 있으므로 현재 버스 위치는 노선 내 순번으로 판별한다.
+  const isCurrent = station.sequence === currentStationSequence
   const isHighlighted = isTarget || isCurrent
 
   return (
@@ -79,7 +80,7 @@ export function RouteStationDetails({
   stations,
   targetStationId,
   targetStationOrder,
-  currentStationName,
+  currentStationSequence,
   routeTypeCode,
   isLoading,
 }: RouteStationDetailsProps) {
@@ -116,7 +117,7 @@ export function RouteStationDetails({
                 station={station}
                 targetStationId={targetStationId}
                 targetStationOrder={targetStationOrder}
-                currentStationName={currentStationName}
+                currentStationSequence={currentStationSequence}
                 accentColor={theme.accentColor}
                 targetRef={targetRef}
               />

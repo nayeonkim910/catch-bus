@@ -5,26 +5,25 @@ import type { Coordinates } from './useCurrentLocation'
 import { loadKakaoMapsSdk } from './kakaoMapsSdk'
 
 const INITIAL_MAP_LEVEL = 4
+const INITIAL_MAP_CENTER: Coordinates = {
+  latitude: 37.2636,
+  longitude: 127.0286,
+}
 // 중심점 주변 조회 결과가 넓은 지도 전체를 대표하지 못하는 축척에서는 마커 조회를 중단한다.
 const MAX_STATION_MARKER_LEVEL = 5
 const MAP_IDLE_DELAY_MS = 500
 
 type UseKakaoMapParams = {
   activeTab: MobileTab
-  station: BusStation
+  station: BusStation | null
 }
 
 export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const stationRef = useRef(station)
   const [map, setMap] = useState<kakao.maps.Map | null>(null)
   const [mapLevel, setMapLevel] = useState(INITIAL_MAP_LEVEL)
   const [searchCenter, setSearchCenter] = useState<Coordinates | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    stationRef.current = station
-  }, [station])
 
   useEffect(() => {
     let isCancelled = false
@@ -34,18 +33,19 @@ export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
         const maps = await loadKakaoMapsSdk()
         if (isCancelled || !containerRef.current) return
 
-        const initialStation = stationRef.current
-        const center = new maps.LatLng(initialStation.latitude, initialStation.longitude)
+        // 정류장을 선택하기 전 지도를 표시할 초기 중심 좌표다.
+        // 이 좌표는 선택 정류장 상태로 사용하지 않는다.
+        const center = new maps.LatLng(
+          INITIAL_MAP_CENTER.latitude,
+          INITIAL_MAP_CENTER.longitude,
+        )
         const nextMap = new maps.Map(containerRef.current, {
           center,
           level: INITIAL_MAP_LEVEL,
         })
 
         setMap(nextMap)
-        setSearchCenter({
-          latitude: initialStation.latitude,
-          longitude: initialStation.longitude,
-        })
+        setSearchCenter(INITIAL_MAP_CENTER)
       } catch (error) {
         if (isCancelled) return
 
@@ -61,9 +61,9 @@ export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
   }, [])
 
   useEffect(() => {
-    if (!map) return
+    if (!map || !station) return
     map.setCenter(new kakao.maps.LatLng(station.latitude, station.longitude))
-  }, [map, station.latitude, station.longitude])
+  }, [map, station])
 
   useEffect(() => {
     if (!map) return

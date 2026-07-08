@@ -5,6 +5,7 @@ import type {
   BusStation,
   RawBusStation,
 } from "./types.ts";
+import { calculateCurrentStationSequence } from "./arrival-sequence.ts";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -108,6 +109,7 @@ function optionalString(value: unknown): string | null {
 function normalizeArrivalVehicle(
   value: Record<string, unknown>,
   index: 1 | 2,
+  targetStationSequence: number,
 ): ArrivalVehicle | null {
   const vehicleId = value[`vehId${index}`];
 
@@ -127,16 +129,21 @@ function normalizeArrivalVehicle(
     value[`lowPlate${index}`],
     `lowPlate${index}`,
   );
+  const remainingStops = optionalNumber(
+    value[`locationNo${index}`],
+    `locationNo${index}`,
+  );
 
   return {
     vehicleId: requireId(vehicleId, `vehId${index}`),
     plateNo: optionalString(value[`plateNo${index}`]) ?? "",
     arrivalSeconds: seconds ?? (minutes === null ? null : minutes * 60),
-    remainingStops: optionalNumber(
-      value[`locationNo${index}`],
-      `locationNo${index}`,
-    ),
+    remainingStops,
     currentStationName: optionalString(value[`stationNm${index}`]),
+    currentStationSequence: calculateCurrentStationSequence(
+      targetStationSequence,
+      remainingStops,
+    ),
     stateCode: optionalNumber(value[`stateCd${index}`], `stateCd${index}`),
     isLowFloor: lowFloorCode === null ? null : lowFloorCode === 1,
     remainingSeats: optionalNumber(
@@ -166,16 +173,18 @@ export function normalizeArrival(
     );
   }
 
+  const stationOrder = requireNumber(value.staOrder, "staOrder");
+
   return {
     stationId: requireId(value.stationId, "stationId"),
     routeId: requireId(value.routeId, "routeId"),
     routeName: requireId(value.routeName, "routeName"),
     destinationName: requireString(value.routeDestName, "routeDestName"),
-    stationOrder: requireNumber(value.staOrder, "staOrder"),
+    stationOrder,
     routeTypeCode: requireNumber(value.routeTypeCd, "routeTypeCd"),
     status: requireString(value.flag, "flag"),
-    first: normalizeArrivalVehicle(value, 1),
-    second: normalizeArrivalVehicle(value, 2),
+    first: normalizeArrivalVehicle(value, 1, stationOrder),
+    second: normalizeArrivalVehicle(value, 2, stationOrder),
     updatedAt,
   };
 }

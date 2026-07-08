@@ -88,7 +88,7 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
           stations={routeStationData.data?.stations}
           targetStationId={arrival.stationId}
           targetStationOrder={arrival.stationOrder}
-          currentStationName={first?.currentStationName ?? null}
+          currentStationSequence={first?.currentStationSequence ?? null}
           routeTypeCode={arrival.routeTypeCode}
           isLoading={routeStationData.isLoading}
         />
