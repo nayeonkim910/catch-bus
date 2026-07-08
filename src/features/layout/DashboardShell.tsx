@@ -9,7 +9,7 @@ import { MobileTabs } from './MobileTabs'
 
 type DashboardShellProps = {
   activeTab: MobileTab
-  station: BusStation
+  station: BusStation | null
   arrivals: BusArrival[]
   favorites: Favorite[]
   onTabChange: (tab: MobileTab) => void

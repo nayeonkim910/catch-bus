@@ -8,7 +8,7 @@ import { useNearbyStations } from './useNearbyStations'
 
 type MapPanelProps = {
   activeTab: MobileTab
-  station: BusStation
+  station: BusStation | null
   onStationSelect: (station: BusStation) => void
 }
 
@@ -28,6 +28,8 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
     const stations = canShowStations ? (nearbyStations.data ?? []) : []
 
     // 주변 조회가 로딩·실패 상태여도 사용자가 선택한 정류장은 지도에 유지한다.
+    if (!station) return stations
+
     return stations.some((nearbyStation) => nearbyStation.id === station.id)
       ? stations
       : [...stations, station]
@@ -37,7 +39,7 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
   useStationMarkers({
     map,
     stations: visibleStations,
-    selectedStationId: station.id,
+    selectedStationId: station?.id ?? null,
     onStationSelect,
   })
 
