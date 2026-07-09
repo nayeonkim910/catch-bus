@@ -5,6 +5,7 @@ import { RouteProgress } from '../../shared/components/RouteProgress'
 import type { BusArrival } from '../../shared/types/bus'
 import { formatArrivalTime } from '../../shared/utils/arrival'
 import { useRouteStationData } from '../routes/useRouteStationData'
+import { getArrivalCardStatus } from './arrivalCardStatus'
 import { RouteStationDetails } from './RouteStationDetails'
 
 type ArrivalCardProps = {
@@ -18,6 +19,7 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
   const [isRouteExpanded, setIsRouteExpanded] = useState(false)
   const routeDetailsId = useId()
   const first = arrival.first
+  const arrivalStatus = getArrivalCardStatus(first?.arrivalSeconds ?? null)
   const routeStationData = useRouteStationData(
     arrival.routeId,
     arrival.stationId,
@@ -25,24 +27,32 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
   )
 
   return (
-    <article className="relative rounded-xl border-2 border-slate-300 bg-white p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:border-blue-700 hover:bg-blue-50 hover:shadow-xl hover:ring-4 hover:ring-blue-300 focus-within:border-blue-700 focus-within:bg-blue-50 focus-within:ring-4 focus-within:ring-blue-300 lg:grid lg:grid-cols-[minmax(180px,0.75fr)_minmax(280px,1.4fr)_minmax(130px,0.5fr)] lg:items-center lg:gap-4 lg:p-3">
+    <article className={`relative rounded-xl border-2 bg-white p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:shadow-xl hover:ring-4 hover:ring-blue-300 focus-within:border-blue-700 focus-within:bg-blue-50 focus-within:ring-4 focus-within:ring-blue-300 lg:grid lg:grid-cols-[minmax(190px,0.8fr)_minmax(280px,1.4fr)_minmax(130px,0.5fr)] lg:items-center lg:gap-4 lg:p-3 ${arrivalStatus.cardClassName}`}>
       <div className="flex items-start justify-between gap-3 lg:block">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <RouteBadge routeName={arrival.routeName} routeTypeCode={arrival.routeTypeCode} />
             <span className="truncate text-sm font-semibold text-slate-700">{arrival.destinationName} 방면</span>
           </div>
-          <div className="mt-3 flex items-end gap-2 lg:mt-2 lg:block">
-            <strong className="text-xl text-brand">
+          <div className="mt-3 flex flex-wrap items-end gap-2 lg:mt-2">
+            <strong className="text-3xl leading-none text-brand lg:text-[28px]">
               {formatArrivalTime(first?.arrivalSeconds ?? null)}
             </strong>
-            <p className="text-xs text-slate-500 lg:mt-1">
-              {first?.remainingStops != null
-                ? `${first.remainingStops}정거장 전`
-                : '남은 정거장 정보 없음'}
-              {first?.isLowFloor ? ' · 저상버스' : ''}
-            </p>
+            <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${arrivalStatus.className}`}>
+              {arrivalStatus.label}
+            </span>
           </div>
+          <p className="mt-2 text-xs text-slate-500">
+            {first?.remainingStops != null
+              ? `${first.remainingStops}정거장 전`
+              : '남은 정거장 정보 없음'}
+            {first?.isLowFloor ? ' · 저상버스' : ''}
+          </p>
+          {first?.currentStationName && (
+            <p className="text-xs text-slate-500 lg:mt-1">
+              현재 {first.currentStationName} 통과 중
+            </p>
+          )}
         </div>
         <button
           className={`grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg border transition-colors lg:absolute lg:top-3 lg:right-3 lg:size-9 ${isFavorite ? 'border-amber-300 bg-amber-50 text-amber-500' : 'border-slate-200 bg-white text-slate-400 hover:text-amber-500'}`}

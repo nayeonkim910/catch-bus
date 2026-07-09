@@ -9,6 +9,15 @@ type StationSearchProps = {
   floating?: boolean
 }
 
+const baseSearchContainerClassName =
+  'relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)]'
+
+const floatingSearchContainerClassName =
+  'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[clamp(13.5rem,24vw,24rem)] lg:ml-0 lg:w-[min(440px,calc(100vw-34rem))]'
+
+const inlineSearchContainerClassName =
+  'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]'
+
 export function StationSearch({ onSelect, floating = false }: StationSearchProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const { query, searchState, setQuery, submitSearch, resetResults } = useStationSearch()
@@ -39,7 +48,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
 
   return (
     <div
-      className={`relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)] ${floating ? 'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[calc(var(--left-panel)+16px)] lg:ml-0 lg:w-[min(420px,calc(100vw-var(--left-panel)-190px))]' : 'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]'}`}
+      className={`${baseSearchContainerClassName} ${floating ? floatingSearchContainerClassName : inlineSearchContainerClassName}`}
       ref={containerRef}
     >
       <form

@@ -1,0 +1,64 @@
+@layer components {
+  .dashboard-shell {
+    position: relative;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--color-canvas);
+  }
+
+  .dashboard-stage {
+    position: relative;
+    min-height: 0;
+    height: calc(100dvh - 116px);
+  }
+
+  .dashboard-content {
+    position: relative;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .details-panel {
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    background: rgb(255 255 255 / 90%);
+    backdrop-filter: blur(24px);
+    transition: height 180ms ease, box-shadow 180ms ease;
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard-shell {
+      --details-panel: clamp(280px, 36vh, 400px);
+    }
+
+    .dashboard-stage {
+      height: 100dvh;
+    }
+
+    .details-panel {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 20;
+      display: flex;
+      height: calc(var(--details-panel) - 1rem);
+      border: 1px solid rgb(255 255 255 / 70%);
+      border-radius: 1.25rem;
+      box-shadow: 0 20px 50px rgb(15 23 42 / 14%);
+    }
+
+    .details-panel--default {
+      height: calc(var(--details-panel) - 1rem);
+    }
+
+    .details-panel--expanded {
+      height: calc(100dvh - 8rem);
+    }
+  }
+}

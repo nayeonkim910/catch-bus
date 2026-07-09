@@ -2,9 +2,9 @@ import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus'
 import type { MobileTab } from '../../shared/types/navigation'
 import { DetailsPanel } from '../details/DetailsPanel'
 import type { ArrivalStatus } from '../details/types'
-import { FavoritesPanel } from '../favorites/FavoritesPanel'
 import { MapPanel } from '../map/MapPanel'
 import { AppHeader } from './AppHeader'
+import './dashboardLayout.css'
 import { MobileTabs } from './MobileTabs'
 
 type DashboardShellProps = {
@@ -35,25 +35,23 @@ export function DashboardShell({
   onRetryArrivals,
 }: DashboardShellProps) {
   return (
-    <div className="relative h-dvh min-h-0 overflow-hidden bg-canvas lg:[--left-panel:300px] xl:[--left-panel:clamp(300px,24vw,388px)]">
+    <div className="dashboard-shell">
       <AppHeader onStationSelect={onStationSelect} />
       <MobileTabs activeTab={activeTab} onChange={onTabChange} />
-      <div className="h-[calc(100dvh-116px)] min-h-0 lg:grid lg:h-dvh lg:grid-cols-[var(--left-panel)_minmax(0,1fr)]">
-        <FavoritesPanel
-          activeTab={activeTab}
-          favorites={favorites}
-          arrivals={arrivals}
-        />
-        <div className="h-full min-h-0 min-w-0 lg:grid lg:grid-rows-[minmax(260px,1fr)_minmax(240px,40vh)]">
+      <div className="dashboard-stage">
+        <div className="dashboard-content">
           <MapPanel
             activeTab={activeTab}
             station={station}
             onStationSelect={onStationSelect}
           />
           <DetailsPanel
+            // 정류장이 바뀌면 하단 패널의 탭과 높이 상태를 기본값으로 되돌린다.
+            key={station?.id ?? 'no-station'}
             activeTab={activeTab}
             station={station}
             arrivals={arrivals}
+            favorites={favorites}
             isFavorite={isFavorite}
             onToggleFavorite={onToggleFavorite}
             arrivalStatus={arrivalStatus}
