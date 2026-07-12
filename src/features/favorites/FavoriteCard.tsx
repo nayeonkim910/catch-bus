@@ -3,13 +3,21 @@ import { RouteProgress } from '../../shared/components/RouteProgress'
 import { RouteBadge } from '../../shared/components/RouteBadge'
 import { formatArrivalTime } from '../../shared/utils/arrival'
 import { useRouteStationData } from '../routes/useRouteStationData'
+import { getFavoriteArrivalLabel } from './favoriteCardStatus'
 
 type FavoriteCardProps = {
   favorite: Favorite
   arrival?: BusArrival
+  isLoading?: boolean
+  isError?: boolean
 }
 
-export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
+export function FavoriteCard({
+  favorite,
+  arrival,
+  isLoading = false,
+  isError = false,
+}: FavoriteCardProps) {
   const first = arrival?.first
   const routeStationData = useRouteStationData(
     favorite.routeId,
@@ -24,7 +32,9 @@ export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
           <RouteBadge routeName={favorite.routeName} routeTypeCode={favorite.routeTypeCode} />
           <span className="truncate text-sm font-semibold text-slate-700">{favorite.destinationName} 방면</span>
         </div>
-        <strong className="shrink-0 text-lg text-brand">{formatArrivalTime(first?.arrivalSeconds ?? null)}</strong>
+        <strong className="shrink-0 text-lg text-brand">
+          {arrival ? formatArrivalTime(first?.arrivalSeconds ?? null) : '—'}
+        </strong>
       </div>
       <p className="mt-3 text-sm font-medium text-slate-700">{favorite.stationName}</p>
       <RouteProgress
@@ -36,7 +46,7 @@ export function FavoriteCard({ favorite, arrival }: FavoriteCardProps) {
         stationNames={routeStationData.data?.timeline}
       />
       <p className="mt-2 text-right text-xs text-slate-500">
-        {first?.remainingStops != null ? `${first.remainingStops}정거장 전` : '위치 정보 없음'}
+        {getFavoriteArrivalLabel({ arrival, isLoading, isError })}
       </p>
     </article>
   )

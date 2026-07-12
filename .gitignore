@@ -21,6 +21,7 @@ dist-ssr
 plan.md
 ui-plan.md
 api-response-types.md
+project-analysis.md
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

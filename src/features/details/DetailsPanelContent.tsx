@@ -29,7 +29,7 @@ export function DetailsPanelContent({
   onRetryArrivals,
 }: DetailsPanelContentProps) {
   if (selectedTab === 'favorites') {
-    return <FavoritesTab favorites={favorites} arrivals={arrivals} />
+    return <FavoritesTab favorites={favorites} />
   }
 
   if (!station) {
