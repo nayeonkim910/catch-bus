@@ -1,3 +1,3 @@
-export type DetailsPanelSize = 'default' | 'expanded'
+export type DetailsPanelSize = 'default' | 'expanded';
 
-export type DetailsPanelTab = 'station-detail' | 'favorites'
+export type DetailsPanelTab = 'station-detail' | 'favorites';

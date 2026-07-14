@@ -1,26 +1,26 @@
-import { useEffect, useRef, type RefObject } from 'react'
-import { BusIcon } from '../../shared/components/BusIcon'
-import type { RouteStation } from '../../shared/types/bus'
-import { getRouteTheme } from '../../shared/utils/routeTheme'
+import { useEffect, useRef, type RefObject } from 'react';
+import { BusIcon } from '../../shared/components/BusIcon';
+import type { RouteStation } from '../../shared/types/bus';
+import { getRouteTheme } from '../../shared/utils/routeTheme';
 
 type RouteStationDetailsProps = {
-  id: string
-  stations: RouteStation[] | undefined
-  targetStationId: string
-  targetStationOrder: number
-  currentStationSequence: number | null
-  routeTypeCode: number
-  isLoading: boolean
-}
+  id: string;
+  stations: RouteStation[] | undefined;
+  targetStationId: string;
+  targetStationOrder: number;
+  currentStationSequence: number | null;
+  routeTypeCode: number;
+  isLoading: boolean;
+};
 
 type RouteStationItemProps = {
-  station: RouteStation
-  targetStationId: string
-  targetStationOrder: number
-  currentStationSequence: number | null
-  accentColor: string
-  targetRef: RefObject<HTMLLIElement | null>
-}
+  station: RouteStation;
+  targetStationId: string;
+  targetStationOrder: number;
+  currentStationSequence: number | null;
+  accentColor: string;
+  targetRef: RefObject<HTMLLIElement | null>;
+};
 
 function RouteStationItem({
   station,
@@ -30,11 +30,10 @@ function RouteStationItem({
   accentColor,
   targetRef,
 }: RouteStationItemProps) {
-  const isTarget =
-    station.id === targetStationId && station.sequence === targetStationOrder
+  const isTarget = station.id === targetStationId && station.sequence === targetStationOrder;
   // 정류장명은 중복될 수 있으므로 현재 버스 위치는 노선 내 순번으로 판별한다.
-  const isCurrent = station.sequence === currentStationSequence
-  const isHighlighted = isTarget || isCurrent
+  const isCurrent = station.sequence === currentStationSequence;
+  const isHighlighted = isTarget || isCurrent;
 
   return (
     <li
@@ -66,13 +65,11 @@ function RouteStationItem({
           {isTarget && <span className="ml-1">· 선택 정류장</span>}
         </strong>
         <span className="mt-0.5 block text-xs text-slate-400">
-          {station.mobileNo
-            ? `정류소 ${station.mobileNo}`
-            : `${station.sequence}번째 정류장`}
+          {station.mobileNo ? `정류소 ${station.mobileNo}` : `${station.sequence}번째 정류장`}
         </span>
       </span>
     </li>
-  )
+  );
 }
 
 export function RouteStationDetails({
@@ -84,17 +81,17 @@ export function RouteStationDetails({
   routeTypeCode,
   isLoading,
 }: RouteStationDetailsProps) {
-  const theme = getRouteTheme(routeTypeCode)
-  const listRef = useRef<HTMLOListElement>(null)
-  const targetRef = useRef<HTMLLIElement>(null)
+  const theme = getRouteTheme(routeTypeCode);
+  const listRef = useRef<HTMLOListElement>(null);
+  const targetRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    const list = listRef.current
-    const target = targetRef.current
-    if (!list || !target) return
+    const list = listRef.current;
+    const target = targetRef.current;
+    if (!list || !target) return;
 
-    list.scrollTop = target.offsetTop - list.clientHeight / 2 + target.clientHeight / 2
-  }, [stations, targetStationId, targetStationOrder])
+    list.scrollTop = target.offsetTop - list.clientHeight / 2 + target.clientHeight / 2;
+  }, [stations, targetStationId, targetStationOrder]);
 
   return (
     <div className="col-span-full border-t border-slate-100 pt-3" id={id}>
@@ -107,10 +104,7 @@ export function RouteStationDetails({
             className="pointer-events-none absolute top-5 bottom-5 left-[19px] w-0.5 bg-slate-300"
             aria-hidden="true"
           />
-          <ol
-            className="hover-scrollbar relative max-h-80 overflow-y-auto pr-2"
-            ref={listRef}
-          >
+          <ol className="hover-scrollbar relative max-h-80 overflow-y-auto pr-2" ref={listRef}>
             {stations.map((station) => (
               <RouteStationItem
                 key={`${station.id}-${station.sequence}`}
@@ -128,5 +122,5 @@ export function RouteStationDetails({
         <p className="py-4 text-center text-sm text-slate-400">노선 정보가 없습니다.</p>
       )}
     </div>
-  )
+  );
 }

@@ -1,12 +1,12 @@
-import { getRouteTheme } from '../utils/routeTheme'
+import { getRouteTheme } from '../utils/routeTheme';
 
 type RouteBadgeProps = {
-  routeName: string
-  routeTypeCode: number
-}
+  routeName: string;
+  routeTypeCode: number;
+};
 
 export function RouteBadge({ routeName, routeTypeCode }: RouteBadgeProps) {
-  const theme = getRouteTheme(routeTypeCode)
+  const theme = getRouteTheme(routeTypeCode);
 
   return (
     <span className="flex shrink-0 items-center gap-1.5">
@@ -17,5 +17,5 @@ export function RouteBadge({ routeName, routeTypeCode }: RouteBadgeProps) {
         {theme.label}
       </span>
     </span>
-  )
+  );
 }

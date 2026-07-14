@@ -1,12 +1,12 @@
 type RoutePalette = {
-  accentColor: string
-  routeClassName: string
-  typeClassName: string
-}
+  accentColor: string;
+  routeClassName: string;
+  typeClassName: string;
+};
 
 type RouteTheme = RoutePalette & {
-  label: string
-}
+  label: string;
+};
 
 const PALETTES = {
   blue: {
@@ -44,13 +44,13 @@ const PALETTES = {
     routeClassName: 'bg-violet-600 text-white',
     typeClassName: 'bg-violet-50 text-violet-700',
   },
-} satisfies Record<string, RoutePalette>
+} satisfies Record<string, RoutePalette>;
 
 function createTheme(label: string, palette: RoutePalette): RouteTheme {
-  return { label, ...palette }
+  return { label, ...palette };
 }
 
-const GENERAL_THEME = createTheme('일반', PALETTES.blue)
+const GENERAL_THEME = createTheme('일반', PALETTES.blue);
 const ROUTE_THEMES: Record<number, RouteTheme> = {
   11: createTheme('직행좌석', PALETTES.red),
   12: createTheme('좌석', PALETTES.indigo),
@@ -68,8 +68,8 @@ const ROUTE_THEMES: Record<number, RouteTheme> = {
   51: createTheme('공항', PALETTES.cyan),
   52: createTheme('공항', PALETTES.cyan),
   53: createTheme('공항', PALETTES.cyan),
-}
+};
 
 export function getRouteTheme(routeTypeCode: number) {
-  return ROUTE_THEMES[routeTypeCode] ?? createTheme('버스', PALETTES.blue)
+  return ROUTE_THEMES[routeTypeCode] ?? createTheme('버스', PALETTES.blue);
 }

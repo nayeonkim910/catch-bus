@@ -28,7 +28,9 @@
     overflow: hidden;
     background: rgb(255 255 255 / 90%);
     backdrop-filter: blur(24px);
-    transition: height 180ms ease, box-shadow 180ms ease;
+    transition:
+      height 180ms ease,
+      box-shadow 180ms ease;
   }
 
   @media (min-width: 1024px) {

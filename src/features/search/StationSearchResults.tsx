@@ -1,12 +1,12 @@
-import type { BusStation } from '../../shared/types/bus'
-import type { StationSearchState } from './useStationSearch'
+import type { BusStation } from '../../shared/types/bus';
+import type { StationSearchState } from './useStationSearch';
 
 type StationSearchResultsProps = {
-  searchState: Exclude<StationSearchState, { status: 'idle' }>
-  onSelect: (station: BusStation) => void
-}
+  searchState: Exclude<StationSearchState, { status: 'idle' }>;
+  onSelect: (station: BusStation) => void;
+};
 
-const MAX_VISIBLE_RESULTS = 12
+const MAX_VISIBLE_RESULTS = 12;
 
 function LoadingResults() {
   return (
@@ -16,23 +16,27 @@ function LoadingResults() {
         <div className="h-14 animate-pulse rounded-lg bg-slate-100" key={item} />
       ))}
     </div>
-  )
+  );
 }
 
 export function StationSearchResults({ searchState, onSelect }: StationSearchResultsProps) {
   if (searchState.status === 'loading') {
-    return <LoadingResults />
+    return <LoadingResults />;
   }
 
   if (searchState.status === 'error') {
-    return <p className="px-3 py-5 text-center text-sm text-red-600" role="alert">{searchState.message}</p>
+    return (
+      <p className="px-3 py-5 text-center text-sm text-red-600" role="alert">
+        {searchState.message}
+      </p>
+    );
   }
 
   if (searchState.stations.length === 0) {
-    return <p className="px-3 py-5 text-center text-sm text-slate-500">검색 결과가 없습니다.</p>
+    return <p className="px-3 py-5 text-center text-sm text-slate-500">검색 결과가 없습니다.</p>;
   }
 
-  const visibleStations = searchState.stations.slice(0, MAX_VISIBLE_RESULTS)
+  const visibleStations = searchState.stations.slice(0, MAX_VISIBLE_RESULTS);
 
   return (
     <>
@@ -50,9 +54,12 @@ export function StationSearchResults({ searchState, onSelect }: StationSearchRes
               type="button"
             >
               <span className="min-w-0">
-                <strong className="block truncate text-sm font-semibold text-slate-900">{station.name}</strong>
+                <strong className="block truncate text-sm font-semibold text-slate-900">
+                  {station.name}
+                </strong>
                 <span className="mt-0.5 block truncate text-xs text-slate-500">
-                  {station.regionName}{station.isCenterLane ? ' · 중앙차로' : ''}
+                  {station.regionName}
+                  {station.isCenterLane ? ' · 중앙차로' : ''}
                 </span>
               </span>
               {station.mobileNo && (
@@ -65,5 +72,5 @@ export function StationSearchResults({ searchState, onSelect }: StationSearchRes
         ))}
       </ul>
     </>
-  )
+  );
 }

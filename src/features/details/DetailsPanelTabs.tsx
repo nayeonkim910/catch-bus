@@ -1,19 +1,16 @@
-import type { DetailsPanelTab } from './detailsPanelTypes'
+import type { DetailsPanelTab } from './detailsPanelTypes';
 
 const detailsPanelTabs = [
   { id: 'station-detail', label: '버스 상세' },
   { id: 'favorites', label: '즐겨찾기' },
-] satisfies { id: DetailsPanelTab; label: string }[]
+] satisfies { id: DetailsPanelTab; label: string }[];
 
 type DetailsPanelTabsProps = {
-  selectedTab: DetailsPanelTab
-  onSelect: (tab: DetailsPanelTab) => void
-}
+  selectedTab: DetailsPanelTab;
+  onSelect: (tab: DetailsPanelTab) => void;
+};
 
-export function DetailsPanelTabs({
-  selectedTab,
-  onSelect,
-}: DetailsPanelTabsProps) {
+export function DetailsPanelTabs({ selectedTab, onSelect }: DetailsPanelTabsProps) {
   return (
     <div
       className="flex min-w-0 shrink gap-1 rounded-full bg-slate-100 p-1"
@@ -33,5 +30,5 @@ export function DetailsPanelTabs({
         </button>
       ))}
     </div>
-  )
+  );
 }

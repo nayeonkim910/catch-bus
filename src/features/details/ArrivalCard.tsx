@@ -1,44 +1,55 @@
-import { useId, useState } from 'react'
-import { StarIcon } from '../../shared/components/Icons'
-import { RouteBadge } from '../../shared/components/RouteBadge'
-import { RouteProgress } from '../../shared/components/RouteProgress'
-import type { BusArrival } from '../../shared/types/bus'
-import { formatArrivalTime } from '../../shared/utils/arrival'
-import { useRouteStationData } from '../routes/useRouteStationData'
-import { getArrivalCardStatus } from './arrivalCardStatus'
-import { RouteStationDetails } from './RouteStationDetails'
+import { useId, useState } from 'react';
+import { StarIcon } from '../../shared/components/Icons';
+import { RouteBadge } from '../../shared/components/RouteBadge';
+import { RouteProgress } from '../../shared/components/RouteProgress';
+import type { BusArrival } from '../../shared/types/bus';
+import { formatArrivalTime } from '../../shared/utils/arrival';
+import { useRouteStationData } from '../routes/useRouteStationData';
+import { getArrivalCardStatus } from './arrivalCardStatus';
+import { RouteStationDetails } from './RouteStationDetails';
 
 type ArrivalCardProps = {
-  arrival: BusArrival
-  targetStationName: string
-  isFavorite: boolean
-  onToggleFavorite: () => void
-}
+  arrival: BusArrival;
+  targetStationName: string;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
+};
 
-export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFavorite }: ArrivalCardProps) {
-  const [isRouteExpanded, setIsRouteExpanded] = useState(false)
-  const routeDetailsId = useId()
-  const first = arrival.first
-  const arrivalStatus = getArrivalCardStatus(first?.arrivalSeconds ?? null)
+export function ArrivalCard({
+  arrival,
+  targetStationName,
+  isFavorite,
+  onToggleFavorite,
+}: ArrivalCardProps) {
+  const [isRouteExpanded, setIsRouteExpanded] = useState(false);
+  const routeDetailsId = useId();
+  const first = arrival.first;
+  const arrivalStatus = getArrivalCardStatus(first?.arrivalSeconds ?? null);
   const routeStationData = useRouteStationData(
     arrival.routeId,
     arrival.stationId,
     arrival.stationOrder,
-  )
+  );
 
   return (
-    <article className={`relative rounded-xl border-2 bg-white p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:shadow-xl hover:ring-4 hover:ring-blue-300 focus-within:border-blue-700 focus-within:bg-blue-50 focus-within:ring-4 focus-within:ring-blue-300 lg:grid lg:grid-cols-[minmax(190px,0.8fr)_minmax(280px,1.4fr)_minmax(130px,0.5fr)] lg:items-center lg:gap-4 lg:p-3 ${arrivalStatus.cardClassName}`}>
+    <article
+      className={`relative rounded-xl border-2 bg-white p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:shadow-xl hover:ring-4 hover:ring-blue-300 focus-within:border-blue-700 focus-within:bg-blue-50 focus-within:ring-4 focus-within:ring-blue-300 lg:grid lg:grid-cols-[minmax(190px,0.8fr)_minmax(280px,1.4fr)_minmax(130px,0.5fr)] lg:items-center lg:gap-4 lg:p-3 ${arrivalStatus.cardClassName}`}
+    >
       <div className="flex items-start justify-between gap-3 lg:block">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <RouteBadge routeName={arrival.routeName} routeTypeCode={arrival.routeTypeCode} />
-            <span className="truncate text-sm font-semibold text-slate-700">{arrival.destinationName} 방면</span>
+            <span className="truncate text-sm font-semibold text-slate-700">
+              {arrival.destinationName} 방면
+            </span>
           </div>
           <div className="mt-3 flex flex-wrap items-end gap-2 lg:mt-2">
             <strong className="text-3xl leading-none text-brand lg:text-[28px]">
               {formatArrivalTime(first?.arrivalSeconds ?? null)}
             </strong>
-            <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${arrivalStatus.className}`}>
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-bold ${arrivalStatus.className}`}
+            >
               {arrivalStatus.label}
             </span>
           </div>
@@ -77,9 +88,7 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
       <div className="mt-4 border-t border-slate-100 pt-4 text-right text-sm text-slate-500 lg:mt-0 lg:border-0 lg:pr-12 lg:pt-0">
         <span className="block text-xs text-slate-400">다음 버스</span>
         <strong className="mt-1 block text-base font-semibold text-slate-600">
-          {arrival.second
-            ? formatArrivalTime(arrival.second.arrivalSeconds)
-            : '정보 없음'}
+          {arrival.second ? formatArrivalTime(arrival.second.arrivalSeconds) : '정보 없음'}
         </strong>
         <button
           className="mt-2 cursor-pointer text-xs font-semibold text-brand hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
@@ -104,5 +113,5 @@ export function ArrivalCard({ arrival, targetStationName, isFavorite, onToggleFa
         />
       )}
     </article>
-  )
+  );
 }

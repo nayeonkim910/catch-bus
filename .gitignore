@@ -22,6 +22,7 @@ plan.md
 ui-plan.md
 api-response-types.md
 project-analysis.md
+prettier-guide.md
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

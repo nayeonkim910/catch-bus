@@ -1,16 +1,16 @@
-import type { BusArrival, BusStation } from '../../shared/types/bus'
-import { ArrivalCard } from './ArrivalCard'
-import type { ArrivalStatus } from './types'
+import type { BusArrival, BusStation } from '../../shared/types/bus';
+import { ArrivalCard } from './ArrivalCard';
+import type { ArrivalStatus } from './types';
 
 type ArrivalListProps = {
-  station: BusStation
-  arrivals: BusArrival[]
-  status: ArrivalStatus
-  error: string | null
-  isFavorite: (stationId: string, routeId: string) => boolean
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void
-  onRetry: () => void
-}
+  station: BusStation;
+  arrivals: BusArrival[];
+  status: ArrivalStatus;
+  error: string | null;
+  isFavorite: (stationId: string, routeId: string) => boolean;
+  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  onRetry: () => void;
+};
 
 function LoadingArrivals() {
   return (
@@ -22,7 +22,7 @@ function LoadingArrivals() {
         />
       ))}
     </div>
-  )
+  );
 }
 
 function ArrivalError({ message, onRetry }: { message: string | null; onRetry: () => void }) {
@@ -39,7 +39,7 @@ function ArrivalError({ message, onRetry }: { message: string | null; onRetry: (
         다시 시도
       </button>
     </div>
-  )
+  );
 }
 
 function EmptyArrivals() {
@@ -47,7 +47,7 @@ function EmptyArrivals() {
     <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
       도착 예정 버스가 없습니다.
     </p>
-  )
+  );
 }
 
 export function ArrivalList({
@@ -59,9 +59,9 @@ export function ArrivalList({
   onToggleFavorite,
   onRetry,
 }: ArrivalListProps) {
-  if (status === 'loading') return <LoadingArrivals />
-  if (status === 'error') return <ArrivalError message={error} onRetry={onRetry} />
-  if (arrivals.length === 0) return <EmptyArrivals />
+  if (status === 'loading') return <LoadingArrivals />;
+  if (status === 'error') return <ArrivalError message={error} onRetry={onRetry} />;
+  if (arrivals.length === 0) return <EmptyArrivals />;
 
   return (
     <div className="space-y-3">
@@ -75,5 +75,5 @@ export function ArrivalList({
         />
       ))}
     </div>
-  )
+  );
 }

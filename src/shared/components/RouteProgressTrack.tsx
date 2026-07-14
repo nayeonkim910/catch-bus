@@ -1,33 +1,31 @@
-import { ROUTE_PROGRESS_LABEL_WIDTH } from '../utils/routeProgress'
-import { BusIcon } from './BusIcon'
+import { ROUTE_PROGRESS_LABEL_WIDTH } from '../utils/routeProgress';
+import { BusIcon } from './BusIcon';
 
 export type RouteProgressNode = {
-  index: number
-  position: number
-  name: string | null
-  isTarget: boolean
-  isCurrent: boolean
-  isPassed: boolean
-}
+  index: number;
+  position: number;
+  name: string | null;
+  isTarget: boolean;
+  isCurrent: boolean;
+  isPassed: boolean;
+};
 
 type RouteProgressTrackProps = {
-  accentColor: string
-  busPosition: number | null
-  traveledWidth: number
-  nodes: RouteProgressNode[]
-}
+  accentColor: string;
+  busPosition: number | null;
+  traveledWidth: number;
+  nodes: RouteProgressNode[];
+};
 
 type FallbackStationLabelsProps = {
-  current: { name: string; position: number; alignLeft: boolean } | null
-  destination: string | null
-}
+  current: { name: string; position: number; alignLeft: boolean } | null;
+  destination: string | null;
+};
 
 function StationNode({ node, accentColor }: { node: RouteProgressNode; accentColor: string }) {
-  const isHighlighted = node.isCurrent || node.isTarget
-  const dotSizeClass = node.isTarget
-    ? 'size-4 border-[3px]'
-    : 'size-3 border-2'
-  const dotColor = node.isPassed || node.isTarget ? accentColor : '#94A3B8'
+  const isHighlighted = node.isCurrent || node.isTarget;
+  const dotSizeClass = node.isTarget ? 'size-4 border-[3px]' : 'size-3 border-2';
+  const dotColor = node.isPassed || node.isTarget ? accentColor : '#94A3B8';
 
   return (
     <span
@@ -54,7 +52,7 @@ function StationNode({ node, accentColor }: { node: RouteProgressNode; accentCol
         </span>
       )}
     </span>
-  )
+  );
 }
 
 function BusMarker({ position, color }: { position: number; color: string }) {
@@ -67,7 +65,7 @@ function BusMarker({ position, color }: { position: number; color: string }) {
         <BusIcon className="h-5 w-6 stroke-[1.8]" />
       </span>
     </span>
-  )
+  );
 }
 
 export function RouteProgressTrack({
@@ -92,13 +90,10 @@ export function RouteProgressTrack({
 
       {busPosition !== null && <BusMarker position={busPosition} color={accentColor} />}
     </>
-  )
+  );
 }
 
-export function FallbackStationLabels({
-  current,
-  destination,
-}: FallbackStationLabelsProps) {
+export function FallbackStationLabels({ current, destination }: FallbackStationLabelsProps) {
   return (
     <>
       {current && (
@@ -119,5 +114,5 @@ export function FallbackStationLabels({
         </span>
       )}
     </>
-  )
+  );
 }

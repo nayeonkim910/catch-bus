@@ -1,8 +1,8 @@
-import { queryOptions } from '@tanstack/react-query'
-import { getStationArrivals } from './busApi'
+import { queryOptions } from '@tanstack/react-query';
+import { getStationArrivals } from './busApi';
 
 // 도착정보는 실시간성이 중요하므로 짧게 잡아 자주 갱신될 수 있게 한다.
-const STATION_ARRIVALS_STALE_TIME_MS = 30 * 1000
+const STATION_ARRIVALS_STALE_TIME_MS = 30 * 1000;
 
 /**
  * 정류장 도착정보 조회를 위한 재사용 가능한 TanStack Query 옵션.
@@ -17,5 +17,5 @@ export function stationArrivalsQueryOptions(stationId: string) {
     queryFn: ({ signal }) => getStationArrivals(stationId, signal),
     staleTime: STATION_ARRIVALS_STALE_TIME_MS,
     select: (response) => response.data.arrivals,
-  })
+  });
 }
