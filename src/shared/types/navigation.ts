@@ -1,1 +1,1 @@
-export type MobileTab = 'map' | 'details'
+export type MobileTab = 'map' | 'details';

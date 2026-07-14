@@ -1,6 +1,6 @@
 type BusIconProps = {
-  className?: string
-}
+  className?: string;
+};
 
 export function BusIcon({ className = 'size-5' }: BusIconProps) {
   return (
@@ -14,5 +14,5 @@ export function BusIcon({ className = 'size-5' }: BusIconProps) {
       <circle cx="8" cy="12" r="1" fill="currentColor" />
       <circle cx="16" cy="12" r="1" fill="currentColor" />
     </svg>
-  )
+  );
 }

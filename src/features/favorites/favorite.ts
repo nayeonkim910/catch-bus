@@ -1,7 +1,7 @@
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus'
+import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
 
 export function getFavoriteId(stationId: string, routeId: string) {
-  return `${stationId}:${routeId}`
+  return `${stationId}:${routeId}`;
 }
 
 export function createFavorite(station: BusStation, arrival: BusArrival): Favorite {
@@ -14,5 +14,5 @@ export function createFavorite(station: BusStation, arrival: BusArrival): Favori
     routeTypeCode: arrival.routeTypeCode,
     destinationName: arrival.destinationName,
     stationOrder: arrival.stationOrder,
-  }
+  };
 }

@@ -6,24 +6,21 @@ const BUS_STOP_ICON = `
     <circle cx="9" cy="18" r="2" />
     <circle cx="24" cy="18" r="2" />
   </svg>
-`
+`;
 
 export function createBusStopMarker(stationName: string, isSelected: boolean) {
-  const marker = document.createElement('button')
-  marker.type = 'button'
-  marker.title = stationName
-  marker.setAttribute('aria-label', `${stationName} 정류장 선택`)
+  const marker = document.createElement('button');
+  marker.type = 'button';
+  marker.title = stationName;
+  marker.setAttribute('aria-label', `${stationName} 정류장 선택`);
   marker.className = isSelected
     ? 'relative grid size-11 cursor-pointer place-items-center rounded-full border-[3px] border-white bg-blue-600 text-white shadow-[0_5px_14px_rgb(15_23_42/35%)] after:absolute after:-bottom-1.5 after:size-3 after:rotate-45 after:rounded-sm after:border-b-[3px] after:border-r-[3px] after:border-white after:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
-    : 'relative grid size-9 cursor-pointer place-items-center rounded-full border-2 border-blue-200 bg-white text-blue-600 shadow-[0_3px_10px_rgb(15_23_42/25%)] after:absolute after:-bottom-1 after:size-2.5 after:rotate-45 after:rounded-[2px] after:border-b-2 after:border-r-2 after:border-blue-200 after:bg-white hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
+    : 'relative grid size-9 cursor-pointer place-items-center rounded-full border-2 border-blue-200 bg-white text-blue-600 shadow-[0_3px_10px_rgb(15_23_42/25%)] after:absolute after:-bottom-1 after:size-2.5 after:rotate-45 after:rounded-[2px] after:border-b-2 after:border-r-2 after:border-blue-200 after:bg-white hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600';
   // 고정된 SVG만 삽입하며 stationName 등 외부 데이터는 마크업에 포함하지 않는다.
-  marker.innerHTML = BUS_STOP_ICON
+  marker.innerHTML = BUS_STOP_ICON;
 
-  const icon = marker.querySelector('svg')
-  icon?.setAttribute(
-    'class',
-    `relative z-10 ${isSelected ? 'h-7 w-8' : 'h-6 w-7'}`,
-  )
+  const icon = marker.querySelector('svg');
+  icon?.setAttribute('class', `relative z-10 ${isSelected ? 'h-7 w-8' : 'h-6 w-7'}`);
 
-  return marker
+  return marker;
 }

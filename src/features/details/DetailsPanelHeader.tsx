@@ -1,17 +1,14 @@
-import { SectionHeading } from '../../shared/components/PanelSection'
-import type { BusStation } from '../../shared/types/bus'
-import { formatUpdatedTime } from '../../shared/utils/arrival'
-import { StationSummary } from './StationSummary'
+import { SectionHeading } from '../../shared/components/PanelSection';
+import type { BusStation } from '../../shared/types/bus';
+import { formatUpdatedTime } from '../../shared/utils/arrival';
+import { StationSummary } from './StationSummary';
 
 type DetailsPanelHeaderProps = {
-  station: BusStation
-  updatedAt?: string
-}
+  station: BusStation;
+  updatedAt?: string;
+};
 
-export function DetailsPanelHeader({
-  station,
-  updatedAt,
-}: DetailsPanelHeaderProps) {
+export function DetailsPanelHeader({ station, updatedAt }: DetailsPanelHeaderProps) {
   return (
     <section className="flex shrink-0 justify-between p-4 sm:p-5 lg:px-5 lg:py-4">
       <div className="lg:hidden">
@@ -24,5 +21,5 @@ export function DetailsPanelHeader({
         </span>
       )}
     </section>
-  )
+  );
 }

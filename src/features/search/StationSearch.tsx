@@ -1,49 +1,48 @@
-import { useEffect, useRef, type FormEvent } from 'react'
-import { SearchIcon } from '../../shared/components/Icons'
-import type { BusStation } from '../../shared/types/bus'
-import { StationSearchResults } from './StationSearchResults'
-import { useStationSearch } from './useStationSearch'
+import { useEffect, useRef, type FormEvent } from 'react';
+import { SearchIcon } from '../../shared/components/Icons';
+import type { BusStation } from '../../shared/types/bus';
+import { StationSearchResults } from './StationSearchResults';
+import { useStationSearch } from './useStationSearch';
 
 type StationSearchProps = {
-  onSelect: (station: BusStation) => void
-  floating?: boolean
-}
+  onSelect: (station: BusStation) => void;
+  floating?: boolean;
+};
 
 const baseSearchContainerClassName =
-  'relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)]'
+  'relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)]';
 
 const floatingSearchContainerClassName =
-  'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[clamp(13.5rem,24vw,24rem)] lg:ml-0 lg:w-[min(440px,calc(100vw-34rem))]'
+  'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[clamp(13.5rem,24vw,24rem)] lg:ml-0 lg:w-[min(440px,calc(100vw-34rem))]';
 
-const inlineSearchContainerClassName =
-  'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]'
+const inlineSearchContainerClassName = 'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]';
 
 export function StationSearch({ onSelect, floating = false }: StationSearchProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { query, searchState, setQuery, submitSearch, resetResults } = useStationSearch()
-  const isOpen = searchState.status !== 'idle'
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { query, searchState, setQuery, submitSearch, resetResults } = useStationSearch();
+  const isOpen = searchState.status !== 'idle';
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) return;
 
     function handlePointerDown(event: PointerEvent) {
       if (!containerRef.current?.contains(event.target as Node)) {
-        resetResults()
+        resetResults();
       }
     }
 
-    document.addEventListener('pointerdown', handlePointerDown)
-    return () => document.removeEventListener('pointerdown', handlePointerDown)
-  }, [isOpen, resetResults])
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [isOpen, resetResults]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    void submitSearch()
+    event.preventDefault();
+    void submitSearch();
   }
 
   function handleSelect(station: BusStation) {
-    setQuery(station.name)
-    onSelect(station)
+    setQuery(station.name);
+    onSelect(station);
   }
 
   return (
@@ -62,7 +61,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
           className="min-w-0 flex-1 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-400 sm:text-base"
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Escape') resetResults()
+            if (event.key === 'Escape') resetResults();
           }}
           placeholder="정류장 검색"
           type="search"
@@ -86,5 +85,5 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
         </div>
       )}
     </div>
-  )
+  );
 }

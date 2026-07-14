@@ -1,10 +1,10 @@
-import { BellIcon, UserIcon } from '../../shared/components/Icons'
-import type { BusStation } from '../../shared/types/bus'
-import { StationSearch } from '../search/StationSearch'
+import { BellIcon, UserIcon } from '../../shared/components/Icons';
+import type { BusStation } from '../../shared/types/bus';
+import { StationSearch } from '../search/StationSearch';
 
 type AppHeaderProps = {
-  onStationSelect: (station: BusStation) => void
-}
+  onStationSelect: (station: BusStation) => void;
+};
 
 export function AppHeader({ onStationSelect }: AppHeaderProps) {
   return (
@@ -44,5 +44,5 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
         </button>
       </nav>
     </header>
-  )
+  );
 }

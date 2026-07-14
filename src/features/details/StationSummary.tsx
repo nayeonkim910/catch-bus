@@ -1,4 +1,4 @@
-import type { BusStation } from '../../shared/types/bus'
+import type { BusStation } from '../../shared/types/bus';
 
 export function StationSummary({ station }: { station: BusStation }) {
   return (
@@ -19,5 +19,5 @@ export function StationSummary({ station }: { station: BusStation }) {
         )}
       </div>
     </div>
-  )
+  );
 }

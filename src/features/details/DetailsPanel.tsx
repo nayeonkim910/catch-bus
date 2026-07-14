@@ -1,23 +1,23 @@
-import { useState } from 'react'
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus'
-import type { MobileTab } from '../../shared/types/navigation'
-import { DetailsPanelContent } from './DetailsPanelContent'
-import { DetailsPanelTabs } from './DetailsPanelTabs'
-import type { DetailsPanelSize, DetailsPanelTab } from './detailsPanelTypes'
-import { PanelSizeControls } from './PanelSizeControls'
-import type { ArrivalStatus } from './types'
+import { useState } from 'react';
+import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { MobileTab } from '../../shared/types/navigation';
+import { DetailsPanelContent } from './DetailsPanelContent';
+import { DetailsPanelTabs } from './DetailsPanelTabs';
+import type { DetailsPanelSize, DetailsPanelTab } from './detailsPanelTypes';
+import { PanelSizeControls } from './PanelSizeControls';
+import type { ArrivalStatus } from './types';
 
 type DetailsPanelProps = {
-  activeTab: MobileTab
-  station: BusStation | null
-  arrivals: BusArrival[]
-  favorites: Favorite[]
-  isFavorite: (stationId: string, routeId: string) => boolean
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void
-  arrivalStatus: ArrivalStatus
-  arrivalError: string | null
-  onRetryArrivals: () => void
-}
+  activeTab: MobileTab;
+  station: BusStation | null;
+  arrivals: BusArrival[];
+  favorites: Favorite[];
+  isFavorite: (stationId: string, routeId: string) => boolean;
+  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  arrivalStatus: ArrivalStatus;
+  arrivalError: string | null;
+  onRetryArrivals: () => void;
+};
 
 export function DetailsPanel({
   activeTab,
@@ -30,8 +30,8 @@ export function DetailsPanel({
   arrivalError,
   onRetryArrivals,
 }: DetailsPanelProps) {
-  const [panelSize, setPanelSize] = useState<DetailsPanelSize>('default')
-  const [selectedTab, setSelectedTab] = useState<DetailsPanelTab>('station-detail')
+  const [panelSize, setPanelSize] = useState<DetailsPanelSize>('default');
+  const [selectedTab, setSelectedTab] = useState<DetailsPanelTab>('station-detail');
 
   return (
     <aside
@@ -59,5 +59,5 @@ export function DetailsPanel({
         />
       </div>
     </aside>
-  )
+  );
 }

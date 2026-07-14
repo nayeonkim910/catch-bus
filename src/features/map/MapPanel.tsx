@@ -1,51 +1,47 @@
-import { useMemo } from 'react'
-import type { BusStation } from '../../shared/types/bus'
-import type { MobileTab } from '../../shared/types/navigation'
-import { useCurrentLocation } from './useCurrentLocation'
-import { useKakaoMap } from './useKakaoMap'
-import { useCurrentLocationMarker, useStationMarkers } from './useMapMarkers'
-import { useNearbyStations } from './useNearbyStations'
+import { useMemo } from 'react';
+import type { BusStation } from '../../shared/types/bus';
+import type { MobileTab } from '../../shared/types/navigation';
+import { useCurrentLocation } from './useCurrentLocation';
+import { useKakaoMap } from './useKakaoMap';
+import { useCurrentLocationMarker, useStationMarkers } from './useMapMarkers';
+import { useNearbyStations } from './useNearbyStations';
 
 type MapPanelProps = {
-  activeTab: MobileTab
-  station: BusStation | null
-  onStationSelect: (station: BusStation) => void
-}
+  activeTab: MobileTab;
+  station: BusStation | null;
+  onStationSelect: (station: BusStation) => void;
+};
 
 export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps) {
-  const location = useCurrentLocation()
+  const location = useCurrentLocation();
   const {
     containerRef,
     map,
     errorMessage: mapError,
     searchCenter,
     canShowStations,
-  } = useKakaoMap({ activeTab, station })
-  const nearbyStations = useNearbyStations(
-    canShowStations ? searchCenter : null,
-  )
+  } = useKakaoMap({ activeTab, station });
+  const nearbyStations = useNearbyStations(canShowStations ? searchCenter : null);
   const visibleStations = useMemo(() => {
-    const stations = canShowStations ? (nearbyStations.data ?? []) : []
+    const stations = canShowStations ? (nearbyStations.data ?? []) : [];
 
     // 주변 조회가 로딩·실패 상태여도 사용자가 선택한 정류장은 지도에 유지한다.
-    if (!station) return stations
+    if (!station) return stations;
 
     return stations.some((nearbyStation) => nearbyStation.id === station.id)
       ? stations
-      : [...stations, station]
-  }, [canShowStations, nearbyStations.data, station])
+      : [...stations, station];
+  }, [canShowStations, nearbyStations.data, station]);
 
-  useCurrentLocationMarker(map, location.coordinates)
+  useCurrentLocationMarker(map, location.coordinates);
   useStationMarkers({
     map,
     stations: visibleStations,
     selectedStationId: station?.id ?? null,
     onStationSelect,
-  })
+  });
 
-  const nearbyError = nearbyStations.isError
-    ? '근처 정류장을 불러오지 못했습니다.'
-    : null
+  const nearbyError = nearbyStations.isError ? '근처 정류장을 불러오지 못했습니다.' : null;
 
   return (
     <main
@@ -53,11 +49,7 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
       id="panel-map"
       role="tabpanel"
     >
-      <div
-        ref={containerRef}
-        className="h-full w-full"
-        aria-label="버스 정류장 지도"
-      />
+      <div ref={containerRef} className="h-full w-full" aria-label="버스 정류장 지도" />
 
       <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2 lg:top-20">
         <button
@@ -89,10 +81,13 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
       </div>
 
       {mapError && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-100 px-6 text-center text-sm text-slate-600" role="alert">
+        <div
+          className="absolute inset-0 z-20 flex items-center justify-center bg-slate-100 px-6 text-center text-sm text-slate-600"
+          role="alert"
+        >
           {mapError}
         </div>
       )}
     </main>
-  )
+  );
 }

@@ -1,15 +1,12 @@
-import type { ReactNode } from 'react'
-import type { DetailsPanelSize } from './detailsPanelTypes'
+import type { ReactNode } from 'react';
+import type { DetailsPanelSize } from './detailsPanelTypes';
 
 type PanelSizeControlsProps = {
-  panelSize: DetailsPanelSize
-  onChange: (size: DetailsPanelSize) => void
-}
+  panelSize: DetailsPanelSize;
+  onChange: (size: DetailsPanelSize) => void;
+};
 
-export function PanelSizeControls({
-  panelSize,
-  onChange,
-}: PanelSizeControlsProps) {
+export function PanelSizeControls({ panelSize, onChange }: PanelSizeControlsProps) {
   return (
     <div
       className="hidden shrink-0 items-center gap-1 lg:flex"
@@ -29,7 +26,7 @@ export function PanelSizeControls({
         </PanelControlButton>
       )}
     </div>
-  )
+  );
 }
 
 function PanelControlButton({
@@ -37,9 +34,9 @@ function PanelControlButton({
   onClick,
   children,
 }: {
-  label: string
-  onClick: () => void
-  children: ReactNode
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
 }) {
   return (
     <button
@@ -63,5 +60,5 @@ function PanelControlButton({
       </svg>
       <span>{label}</span>
     </button>
-  )
+  );
 }
