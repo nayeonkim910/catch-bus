@@ -12,8 +12,10 @@ type DetailsPanelContentProps = {
   favorites: Favorite[];
   arrivalStatus: ArrivalStatus;
   arrivalError: string | null;
+  selectedRouteId: string | null;
   isFavorite: (stationId: string, routeId: string) => boolean;
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  onSelectRoute: (arrival: BusArrival) => void;
   onRetryArrivals: () => void;
 };
 
@@ -24,8 +26,10 @@ export function DetailsPanelContent({
   favorites,
   arrivalStatus,
   arrivalError,
+  selectedRouteId,
   isFavorite,
   onToggleFavorite,
+  onSelectRoute,
   onRetryArrivals,
 }: DetailsPanelContentProps) {
   if (selectedTab === 'favorites') {
@@ -45,8 +49,10 @@ export function DetailsPanelContent({
           arrivals={arrivals}
           status={arrivalStatus}
           error={arrivalError}
+          selectedRouteId={selectedRouteId}
           isFavorite={isFavorite}
           onToggleFavorite={onToggleFavorite}
+          onSelectRoute={onSelectRoute}
           onRetry={onRetryArrivals}
         />
       </section>

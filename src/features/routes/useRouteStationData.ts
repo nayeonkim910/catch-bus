@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRouteStations } from '../../lib/busApi';
+import { routeStationsQueryOptions } from '../../lib/busQueries';
 import type { RouteStation } from '../../shared/types/bus';
 
 const TIMELINE_STATION_COUNT = 5;
-const ROUTE_CACHE_DURATION_MS = 24 * 60 * 60 * 1000;
 
 function findTargetIndex(
   stations: RouteStation[],
@@ -48,10 +47,7 @@ export function useRouteStationData(
   targetStationOrder: number,
 ) {
   return useQuery({
-    queryKey: ['route-stations', routeId],
-    queryFn: ({ signal }) => getRouteStations(routeId, signal),
-    staleTime: ROUTE_CACHE_DURATION_MS,
-    gcTime: ROUTE_CACHE_DURATION_MS,
+    ...routeStationsQueryOptions(routeId),
     select: (response) => ({
       stations: response.data.stations,
       timeline: createTimeline(response.data.stations, targetStationId, targetStationOrder),
