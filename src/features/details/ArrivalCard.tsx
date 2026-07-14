@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { StarIcon } from '../../shared/components/Icons';
+import { MapPinIcon, StarIcon } from '../../shared/components/Icons';
 import { RouteBadge } from '../../shared/components/RouteBadge';
 import { RouteProgress } from '../../shared/components/RouteProgress';
 import type { BusArrival } from '../../shared/types/bus';
@@ -12,14 +12,18 @@ type ArrivalCardProps = {
   arrival: BusArrival;
   targetStationName: string;
   isFavorite: boolean;
+  isRouteSelected: boolean;
   onToggleFavorite: () => void;
+  onSelectRoute: () => void;
 };
 
 export function ArrivalCard({
   arrival,
   targetStationName,
   isFavorite,
+  isRouteSelected,
   onToggleFavorite,
+  onSelectRoute,
 }: ArrivalCardProps) {
   const [isRouteExpanded, setIsRouteExpanded] = useState(false);
   const routeDetailsId = useId();
@@ -64,6 +68,19 @@ export function ArrivalCard({
               현재 {first.currentStationName} 통과 중
             </p>
           )}
+          <button
+            className={`mt-3 inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+              isRouteSelected
+                ? 'border-blue-600 bg-blue-600 text-white'
+                : 'border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700'
+            }`}
+            type="button"
+            aria-pressed={isRouteSelected}
+            onClick={onSelectRoute}
+          >
+            <MapPinIcon />
+            {isRouteSelected ? '지도에서 보는 중' : '지도에서 보기'}
+          </button>
         </div>
         <button
           className={`grid size-10 shrink-0 cursor-pointer place-items-center rounded-lg border transition-colors lg:absolute lg:top-3 lg:right-3 lg:size-9 ${isFavorite ? 'border-amber-300 bg-amber-50 text-amber-500' : 'border-slate-200 bg-white text-slate-400 hover:text-amber-500'}`}

@@ -7,8 +7,10 @@ type ArrivalListProps = {
   arrivals: BusArrival[];
   status: ArrivalStatus;
   error: string | null;
+  selectedRouteId: string | null;
   isFavorite: (stationId: string, routeId: string) => boolean;
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  onSelectRoute: (arrival: BusArrival) => void;
   onRetry: () => void;
 };
 
@@ -55,8 +57,10 @@ export function ArrivalList({
   arrivals,
   status,
   error,
+  selectedRouteId,
   isFavorite,
   onToggleFavorite,
+  onSelectRoute,
   onRetry,
 }: ArrivalListProps) {
   if (status === 'loading') return <LoadingArrivals />;
@@ -71,7 +75,9 @@ export function ArrivalList({
           arrival={arrival}
           targetStationName={station.name}
           isFavorite={isFavorite(station.id, arrival.routeId)}
+          isRouteSelected={arrival.routeId === selectedRouteId}
           onToggleFavorite={() => onToggleFavorite(station, arrival)}
+          onSelectRoute={() => onSelectRoute(arrival)}
         />
       ))}
     </div>

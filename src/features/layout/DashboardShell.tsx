@@ -3,6 +3,7 @@ import type { MobileTab } from '../../shared/types/navigation';
 import { DetailsPanel } from '../details/DetailsPanel';
 import type { ArrivalStatus } from '../details/types';
 import { MapPanel } from '../map/MapPanel';
+import type { SelectedRoute } from '../map/selectedRoute';
 import { AppHeader } from './AppHeader';
 import './dashboardLayout.css';
 import { MobileTabs } from './MobileTabs';
@@ -12,10 +13,13 @@ type DashboardShellProps = {
   station: BusStation | null;
   arrivals: BusArrival[];
   favorites: Favorite[];
+  selectedRoute: SelectedRoute | null;
   onTabChange: (tab: MobileTab) => void;
   onStationSelect: (station: BusStation) => void;
   isFavorite: (stationId: string, routeId: string) => boolean;
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  onSelectRoute: (arrival: BusArrival) => void;
+  onClearRoute: () => void;
   arrivalStatus: ArrivalStatus;
   arrivalError: string | null;
   onRetryArrivals: () => void;
@@ -26,10 +30,13 @@ export function DashboardShell({
   station,
   arrivals,
   favorites,
+  selectedRoute,
   onTabChange,
   onStationSelect,
   isFavorite,
   onToggleFavorite,
+  onSelectRoute,
+  onClearRoute,
   arrivalStatus,
   arrivalError,
   onRetryArrivals,
@@ -40,7 +47,13 @@ export function DashboardShell({
       <MobileTabs activeTab={activeTab} onChange={onTabChange} />
       <div className="dashboard-stage">
         <div className="dashboard-content">
-          <MapPanel activeTab={activeTab} station={station} onStationSelect={onStationSelect} />
+          <MapPanel
+            activeTab={activeTab}
+            station={station}
+            selectedRoute={selectedRoute}
+            onStationSelect={onStationSelect}
+            onClearRoute={onClearRoute}
+          />
           <DetailsPanel
             // 정류장이 바뀌면 하단 패널의 탭과 높이 상태를 기본값으로 되돌린다.
             key={station?.id ?? 'no-station'}
@@ -48,8 +61,10 @@ export function DashboardShell({
             station={station}
             arrivals={arrivals}
             favorites={favorites}
+            selectedRouteId={selectedRoute?.routeId ?? null}
             isFavorite={isFavorite}
             onToggleFavorite={onToggleFavorite}
+            onSelectRoute={onSelectRoute}
             arrivalStatus={arrivalStatus}
             arrivalError={arrivalError}
             onRetryArrivals={onRetryArrivals}

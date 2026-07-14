@@ -1,18 +1,34 @@
 import { useMemo } from 'react';
 import type { BusStation } from '../../shared/types/bus';
 import type { MobileTab } from '../../shared/types/navigation';
+import { getRouteTheme } from '../../shared/utils/routeTheme';
+import { RouteOverlayPanel } from './RouteOverlayPanel';
+import type { SelectedRoute } from './selectedRoute';
+import { useBusLocations } from './useBusLocations';
+import { useBusMarkers } from './useBusMarkers';
 import { useCurrentLocation } from './useCurrentLocation';
 import { useKakaoMap } from './useKakaoMap';
 import { useCurrentLocationMarker, useStationMarkers } from './useMapMarkers';
 import { useNearbyStations } from './useNearbyStations';
+import { useRouteLine } from './useRouteLine';
+import { useRoutePolyline } from './useRoutePolyline';
+import { useRouteStations } from './useRouteStations';
 
 type MapPanelProps = {
   activeTab: MobileTab;
   station: BusStation | null;
+  selectedRoute: SelectedRoute | null;
   onStationSelect: (station: BusStation) => void;
+  onClearRoute: () => void;
 };
 
-export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps) {
+export function MapPanel({
+  activeTab,
+  station,
+  selectedRoute,
+  onStationSelect,
+  onClearRoute,
+}: MapPanelProps) {
   const location = useCurrentLocation();
   const {
     containerRef,
@@ -33,12 +49,35 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
       : [...stations, station];
   }, [canShowStations, nearbyStations.data, station]);
 
+  const routeId = selectedRoute?.routeId ?? null;
+  const routeLine = useRouteLine(routeId);
+  const routeStations = useRouteStations(routeId);
+  const busLocations = useBusLocations(routeId);
+
+  // 차량은 좌표 없이 정류장 순번만 주므로, stationId로 경유 정류장 좌표를 찾는 조회 맵을 만든다.
+  const stationsById = useMemo(() => {
+    if (!routeStations.data) return null;
+    return new Map(routeStations.data.map((routeStation) => [routeStation.id, routeStation]));
+  }, [routeStations.data]);
+
+  const routeAccentColor = selectedRoute
+    ? getRouteTheme(selectedRoute.routeTypeCode).accentColor
+    : '#2563EB';
+
   useCurrentLocationMarker(map, location.coordinates);
+  // 정류장 마커는 항상 유지되고, 아래 노선 오버레이(선·차량)만 선택에 따라 얹혔다 사라진다.
   useStationMarkers({
     map,
     stations: visibleStations,
     selectedStationId: station?.id ?? null,
     onStationSelect,
+  });
+  useRoutePolyline(map, routeLine.data, routeAccentColor);
+  useBusMarkers({
+    map,
+    buses: busLocations.data,
+    stationsById,
+    routeName: selectedRoute?.routeName ?? '',
   });
 
   const nearbyError = nearbyStations.isError ? '근처 정류장을 불러오지 못했습니다.' : null;
@@ -50,6 +89,18 @@ export function MapPanel({ activeTab, station, onStationSelect }: MapPanelProps)
       role="tabpanel"
     >
       <div ref={containerRef} className="h-full w-full" aria-label="버스 정류장 지도" />
+
+      {selectedRoute && (
+        <div className="pointer-events-none absolute left-4 top-4 z-10 lg:top-20">
+          <RouteOverlayPanel
+            route={selectedRoute}
+            busCount={busLocations.data?.length ?? 0}
+            isLoading={busLocations.isLoading}
+            isError={busLocations.isError}
+            onClear={onClearRoute}
+          />
+        </div>
+      )}
 
       <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2 lg:top-20">
         <button

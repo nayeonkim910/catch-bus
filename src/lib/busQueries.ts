@@ -1,8 +1,12 @@
 import { queryOptions } from '@tanstack/react-query';
-import { getStationArrivals } from './busApi';
+import { getBusLocations, getRouteLine, getRouteStations, getStationArrivals } from './busApi';
 
 // 도착정보는 실시간성이 중요하므로 짧게 잡아 자주 갱신될 수 있게 한다.
 const STATION_ARRIVALS_STALE_TIME_MS = 30 * 1000;
+// 노선 형상·경유 정류장은 거의 바뀌지 않으므로 길게 캐시한다.
+const ROUTE_STATIC_STALE_TIME_MS = 24 * 60 * 60 * 1000;
+// 실시간 차량 위치는 자주 바뀌므로 짧게 잡는다.
+const BUS_LOCATIONS_STALE_TIME_MS = 10 * 1000;
 
 /**
  * 정류장 도착정보 조회를 위한 재사용 가능한 TanStack Query 옵션.
@@ -17,5 +21,42 @@ export function stationArrivalsQueryOptions(stationId: string) {
     queryFn: ({ signal }) => getStationArrivals(stationId, signal),
     staleTime: STATION_ARRIVALS_STALE_TIME_MS,
     select: (response) => response.data.arrivals,
+  });
+}
+
+/**
+ * 노선 경유 정류장 조회용 base 옵션(select 없음).
+ *
+ * 진행선(useRouteStationData)과 지도 좌표 조회(useRouteStations)가 같은 queryKey를
+ * 공유해 조회를 한 번만 수행하도록, 공통 옵션만 여기서 정의하고 select는 각 소비자가 붙인다.
+ */
+export function routeStationsQueryOptions(routeId: string) {
+  return queryOptions({
+    queryKey: ['route-stations', routeId],
+    queryFn: ({ signal }) => getRouteStations(routeId, signal),
+    staleTime: ROUTE_STATIC_STALE_TIME_MS,
+    gcTime: ROUTE_STATIC_STALE_TIME_MS,
+  });
+}
+
+/** 노선 형상(폴리라인 좌표) 조회용 옵션. */
+export function routeLineQueryOptions(routeId: string) {
+  return queryOptions({
+    queryKey: ['route-line', routeId],
+    queryFn: ({ signal }) => getRouteLine(routeId, signal),
+    staleTime: ROUTE_STATIC_STALE_TIME_MS,
+    gcTime: ROUTE_STATIC_STALE_TIME_MS,
+    select: (response) => response.data.points,
+  });
+}
+
+/** 실시간 차량 위치 조회용 옵션. 공공 API가 간헐적으로 타임아웃을 내므로 재시도를 늘린다. */
+export function busLocationsQueryOptions(routeId: string) {
+  return queryOptions({
+    queryKey: ['bus-locations', routeId],
+    queryFn: ({ signal }) => getBusLocations(routeId, signal),
+    staleTime: BUS_LOCATIONS_STALE_TIME_MS,
+    retry: 2,
+    select: (response) => response.data.locations,
   });
 }

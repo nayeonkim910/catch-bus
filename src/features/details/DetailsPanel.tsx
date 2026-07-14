@@ -12,8 +12,10 @@ type DetailsPanelProps = {
   station: BusStation | null;
   arrivals: BusArrival[];
   favorites: Favorite[];
+  selectedRouteId: string | null;
   isFavorite: (stationId: string, routeId: string) => boolean;
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
+  onSelectRoute: (arrival: BusArrival) => void;
   arrivalStatus: ArrivalStatus;
   arrivalError: string | null;
   onRetryArrivals: () => void;
@@ -24,8 +26,10 @@ export function DetailsPanel({
   station,
   arrivals,
   favorites,
+  selectedRouteId,
   isFavorite,
   onToggleFavorite,
+  onSelectRoute,
   arrivalStatus,
   arrivalError,
   onRetryArrivals,
@@ -53,8 +57,10 @@ export function DetailsPanel({
           favorites={favorites}
           arrivalStatus={arrivalStatus}
           arrivalError={arrivalError}
+          selectedRouteId={selectedRouteId}
           isFavorite={isFavorite}
           onToggleFavorite={onToggleFavorite}
+          onSelectRoute={onSelectRoute}
           onRetryArrivals={onRetryArrivals}
         />
       </div>
