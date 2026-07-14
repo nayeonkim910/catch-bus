@@ -1,0 +1,10 @@
+# 빌드 산출물·의존성
+dist
+node_modules
+package-lock.json
+
+# Deno 코드 — deno fmt가 담당 (prettier 제외)
+supabase/functions
+
+# 마크다운 문서는 손으로 관리 (prettier가 표·프로즈를 건드리지 않게)
+*.md
