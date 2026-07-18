@@ -1,3 +1,4 @@
+import { Button } from '../../shared/components/ui/Button';
 import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { ArrivalCard } from './ArrivalCard';
 import type { ArrivalStatus } from './types';
@@ -33,13 +34,9 @@ function ArrivalError({ message, onRetry }: { message: string | null; onRetry: (
       <p className="text-sm text-red-700" role="alert">
         {message ?? '도착정보를 불러오지 못했습니다.'}
       </p>
-      <button
-        className="mt-3 cursor-pointer rounded-lg bg-white px-3 py-2 text-sm font-semibold text-red-700 shadow-sm ring-1 ring-red-200 hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-red-500"
-        onClick={onRetry}
-        type="button"
-      >
+      <Button variant="secondary" size="sm" className="mt-3" onClick={onRetry}>
         다시 시도
-      </button>
+      </Button>
     </div>
   );
 }
