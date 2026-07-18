@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { BusStation } from '../../shared/types/bus';
 import type { MobileTab } from '../../shared/types/navigation';
+import { Button } from '../../shared/components/ui/Button';
 import { getRouteTheme } from '../../shared/utils/routeTheme';
 import { RouteOverlayPanel } from './RouteOverlayPanel';
 import type { SelectedRoute } from './selectedRoute';
@@ -103,14 +104,13 @@ export function MapPanel({
       )}
 
       <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2 lg:top-20">
-        <button
-          type="button"
-          className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm disabled:cursor-wait disabled:text-slate-400"
+        <Button
+          variant="secondary"
           onClick={location.requestLocation}
           disabled={location.status === 'loading'}
         >
           {location.status === 'loading' ? '위치 확인 중…' : '내 위치에서 찾기'}
-        </button>
+        </Button>
 
         {(location.errorMessage || nearbyError) && (
           <p className="rounded-lg bg-white px-3 py-2 text-xs text-red-600 shadow" role="alert">

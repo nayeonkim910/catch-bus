@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Button } from '../../shared/components/ui/Button';
 import type { DetailsPanelSize } from './detailsPanelTypes';
 
 type PanelSizeControlsProps = {
@@ -39,13 +40,7 @@ function PanelControlButton({
   children: ReactNode;
 }) {
   return (
-    <button
-      className="inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 text-xs font-bold text-slate-600 shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-brand"
-      type="button"
-      aria-label={label}
-      title={label}
-      onClick={onClick}
-    >
+    <Button variant="secondary" size="sm" aria-label={label} title={label} onClick={onClick}>
       <svg
         className="size-4"
         viewBox="0 0 24 24"
@@ -59,6 +54,6 @@ function PanelControlButton({
         {children}
       </svg>
       <span>{label}</span>
-    </button>
+    </Button>
   );
 }

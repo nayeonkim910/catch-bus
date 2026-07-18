@@ -7,22 +7,29 @@
     <meta name="color-scheme" content="light dark" />
     <title>catch-bus</title>
     <script>
-      // FOUC 방지. 첫 페인트 전에 동기 실행해 data-theme을 확정한다.
-      // useEffect는 페인트 이후라 늦다.
-      (function () {
-        try {
-          var stored = localStorage.getItem('theme');
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
-          document.documentElement.setAttribute('data-theme', theme);
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-      })();
+      // 테마 확정. 첫 페인트 전에 동기 실행해 FOUC를 막는다.
+      //
+      // [임시] 다크 전면 지원 전까지 라이트 고정. 앱 대부분이 아직 하드코딩
+      // 라이트라, 시스템 다크를 자동 적용하면 토큰을 쓰는 부분만 다크로 튄다.
+      // 전체 토큰화 + 테마 토글을 붙이면, 아래 주석 처리한 감지 로직을 되살리고
+      // 이 강제 라인을 지운다.
+      document.documentElement.setAttribute('data-theme', 'light');
+
+      // (되살릴 감지 로직: localStorage 저장값 우선, 없으면 시스템 설정)
+      // (function () {
+      //   try {
+      //     var stored = localStorage.getItem('theme');
+      //     var theme =
+      //       stored === 'light' || stored === 'dark'
+      //         ? stored
+      //         : window.matchMedia('(prefers-color-scheme: dark)').matches
+      //           ? 'dark'
+      //           : 'light';
+      //     document.documentElement.setAttribute('data-theme', theme);
+      //   } catch (e) {
+      //     document.documentElement.setAttribute('data-theme', 'light');
+      //   }
+      // })();
     </script>
   </head>
   <body>

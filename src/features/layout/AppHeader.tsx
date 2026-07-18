@@ -1,4 +1,5 @@
 import { BellIcon, UserIcon } from '../../shared/components/Icons';
+import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearch } from '../search/StationSearch';
 
@@ -26,22 +27,12 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
         className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center lg:gap-3 lg:rounded-xl lg:bg-white lg:px-3 lg:shadow-lg"
         aria-label="사용자 메뉴"
       >
-        <button
-          className="hidden min-h-10 cursor-pointer items-center justify-center gap-2 bg-transparent text-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:inline-flex sm:w-10 lg:w-auto"
-          type="button"
-          aria-label="알림"
-        >
+        <Button variant="tertiary" size="icon" className="hidden sm:inline-flex" aria-label="알림">
           <BellIcon />
-          <span className="hidden xl:inline">알림</span>
-        </button>
-        <button
-          className="inline-flex min-h-10 w-10 cursor-pointer items-center justify-center gap-2 bg-transparent text-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand lg:w-auto"
-          type="button"
-          aria-label="내 계정"
-        >
+        </Button>
+        <Button variant="tertiary" size="icon" aria-label="내 계정">
           <UserIcon />
-          <span className="hidden xl:inline">내 계정</span>
-        </button>
+        </Button>
       </nav>
     </header>
   );

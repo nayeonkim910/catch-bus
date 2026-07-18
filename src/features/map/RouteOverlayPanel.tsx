@@ -1,5 +1,6 @@
 import { CloseIcon } from '../../shared/components/Icons';
 import { RouteBadge } from '../../shared/components/RouteBadge';
+import { Button } from '../../shared/components/ui/Button';
 import type { SelectedRoute } from './selectedRoute';
 
 type RouteOverlayPanelProps = {
@@ -55,14 +56,15 @@ export function RouteOverlayPanel({
           {status.text}
         </p>
       </div>
-      <button
-        className="grid size-8 shrink-0 place-items-center rounded-lg border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        type="button"
+      <Button
+        variant="secondary"
+        size="icon"
+        className="shrink-0"
         onClick={onClear}
         aria-label="노선 표시 닫기"
       >
         <CloseIcon />
-      </button>
+      </Button>
     </section>
   );
 }

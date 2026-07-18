@@ -1,5 +1,6 @@
 import { useEffect, useRef, type FormEvent } from 'react';
 import { SearchIcon } from '../../shared/components/Icons';
+import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearchResults } from './StationSearchResults';
 import { useStationSearch } from './useStationSearch';
@@ -67,13 +68,15 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
           type="search"
           value={query}
         />
-        <button
-          className="shrink-0 cursor-pointer rounded-md bg-brand px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-wait disabled:bg-blue-300 sm:px-3 sm:text-sm"
+        <Button
+          variant="primary"
+          size="sm"
+          className="shrink-0"
           disabled={searchState.status === 'loading'}
           type="submit"
         >
           {searchState.status === 'loading' ? '검색 중' : '검색'}
-        </button>
+        </Button>
       </form>
 
       {isOpen && (
