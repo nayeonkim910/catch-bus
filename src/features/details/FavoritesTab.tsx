@@ -12,7 +12,7 @@ export function FavoritesTab({ favorites }: FavoritesTabProps) {
   return (
     <section className="hover-scrollbar min-h-0 flex-1 overflow-y-auto p-4 sm:p-5 lg:px-5 lg:py-4">
       {favorites.length > 0 ? (
-        <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="space-y-3">
           {favorites.map((favorite) => {
             const { arrival, isLoading, isError } = arrivals.getEntry(favorite);
             return (

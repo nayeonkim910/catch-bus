@@ -28,7 +28,7 @@ export function RouteProgress({
     remainingStops,
     stationNames,
   });
-  const spacingClass = horizontal ? 'mt-3 lg:mt-0' : compact ? 'mt-3' : 'mt-4';
+  const spacingClass = horizontal ? 'mt-3 lg:mt-0' : compact ? 'mt-1' : 'mt-4';
 
   return (
     <div className={spacingClass}>

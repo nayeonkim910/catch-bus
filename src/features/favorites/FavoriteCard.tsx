@@ -38,7 +38,7 @@ export function FavoriteCard({
           {arrival ? formatArrivalTime(first?.arrivalSeconds ?? null) : '—'}
         </strong>
       </div>
-      <p className="mt-3 text-sm font-medium text-slate-700">{favorite.stationName}</p>
+      <p className="mt-2 text-sm font-medium text-slate-700">{favorite.stationName}</p>
       <RouteProgress
         compact
         currentStationName={first?.currentStationName ?? null}
@@ -47,7 +47,7 @@ export function FavoriteCard({
         routeTypeCode={favorite.routeTypeCode}
         stationNames={routeStationData.data?.timeline}
       />
-      <p className="mt-2 text-right text-xs text-slate-500">
+      <p className="mt-1 text-right text-xs text-slate-500">
         {getFavoriteArrivalLabel({ arrival, isLoading, isError })}
       </p>
     </article>
