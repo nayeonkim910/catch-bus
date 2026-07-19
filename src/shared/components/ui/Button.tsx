@@ -8,8 +8,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary text-primary-foreground hover:bg-primary-hover',
-        secondary: 'border border-input text-foreground hover:bg-muted-hover',
-        tertiary: 'text-foreground hover:bg-muted',
+        secondary: 'border border-input text-foreground hover:bg-accent',
+        tertiary: 'text-foreground hover:bg-accent',
         danger: 'bg-danger text-danger-foreground hover:bg-danger-hover',
       },
       size: {
