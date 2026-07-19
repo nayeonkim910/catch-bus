@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../shared/components/ui/Tabs';
 import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
 import type { MobileTab } from '../../shared/types/navigation';
 import { ArrivalList } from './ArrivalList';
 import { DetailsPanelHeader } from './DetailsPanelHeader';
-import type { DetailsPanelSize } from './detailsPanelTypes';
 import { FavoritesTab } from './FavoritesTab';
-import { PanelSizeControls } from './PanelSizeControls';
 import type { ArrivalStatus } from './types';
 
 type DetailsPanelProps = {
@@ -36,11 +33,9 @@ export function DetailsPanel({
   arrivalError,
   onRetryArrivals,
 }: DetailsPanelProps) {
-  const [panelSize, setPanelSize] = useState<DetailsPanelSize>('default');
-
   return (
     <aside
-      className={`${activeTab === 'details' ? 'flex' : 'hidden'} details-panel details-panel--${panelSize} lg:flex`}
+      className={`${activeTab === 'details' ? 'flex' : 'hidden'} details-panel lg:flex`}
       id="panel-details"
       role="tabpanel"
       aria-label="상세 패널"
@@ -48,12 +43,19 @@ export function DetailsPanel({
       {/* 패널 안의 콘텐츠 탭. 바깥에서 건드릴 일이 없어 비제어(defaultValue)로 둔다.
           정류장이 바뀌면 DashboardShell의 key remount로 이 탭이 기본값으로 초기화된다. */}
       <Tabs defaultValue="station-detail" className="flex min-h-0 flex-1 flex-col">
-        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-200/70 px-4 py-3 sm:px-5">
+        <div className="flex shrink-0 items-center gap-3 border-b border-slate-200/70 px-4 py-3 sm:px-5">
+          {/* 데스크톱에선 로고가 패널 헤더의 탭 왼쪽에 온다. 모바일은 AppHeader가 로고를 보여준다. */}
+          <a
+            href="#panel-map"
+            aria-label="Catch Bus 홈"
+            className="hidden shrink-0 text-lg font-extrabold tracking-[-0.5px] text-blue-950 no-underline lg:inline-flex"
+          >
+            Catch&nbsp;<span className="text-brand">Bus</span>
+          </a>
           <TabsList>
             <TabsTrigger value="station-detail">버스 상세</TabsTrigger>
             <TabsTrigger value="favorites">즐겨찾기</TabsTrigger>
           </TabsList>
-          <PanelSizeControls panelSize={panelSize} onChange={setPanelSize} />
         </div>
 
         <TabsContent value="station-detail" className="flex min-h-0 flex-1 flex-col">

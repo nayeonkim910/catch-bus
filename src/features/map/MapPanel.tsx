@@ -91,8 +91,9 @@ export function MapPanel({
     >
       <div ref={containerRef} className="h-full w-full" aria-label="버스 정류장 지도" />
 
+      {/* 데스크톱은 상단 중앙을 검색바가 쓰므로, 노선 오버레이를 좌측 패널 너머 지도 하단으로 뺀다. */}
       {selectedRoute && (
-        <div className="pointer-events-none absolute left-4 top-4 z-10 lg:top-20">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 lg:top-auto lg:bottom-4 lg:left-[calc(var(--details-panel)+2rem)]">
           <RouteOverlayPanel
             route={selectedRoute}
             busCount={busLocations.data?.length ?? 0}
@@ -103,9 +104,10 @@ export function MapPanel({
         </div>
       )}
 
-      <div className="absolute right-4 top-4 z-10 flex max-w-72 flex-col items-end gap-2 lg:top-20">
+      <div className="absolute right-4 bottom-4 z-10 flex max-w-72 flex-col-reverse items-end gap-2">
         <Button
           variant="secondary"
+          className="bg-card shadow-md"
           onClick={location.requestLocation}
           disabled={location.status === 'loading'}
         >
