@@ -70,7 +70,6 @@ export function ArrivalList({
         <ArrivalCard
           key={arrival.routeId}
           arrival={arrival}
-          targetStationName={station.name}
           isFavorite={isFavorite(station.id, arrival.routeId)}
           isRouteSelected={arrival.routeId === selectedRouteId}
           onToggleFavorite={() => onToggleFavorite(station, arrival)}
