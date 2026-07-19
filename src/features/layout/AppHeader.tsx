@@ -12,7 +12,7 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
     <header className="relative z-40 flex h-16 justify-between gap-2 border-b-2 border-blue-200 p-2 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:top-0 lg:block lg:h-0 lg:border-0 lg:p-0">
       <div className="flex lg:contents">
         <a
-          className="flex self-stretch items-center px-3.5 text-xl font-extrabold tracking-[-1.2px] text-blue-950 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:px-4.5 sm:text-[21px] lg:pointer-events-auto lg:absolute lg:top-4 lg:left-4 lg:h-12 lg:self-auto lg:rounded-xl lg:bg-white lg:px-5 lg:shadow-lg xl:text-[24px]"
+          className="flex self-stretch items-center px-3.5 text-xl font-extrabold tracking-[-1.2px] text-blue-950 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:px-4.5 sm:text-[21px] lg:hidden"
           href="#panel-map"
           aria-label="Catch Bus 홈"
         >

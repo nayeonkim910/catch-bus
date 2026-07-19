@@ -14,7 +14,7 @@ const baseSearchContainerClassName =
   'relative ml-1.5 w-[calc(100%-12px)] sm:ml-3 sm:w-[calc(100%-24px)]';
 
 const floatingSearchContainerClassName =
-  'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-[clamp(13.5rem,24vw,24rem)] lg:ml-0 lg:w-[min(440px,calc(100vw-34rem))]';
+  'lg:pointer-events-auto lg:absolute lg:top-4 lg:left-1/2 lg:ml-0 lg:w-[min(440px,calc(100vw-46rem))] lg:-translate-x-1/2';
 
 const inlineSearchContainerClassName = 'lg:ml-6 lg:w-[min(420px,calc(100%-48px))]';
 
