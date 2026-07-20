@@ -2,6 +2,7 @@ import { Bell, User } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearch } from '../search/StationSearch';
+import { LoginDialog } from '../auth/LoginDialog';
 
 type AppHeaderProps = {
   onStationSelect: (station: BusStation) => void;
@@ -30,9 +31,11 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
         <Button variant="tertiary" size="icon" className="hidden sm:inline-flex" aria-label="알림">
           <Bell className="size-5 shrink-0" />
         </Button>
-        <Button variant="tertiary" size="icon" aria-label="내 계정">
-          <User className="size-5 shrink-0" />
-        </Button>
+        <LoginDialog>
+          <Button variant="tertiary" size="icon" aria-label="내 계정">
+            <User className="size-5 shrink-0" />
+          </Button>
+        </LoginDialog>
       </nav>
     </header>
   );
