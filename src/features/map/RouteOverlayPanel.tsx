@@ -1,4 +1,4 @@
-import { CloseIcon } from '../../shared/components/Icons';
+import { X } from 'lucide-react';
 import { RouteBadge } from '../../shared/components/RouteBadge';
 import { Button } from '../../shared/components/ui/Button';
 import type { SelectedRoute } from './selectedRoute';
@@ -63,7 +63,7 @@ export function RouteOverlayPanel({
         onClick={onClear}
         aria-label="노선 표시 닫기"
       >
-        <CloseIcon />
+        <X className="size-5 shrink-0" />
       </Button>
     </section>
   );

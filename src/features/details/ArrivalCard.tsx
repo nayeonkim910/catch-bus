@@ -1,5 +1,5 @@
 import { useId, useState, type KeyboardEvent } from 'react';
-import { StarIcon } from '../../shared/components/Icons';
+import { Star } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import { RouteBadge } from '../../shared/components/RouteBadge';
 import type { BusArrival } from '../../shared/types/bus';
@@ -73,7 +73,7 @@ export function ArrivalCard({
               onToggleFavorite();
             }}
           >
-            <StarIcon filled={isFavorite} />
+            <Star className="size-5 shrink-0" fill={isFavorite ? 'currentColor' : 'none'} />
           </Button>
         </div>
 

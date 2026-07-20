@@ -1,5 +1,5 @@
 import { useEffect, useRef, type FormEvent } from 'react';
-import { SearchIcon } from '../../shared/components/Icons';
+import { Search } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearchResults } from './StationSearchResults';
@@ -56,7 +56,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
         onSubmit={handleSubmit}
         role="search"
       >
-        <SearchIcon />
+        <Search className="size-5 shrink-0" />
         <input
           aria-controls={isOpen ? 'station-search-results' : undefined}
           className="min-w-0 flex-1 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-400 sm:text-base"

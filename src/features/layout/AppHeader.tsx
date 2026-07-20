@@ -1,4 +1,4 @@
-import { BellIcon, UserIcon } from '../../shared/components/Icons';
+import { Bell, User } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearch } from '../search/StationSearch';
@@ -28,10 +28,10 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
         aria-label="사용자 메뉴"
       >
         <Button variant="tertiary" size="icon" className="hidden sm:inline-flex" aria-label="알림">
-          <BellIcon />
+          <Bell className="size-5 shrink-0" />
         </Button>
         <Button variant="tertiary" size="icon" aria-label="내 계정">
-          <UserIcon />
+          <User className="size-5 shrink-0" />
         </Button>
       </nav>
     </header>
