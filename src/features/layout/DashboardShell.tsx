@@ -1,7 +1,6 @@
 import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
 import type { MobileTab } from '../../shared/types/navigation';
 import { DetailsPanel } from '../details/DetailsPanel';
-import type { ArrivalStatus } from '../details/types';
 import { MapPanel } from '../map/MapPanel';
 import type { SelectedRoute } from '../map/selectedRoute';
 import { AppHeader } from './AppHeader';
@@ -11,7 +10,6 @@ import { MobileTabs } from './MobileTabs';
 type DashboardShellProps = {
   activeTab: MobileTab;
   station: BusStation | null;
-  arrivals: BusArrival[];
   favorites: Favorite[];
   selectedRoute: SelectedRoute | null;
   onTabChange: (tab: MobileTab) => void;
@@ -20,15 +18,11 @@ type DashboardShellProps = {
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
   onClearRoute: () => void;
-  arrivalStatus: ArrivalStatus;
-  arrivalError: string | null;
-  onRetryArrivals: () => void;
 };
 
 export function DashboardShell({
   activeTab,
   station,
-  arrivals,
   favorites,
   selectedRoute,
   onTabChange,
@@ -37,9 +31,6 @@ export function DashboardShell({
   onToggleFavorite,
   onSelectRoute,
   onClearRoute,
-  arrivalStatus,
-  arrivalError,
-  onRetryArrivals,
 }: DashboardShellProps) {
   return (
     <div className="dashboard-shell">
@@ -59,15 +50,11 @@ export function DashboardShell({
             key={station?.id ?? 'no-station'}
             activeTab={activeTab}
             station={station}
-            arrivals={arrivals}
             favorites={favorites}
             selectedRouteId={selectedRoute?.routeId ?? null}
             isFavorite={isFavorite}
             onToggleFavorite={onToggleFavorite}
             onSelectRoute={onSelectRoute}
-            arrivalStatus={arrivalStatus}
-            arrivalError={arrivalError}
-            onRetryArrivals={onRetryArrivals}
           />
         </div>
       </div>
