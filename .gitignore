@@ -18,14 +18,7 @@ dist-ssr
 !.env.example
 
 # Local planning
-plan.md
-ui-plan.md
-api-response-types.md
-project-analysis.md
-prettier-guide.md
-product-ideas.md
-feature-realtime-bus-map.md
-design-system-notes.md
+plan/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
