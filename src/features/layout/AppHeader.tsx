@@ -1,4 +1,4 @@
-import { Bell, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import type { BusStation } from '../../shared/types/bus';
 import { StationSearch } from '../search/StationSearch';
@@ -28,9 +28,6 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
         className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center lg:gap-3 lg:rounded-xl lg:bg-white lg:px-3 lg:shadow-lg"
         aria-label="사용자 메뉴"
       >
-        <Button variant="tertiary" size="icon" className="hidden sm:inline-flex" aria-label="알림">
-          <Bell className="size-5 shrink-0" />
-        </Button>
         <LoginDialog>
           <Button variant="tertiary" size="icon" aria-label="내 계정">
             <User className="size-5 shrink-0" />
