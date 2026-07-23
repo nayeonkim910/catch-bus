@@ -10,7 +10,8 @@
   .dashboard-stage {
     position: relative;
     min-height: 0;
-    height: calc(100dvh - 116px);
+    /* 모바일: 상단 AppHeader(64px) 아래 전체. 탭바 제거로 지도가 항상 전체 노출되고 상세는 시트로 뜬다. */
+    height: calc(100dvh - 64px);
   }
 
   .dashboard-content {

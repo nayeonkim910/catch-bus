@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import type { BusStation } from '../../shared/types/bus';
-import type { MobileTab } from '../../shared/types/navigation';
 import { Button } from '../../shared/components/ui/Button';
 import { getRouteTheme } from '../../shared/utils/routeTheme';
 import { RouteOverlayPanel } from './RouteOverlayPanel';
@@ -16,20 +15,13 @@ import { useRoutePolyline } from './useRoutePolyline';
 import { useRouteStations } from './useRouteStations';
 
 type MapPanelProps = {
-  activeTab: MobileTab;
   station: BusStation | null;
   selectedRoute: SelectedRoute | null;
   onStationSelect: (station: BusStation) => void;
   onClearRoute: () => void;
 };
 
-export function MapPanel({
-  activeTab,
-  station,
-  selectedRoute,
-  onStationSelect,
-  onClearRoute,
-}: MapPanelProps) {
+export function MapPanel({ station, selectedRoute, onStationSelect, onClearRoute }: MapPanelProps) {
   const location = useCurrentLocation();
   const {
     containerRef,
@@ -37,7 +29,7 @@ export function MapPanel({
     errorMessage: mapError,
     searchCenter,
     canShowStations,
-  } = useKakaoMap({ activeTab, station });
+  } = useKakaoMap({ station });
   const nearbyStations = useNearbyStations(canShowStations ? searchCenter : null);
   const visibleStations = useMemo(() => {
     const stations = canShowStations ? (nearbyStations.data ?? []) : [];
@@ -84,11 +76,7 @@ export function MapPanel({
   const nearbyError = nearbyStations.isError ? '근처 정류장을 불러오지 못했습니다.' : null;
 
   return (
-    <main
-      className={`${activeTab === 'map' ? 'block' : 'hidden'} relative h-full min-h-0 min-w-0 overflow-hidden bg-slate-100 lg:block`}
-      id="panel-map"
-      role="tabpanel"
-    >
+    <main className="relative h-full min-h-0 min-w-0 overflow-hidden bg-slate-100" id="panel-map">
       <div ref={containerRef} className="h-full w-full" aria-label="버스 정류장 지도" />
 
       {/* 데스크톱은 상단 중앙을 검색바가 쓰므로, 노선 오버레이를 좌측 패널 너머 지도 하단으로 뺀다. */}

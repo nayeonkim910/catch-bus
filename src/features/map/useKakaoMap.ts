@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import type { BusStation } from '../../shared/types/bus';
-import type { MobileTab } from '../../shared/types/navigation';
 import type { Coordinates } from './useCurrentLocation';
 import { loadKakaoMapsSdk } from './kakaoMapsSdk';
 
@@ -14,11 +13,10 @@ const MAX_STATION_MARKER_LEVEL = 5;
 const MAP_IDLE_DELAY_MS = 500;
 
 type UseKakaoMapParams = {
-  activeTab: MobileTab;
   station: BusStation | null;
 };
 
-export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
+export function useKakaoMap({ station }: UseKakaoMapParams) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [mapLevel, setMapLevel] = useState(INITIAL_MAP_LEVEL);
@@ -91,17 +89,10 @@ export function useKakaoMap({ activeTab, station }: UseKakaoMapParams) {
   }, [map]);
 
   useEffect(() => {
-    if (activeTab !== 'map' || !map) return;
-
-    // display:none 상태였던 모바일 탭은 표시 후 지도 크기를 다시 계산해야 한다.
-    map.relayout();
-  }, [activeTab, map]);
-
-  useEffect(() => {
     const container = containerRef.current;
     if (!map || !container) return;
 
-    // 하단 상세 패널로 지도 영역 높이가 바뀌면 현재 컨테이너 크기에 맞춰 다시 그린다.
+    // 지도는 항상 보이지만, 뷰포트·회전 등으로 컨테이너 크기가 바뀌면 다시 그린다.
     const resizeObserver = new ResizeObserver(() => map.relayout());
     resizeObserver.observe(container);
 
