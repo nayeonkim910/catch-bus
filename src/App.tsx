@@ -3,22 +3,22 @@ import { useFavorites } from './features/favorites/useFavorites';
 import { DashboardShell } from './features/layout/DashboardShell';
 import { createSelectedRoute, type SelectedRoute } from './features/map/selectedRoute';
 import type { BusArrival, BusStation } from './shared/types/bus';
-import type { MobileTab } from './shared/types/navigation';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<MobileTab>('map');
-  // 정류장을 선택하기 전에는 실제 도착정보처럼 보일 수 있는 기본 데이터를 두지 않는다.
+  // 지도에서 고른 정류장. Map ↔ Details가 실제로 공유하는 상태다.
   const [station, setStation] = useState<BusStation | null>(null);
   // 지도에 노선·실시간 차량을 시각화할 선택 노선. 정류장을 바꾸면 초기화한다.
   const [selectedRoute, setSelectedRoute] = useState<SelectedRoute | null>(null);
+  // 정류장 "선택 이벤트" 카운터. 같은 정류장을 다시 눌러도 증가해 모바일 시트를 다시 연다.
+  const [selectionSeq, setSelectionSeq] = useState(0);
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
 
   const handleStationSelect = useCallback((nextStation: BusStation) => {
     setStation(nextStation);
     // 선택 노선은 직전 정류장 맥락이었으므로 정류장이 바뀌면 지도 오버레이를 걷어낸다.
     setSelectedRoute(null);
-    setActiveTab('details');
-    // 도착정보는 StationArrivalsPanel이 station을 받아 직접 조회한다(콜로케이션).
+    // 선택 이벤트를 증가시켜 DetailsSheet(모바일)가 열리도록 한다(같은 정류장 재선택 포함).
+    setSelectionSeq((seq) => seq + 1);
   }, []);
 
   const handleSelectRoute = useCallback((arrival: BusArrival) => {
@@ -32,11 +32,10 @@ function App() {
 
   return (
     <DashboardShell
-      activeTab={activeTab}
       station={station}
+      selectionSeq={selectionSeq}
       favorites={favorites}
       selectedRoute={selectedRoute}
-      onTabChange={setActiveTab}
       onStationSelect={handleStationSelect}
       isFavorite={isFavorite}
       onToggleFavorite={toggleFavorite}

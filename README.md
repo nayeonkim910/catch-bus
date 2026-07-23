@@ -27,7 +27,7 @@
 | Core | React 19, TypeScript, Vite |
 | 서버 상태 | TanStack Query |
 | 스타일링 | Tailwind CSS v4, CVA(class-variance-authority) |
-| UI 프리미티브 | Radix UI (Dialog, Tabs), lucide-react |
+| UI 프리미티브 | Radix UI (Dialog, Tabs), vaul(모바일 바텀시트), lucide-react |
 | 지도 | Kakao Maps SDK |
 | 백엔드 | Supabase Edge Functions (Deno), 공공 API 프록시 |
 | 품질 | ESLint, Prettier |

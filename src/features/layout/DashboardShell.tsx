@@ -1,18 +1,17 @@
+import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
-import type { MobileTab } from '../../shared/types/navigation';
 import { DetailsPanel } from '../details/DetailsPanel';
+import { DetailsSheet } from '../details/DetailsSheet';
 import { MapPanel } from '../map/MapPanel';
 import type { SelectedRoute } from '../map/selectedRoute';
 import { AppHeader } from './AppHeader';
 import './dashboardLayout.css';
-import { MobileTabs } from './MobileTabs';
 
 type DashboardShellProps = {
-  activeTab: MobileTab;
   station: BusStation | null;
+  selectionSeq: number;
   favorites: Favorite[];
   selectedRoute: SelectedRoute | null;
-  onTabChange: (tab: MobileTab) => void;
   onStationSelect: (station: BusStation) => void;
   isFavorite: (stationId: string, routeId: string) => boolean;
   onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
@@ -21,41 +20,43 @@ type DashboardShellProps = {
 };
 
 export function DashboardShell({
-  activeTab,
   station,
+  selectionSeq,
   favorites,
   selectedRoute,
-  onTabChange,
   onStationSelect,
   isFavorite,
   onToggleFavorite,
   onSelectRoute,
   onClearRoute,
 }: DashboardShellProps) {
+  // 데스크톱은 좌측 고정 패널, 모바일은 바텀시트. 동작이 달라 컨테이너를 갈라 렌더한다.
+  // 1024px는 dashboardLayout.css의 lg 브레이크포인트와 일치시킨다.
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const detailProps = {
+    station,
+    favorites,
+    selectedRouteId: selectedRoute?.routeId ?? null,
+    isFavorite,
+    onToggleFavorite,
+    onSelectRoute,
+  };
   return (
     <div className="dashboard-shell">
       <AppHeader onStationSelect={onStationSelect} />
-      <MobileTabs activeTab={activeTab} onChange={onTabChange} />
       <div className="dashboard-stage">
         <div className="dashboard-content">
           <MapPanel
-            activeTab={activeTab}
             station={station}
             selectedRoute={selectedRoute}
             onStationSelect={onStationSelect}
             onClearRoute={onClearRoute}
           />
-          <DetailsPanel
-            // 정류장이 바뀌면 하단 패널의 탭과 높이 상태를 기본값으로 되돌린다.
-            key={station?.id ?? 'no-station'}
-            activeTab={activeTab}
-            station={station}
-            favorites={favorites}
-            selectedRouteId={selectedRoute?.routeId ?? null}
-            isFavorite={isFavorite}
-            onToggleFavorite={onToggleFavorite}
-            onSelectRoute={onSelectRoute}
-          />
+          {isDesktop ? (
+            <DetailsPanel {...detailProps} />
+          ) : (
+            <DetailsSheet {...detailProps} selectionSeq={selectionSeq} />
+          )}
         </div>
       </div>
     </div>
