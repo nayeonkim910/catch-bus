@@ -1,13 +1,10 @@
 import { EmptyState } from '../../shared/components/EmptyState';
-import type { Favorite } from '../../shared/types/bus';
 import { FavoriteCard } from '../favorites/FavoriteCard';
 import { useFavoriteArrivals } from '../favorites/useFavoriteArrivals';
+import { useFavorites } from '../favorites/useFavorites';
 
-type FavoritesTabProps = {
-  favorites: Favorite[];
-};
-
-export function FavoritesTab({ favorites }: FavoritesTabProps) {
+export function FavoritesTab() {
+  const { favorites } = useFavorites(); // 즐겨찾기 목록을 store에서 직접 구독
   const arrivals = useFavoriteArrivals(favorites);
 
   if (favorites.length === 0) {

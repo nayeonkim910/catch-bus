@@ -1,5 +1,5 @@
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { DetailsPanel } from '../details/DetailsPanel';
 import { DetailsSheet } from '../details/DetailsSheet';
 import { MapPanel } from '../map/MapPanel';
@@ -10,11 +10,8 @@ import './dashboardLayout.css';
 type DashboardShellProps = {
   station: BusStation | null;
   selectionSeq: number;
-  favorites: Favorite[];
   selectedRoute: SelectedRoute | null;
   onStationSelect: (station: BusStation) => void;
-  isFavorite: (stationId: string, routeId: string) => boolean;
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
   onClearRoute: () => void;
 };
@@ -22,11 +19,8 @@ type DashboardShellProps = {
 export function DashboardShell({
   station,
   selectionSeq,
-  favorites,
   selectedRoute,
   onStationSelect,
-  isFavorite,
-  onToggleFavorite,
   onSelectRoute,
   onClearRoute,
 }: DashboardShellProps) {
@@ -35,10 +29,7 @@ export function DashboardShell({
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const detailProps = {
     station,
-    favorites,
     selectedRouteId: selectedRoute?.routeId ?? null,
-    isFavorite,
-    onToggleFavorite,
     onSelectRoute,
   };
   return (

@@ -1,15 +1,12 @@
 import { EmptyState } from '../../shared/components/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../shared/components/ui/Tabs';
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { FavoritesTab } from './FavoritesTab';
 import { StationArrivalsPanel } from './StationArrivalsPanel';
 
 type DetailsContentProps = {
   station: BusStation | null;
-  favorites: Favorite[];
   selectedRouteId: string | null;
-  isFavorite: (stationId: string, routeId: string) => boolean;
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
 };
 
@@ -19,10 +16,7 @@ type DetailsContentProps = {
  */
 export function DetailsContent({
   station,
-  favorites,
   selectedRouteId,
-  isFavorite,
-  onToggleFavorite,
   onSelectRoute,
 }: DetailsContentProps) {
   return (
@@ -47,8 +41,6 @@ export function DetailsContent({
           <StationArrivalsPanel
             station={station}
             selectedRouteId={selectedRouteId}
-            isFavorite={isFavorite}
-            onToggleFavorite={onToggleFavorite}
             onSelectRoute={onSelectRoute}
           />
         ) : (
@@ -59,7 +51,7 @@ export function DetailsContent({
         )}
       </TabsContent>
       <TabsContent value="favorites" className="flex min-h-0 flex-1 flex-col">
-        <FavoritesTab favorites={favorites} />
+        <FavoritesTab />
       </TabsContent>
     </Tabs>
   );

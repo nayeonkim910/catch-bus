@@ -1,12 +1,9 @@
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { DetailsContent } from './DetailsContent';
 
 type DetailsPanelProps = {
   station: BusStation | null;
-  favorites: Favorite[];
   selectedRouteId: string | null;
-  isFavorite: (stationId: string, routeId: string) => boolean;
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
 };
 

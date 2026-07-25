@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useFavorites } from './features/favorites/useFavorites';
 import { DashboardShell } from './features/layout/DashboardShell';
 import { createSelectedRoute, type SelectedRoute } from './features/map/selectedRoute';
 import type { BusArrival, BusStation } from './shared/types/bus';
@@ -11,7 +10,6 @@ function App() {
   const [selectedRoute, setSelectedRoute] = useState<SelectedRoute | null>(null);
   // 정류장 "선택 이벤트" 카운터. 같은 정류장을 다시 눌러도 증가해 모바일 시트를 다시 연다.
   const [selectionSeq, setSelectionSeq] = useState(0);
-  const { favorites, isFavorite, toggle: toggleFavorite } = useFavorites();
 
   const handleStationSelect = useCallback((nextStation: BusStation) => {
     setStation(nextStation);
@@ -34,11 +32,8 @@ function App() {
     <DashboardShell
       station={station}
       selectionSeq={selectionSeq}
-      favorites={favorites}
       selectedRoute={selectedRoute}
       onStationSelect={handleStationSelect}
-      isFavorite={isFavorite}
-      onToggleFavorite={toggleFavorite}
       onSelectRoute={handleSelectRoute}
       onClearRoute={handleClearRoute}
     />
