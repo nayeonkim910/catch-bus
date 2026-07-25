@@ -11,7 +11,7 @@ function App() {
   const [selectedRoute, setSelectedRoute] = useState<SelectedRoute | null>(null);
   // 정류장 "선택 이벤트" 카운터. 같은 정류장을 다시 눌러도 증가해 모바일 시트를 다시 연다.
   const [selectionSeq, setSelectionSeq] = useState(0);
-  const { favorites, isFavorite, toggleFavorite } = useFavorites();
+  const { favorites, isFavorite, toggle: toggleFavorite } = useFavorites();
 
   const handleStationSelect = useCallback((nextStation: BusStation) => {
     setStation(nextStation);
