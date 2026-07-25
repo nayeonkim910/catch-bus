@@ -1,0 +1,45 @@
+name: CI
+
+# main으로의 push와 모든 PR에서 품질 게이트를 자동 실행한다.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 같은 브랜치에서 새 커밋이 오면 진행 중인 낡은 실행은 취소한다.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck & build
+        run: npm run build
+
+      - name: Frontend tests (Vitest)
+        run: npm run test:run
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Edge function tests (Deno)
+        run: npm run test:edge
