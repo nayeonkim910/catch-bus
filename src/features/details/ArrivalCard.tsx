@@ -2,27 +2,29 @@ import { useId, useState, type KeyboardEvent } from 'react';
 import { Star } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
 import { RouteBadge } from '../../shared/components/RouteBadge';
-import type { BusArrival } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '../../shared/types/bus';
+import { useFavorites } from '../favorites/useFavorites';
 import { useRouteStationData } from '../routes/useRouteStationData';
 import { getArrivalCardStatus } from './arrivalCardStatus';
 import { ArrivalSummary } from './ArrivalSummary';
 import { RouteStationDetails } from './RouteStationDetails';
 
 type ArrivalCardProps = {
+  station: BusStation;
   arrival: BusArrival;
-  isFavorite: boolean;
   isRouteSelected: boolean;
-  onToggleFavorite: () => void;
   onSelectRoute: () => void;
 };
 
 export function ArrivalCard({
+  station,
   arrival,
-  isFavorite,
   isRouteSelected,
-  onToggleFavorite,
   onSelectRoute,
 }: ArrivalCardProps) {
+  // 즐겨찾기 상태는 store에서 직접 구독하며 favorites 변경 시 리렌더되어 별표 반영함.
+  const { isFavorite, toggle } = useFavorites();
+  const isFavorited = isFavorite(station.id, arrival.routeId);
   const [isRouteExpanded, setIsRouteExpanded] = useState(false);
   const routeDetailsId = useId();
   const arrivalSeconds = arrival.first?.arrivalSeconds ?? null;
@@ -64,17 +66,17 @@ export function ArrivalCard({
             </span>
           </div>
           <Button
-            variant={isFavorite ? 'primary' : 'secondary'}
+            variant={isFavorited ? 'primary' : 'secondary'}
             size="icon"
             className="size-8 shrink-0"
-            aria-label={`${arrival.routeName}번 즐겨찾기 ${isFavorite ? '삭제' : '추가'}`}
-            aria-pressed={isFavorite}
+            aria-label={`${arrival.routeName}번 즐겨찾기 ${isFavorited ? '삭제' : '추가'}`}
+            aria-pressed={isFavorited}
             onClick={(event) => {
               event.stopPropagation();
-              onToggleFavorite();
+              toggle(station, arrival);
             }}
           >
-            <Star className="size-5 shrink-0" fill={isFavorite ? 'currentColor' : 'none'} />
+            <Star className="size-5 shrink-0" fill={isFavorited ? 'currentColor' : 'none'} />
           </Button>
         </div>
 

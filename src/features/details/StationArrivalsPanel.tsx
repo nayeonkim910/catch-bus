@@ -7,8 +7,6 @@ import { useStationArrivals } from './useStationArrivals';
 type StationArrivalsPanelProps = {
   station: BusStation;
   selectedRouteId: string | null;
-  isFavorite: (stationId: string, routeId: string) => boolean;
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
 };
 
@@ -22,8 +20,6 @@ type StationArrivalsPanelProps = {
 export function StationArrivalsPanel({
   station,
   selectedRouteId,
-  isFavorite,
-  onToggleFavorite,
   onSelectRoute,
 }: StationArrivalsPanelProps) {
   const { data, isPending, isError, error, refetch } = useStationArrivals(station.id);
@@ -47,8 +43,6 @@ export function StationArrivalsPanel({
             station={station}
             arrivals={arrivals}
             selectedRouteId={selectedRouteId}
-            isFavorite={isFavorite}
-            onToggleFavorite={onToggleFavorite}
             onSelectRoute={onSelectRoute}
           />
         )}

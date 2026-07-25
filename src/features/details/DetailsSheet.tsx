@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { Drawer } from 'vaul';
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { DetailsContent } from './DetailsContent';
 
 type DetailsSheetProps = {
   station: BusStation | null;
   selectionSeq: number;
-  favorites: Favorite[];
   selectedRouteId: string | null;
-  isFavorite: (stationId: string, routeId: string) => boolean;
-  onToggleFavorite: (station: BusStation, arrival: BusArrival) => void;
   onSelectRoute: (arrival: BusArrival) => void;
 };
 
