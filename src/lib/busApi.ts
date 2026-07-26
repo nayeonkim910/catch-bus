@@ -8,24 +8,6 @@ import type {
   VehicleLocation,
 } from '../shared/types/bus';
 
-type StationSearchResponse = {
-  data: {
-    stations: BusStation[];
-  };
-  meta: {
-    updatedAt: string;
-  };
-};
-
-type StationArrivalsResponse = {
-  data: {
-    arrivals: BusArrival[];
-  };
-  meta: {
-    updatedAt: string;
-  };
-};
-
 type ApiResponse<T> = {
   data: T;
   meta: { updatedAt: string };
@@ -88,53 +70,29 @@ async function requestBusApi<T>(
     throw new Error(getRequestErrorMessage(errorPayload));
   }
 
+  // 200인데 본문이 JSON이 아니면(프록시의 HTML 에러 페이지 등) payload가 null이다.
+  // 여기서 막지 않으면 null이 T로 캐스팅되어 소비처에서 TypeError로 터진다.
+  if (payload === null) {
+    throw new Error('버스정보 응답을 해석하지 못했습니다.');
+  }
+
   return payload as T;
 }
 
-export async function searchStations(
-  query: string,
-  signal?: AbortSignal,
-): Promise<StationSearchResponse> {
-  const payload = await requestBusApi<StationSearchResponse>('search-stations', { query }, signal);
-
-  if (
-    !payload ||
-    typeof payload !== 'object' ||
-    !('data' in payload) ||
-    !payload.data ||
-    typeof payload.data !== 'object' ||
-    !('stations' in payload.data) ||
-    !Array.isArray(payload.data.stations)
-  ) {
-    throw new Error('정류장 검색 응답 형식이 올바르지 않습니다.');
-  }
-
-  return payload as StationSearchResponse;
+export function searchStations(query: string, signal?: AbortSignal) {
+  return requestBusApi<ApiResponse<{ stations: BusStation[] }>>(
+    'search-stations',
+    { query },
+    signal,
+  );
 }
 
-export async function getStationArrivals(
-  stationId: string,
-  signal?: AbortSignal,
-): Promise<StationArrivalsResponse> {
-  const payload = await requestBusApi<StationArrivalsResponse>(
+export function getStationArrivals(stationId: string, signal?: AbortSignal) {
+  return requestBusApi<ApiResponse<{ arrivals: BusArrival[] }>>(
     'station-arrivals',
     { stationId },
     signal,
   );
-
-  if (
-    !payload ||
-    typeof payload !== 'object' ||
-    !('data' in payload) ||
-    !payload.data ||
-    typeof payload.data !== 'object' ||
-    !('arrivals' in payload.data) ||
-    !Array.isArray(payload.data.arrivals)
-  ) {
-    throw new Error('도착정보 응답 형식이 올바르지 않습니다.');
-  }
-
-  return payload;
 }
 
 export function getNearbyStations(latitude: number, longitude: number, signal?: AbortSignal) {
@@ -142,13 +100,7 @@ export function getNearbyStations(latitude: number, longitude: number, signal?: 
     'nearby-stations',
     { latitude: String(latitude), longitude: String(longitude) },
     signal,
-  ).then((payload) => {
-    if (!Array.isArray(payload?.data?.stations)) {
-      throw new Error('근처 정류장 응답 형식이 올바르지 않습니다.');
-    }
-
-    return payload;
-  });
+  );
 }
 
 export function searchBusRoutes(query: string, signal?: AbortSignal) {
@@ -156,7 +108,13 @@ export function searchBusRoutes(query: string, signal?: AbortSignal) {
 }
 
 export function getRouteInfo(routeId: string, signal?: AbortSignal) {
-  return requestBusApi<ApiResponse<{ route: RouteInfo }>>('route-info', { routeId }, signal);
+  return requestBusApi<ApiResponse<{ route: RouteInfo }>>(
+    'route-info',
+    {
+      routeId,
+    },
+    signal,
+  );
 }
 
 export function getRouteStations(routeId: string, signal?: AbortSignal) {
