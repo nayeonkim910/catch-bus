@@ -1,8 +1,8 @@
-import { useQueries, type UseQueryResult } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
-import { stationArrivalsQueryOptions } from "../../lib/busQueries";
-import type { BusArrival, Favorite } from "../../shared/types/bus";
-import { getFavoriteId } from "./favorite";
+import { useQueries, type UseQueryResult } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
+import { stationArrivalsQueryOptions } from '../../lib/busQueries';
+import type { BusArrival, Favorite } from '../../shared/types/bus';
+import { getFavoriteId } from './favorite';
 
 export type FavoriteArrivalEntry = {
   /** 즐겨찾기의 정류장·노선에 해당하는 도착정보. 아직 없거나 운행 정보가 없으면 undefined. */
@@ -34,10 +34,7 @@ export function buildFavoriteArrivals(
   results.forEach((result, index) => {
     statusByStation.set(stationIds[index], result);
     for (const arrival of result.data ?? []) {
-      arrivalByFavoriteId.set(
-        getFavoriteId(arrival.stationId, arrival.routeId),
-        arrival,
-      );
+      arrivalByFavoriteId.set(getFavoriteId(arrival.stationId, arrival.routeId), arrival);
     }
   });
 
@@ -65,15 +62,12 @@ export function useFavoriteArrivals(favorites: Favorite[]): FavoriteArrivals {
 
   // 조립은 순수 함수에 위임하고, 조회 결과가 바뀔 때만 다시 만들도록 최적화한다.
   const combine = useCallback(
-    (results: StationArrivalsResult[]) =>
-      buildFavoriteArrivals(stationIds, results),
+    (results: StationArrivalsResult[]) => buildFavoriteArrivals(stationIds, results),
     [stationIds],
   );
 
   return useQueries({
-    queries: stationIds.map((stationId) =>
-      stationArrivalsQueryOptions(stationId)
-    ),
+    queries: stationIds.map((stationId) => stationArrivalsQueryOptions(stationId)),
     combine,
   });
 }

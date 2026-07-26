@@ -14,11 +14,7 @@ type DetailsContentProps = {
  * 상세 패널의 순수 콘텐츠(버스 상세/즐겨찾기 탭 + 내용). 담는 그릇과 무관하다.
  * 데스크톱은 좌측 고정 패널(DetailsPanel), 모바일은 바텀시트가 이 콘텐츠를 담는다.
  */
-export function DetailsContent({
-  station,
-  selectedRouteId,
-  onSelectRoute,
-}: DetailsContentProps) {
+export function DetailsContent({ station, selectedRouteId, onSelectRoute }: DetailsContentProps) {
   return (
     <Tabs defaultValue="station-detail" className="flex min-h-0 flex-1 flex-col">
       <div className="flex shrink-0 items-center gap-3 border-b border-slate-200/70 px-4 py-3 sm:px-5">
