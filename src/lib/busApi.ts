@@ -46,7 +46,13 @@ function getRequestErrorMessage(payload: ErrorResponse | null) {
   return payload?.error?.message ?? '버스정보 요청에 실패했습니다.';
 }
 
+// env는 빌드 타임에 고정되므로 첫 요청에 한 번만 읽어 캐시한다. 매 요청마다 재계산하지 않는다.
+// (최상위에서 즉시 호출하지 않는 이유: env 없는 환경에서 이 모듈을 import만 해도 throw나는 걸 피하기 위함)
+let cachedApiConfig: { baseUrl: string; publishableKey: string } | null = null;
+
 function getApiConfig() {
+  if (cachedApiConfig) return cachedApiConfig;
+
   const baseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
   const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
 
@@ -54,7 +60,8 @@ function getApiConfig() {
     throw new Error('Supabase API 환경변수가 설정되지 않았습니다.');
   }
 
-  return { baseUrl, publishableKey };
+  cachedApiConfig = { baseUrl, publishableKey };
+  return cachedApiConfig;
 }
 
 async function requestBusApi<T>(
