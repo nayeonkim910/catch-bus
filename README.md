@@ -1,5 +1,7 @@
 # 🚌 Catch Bus
 
+[![CI](https://github.com/nayeonkim910/catch-bus/actions/workflows/ci.yml/badge.svg)](https://github.com/nayeonkim910/catch-bus/actions/workflows/ci.yml)
+
 > 자주 타는 버스 노선과 승차 정류장 조합의 실시간 도착 상황을, 집을 나서기 전에 한눈에 확인하는 웹 서비스
 
 경기도 공공 버스 API를 기반으로, 지도에서 주변 정류장을 찾고 도착 정보를 확인하고 노선의 실시간 차량 위치를 추적하고 자주 쓰는 조합을 즐겨찾기할 수 있습니다.
@@ -26,11 +28,13 @@
 | --- | --- |
 | Core | React 19, TypeScript, Vite |
 | 서버 상태 | TanStack Query |
+| 클라이언트 상태 | Zustand + persist (즐겨찾기 localStorage 영속화) |
 | 스타일링 | Tailwind CSS v4, CVA(class-variance-authority) |
 | UI 프리미티브 | Radix UI (Dialog, Tabs), vaul(모바일 바텀시트), lucide-react |
 | 지도 | Kakao Maps SDK |
 | 백엔드 | Supabase Edge Functions (Deno), 공공 API 프록시 |
-| 품질 | ESLint, Prettier |
+| 테스트 | Vitest, React Testing Library (프론트) / Deno test (엣지 함수) |
+| 품질 | ESLint, Prettier, GitHub Actions CI |
 
 ## 아키텍처
 
@@ -59,9 +63,9 @@ flowchart LR
 
 도착 정보(30초), 실시간 차량 위치(10초), 노선 형상/경유 정류장(24시간)처럼 갱신 주기가 다른 데이터에 서로 다른 `staleTime`을 부여했습니다. 여러 즐겨찾기가 같은 정류장을 참조할 때는 `stationId`로 중복을 제거하고 `queryKey`를 공유해, 정류장당 한 번만 도착 정보를 조회합니다.
 
-**2. 경쟁 조건(race condition) 제거** ([`src/App.tsx`](src/App.tsx), [`src/features/search/useStationSearch.ts`](src/features/search/useStationSearch.ts))
+**2. 경쟁 조건(race condition) 제거** ([`src/features/search/useStationSearch.ts`](src/features/search/useStationSearch.ts), [`src/lib/busQueries.ts`](src/lib/busQueries.ts))
 
-정류장을 빠르게 바꿔 선택하면 이전 요청의 응답이 최신 화면을 덮어쓸 수 있습니다. 모든 조회에 `AbortController`를 적용해 이전 요청을 취소하고, 취소된 응답은 상태에 반영하지 않도록 했습니다.
+정류장을 빠르게 바꿔 선택하면 이전 요청의 응답이 최신 화면을 덮어쓸 수 있습니다. 조회 요청에 `AbortController` 기반 취소 신호를 걸어 오래된 요청을 취소하고, 취소된 응답은 화면에 반영하지 않도록 했습니다.
 
 **3. 폴링 자원 관리** ([`src/features/map/useBusLocations.ts`](src/features/map/useBusLocations.ts))
 
@@ -71,6 +75,10 @@ flowchart LR
 
 공공 API 응답을 그대로 믿지 않고 필드 단위로 검증(`requireString`/`requireId`/`requireNumber`)한 뒤, 이상값이면 `502 UPSTREAM_ERROR`로 격리해 깨진 데이터가 화면까지 전파되지 않도록 했습니다.
 
+**5. 런타임에 맞춘 테스트 전략** ([`useFavoriteArrivals.test.ts`](src/features/favorites/useFavoriteArrivals.test.ts), [`normalize.test.ts`](supabase/functions/bus-api/gyeonggi/normalize.test.ts))
+
+커버리지를 채우기보다 회귀 위험이 큰 핵심 로직만 골라 테스트했습니다. 프론트엔드는 Vitest + React Testing Library, 엣지 함수는 Deno 내장 러너로 각 런타임에 맞게 분리했고, GitHub Actions에서 PR마다 lint·타입 체크·양쪽 테스트를 자동으로 검증합니다.
+
 ## 데모 안내
 
 - **지원 범위:** 현재 경기도 버스 데이터만 지원합니다. 앱은 기본적으로 경기 지역 지도로 열리며, 서울 등 타 지역의 정류장은 검색/조회되지 않습니다.
@@ -79,7 +87,7 @@ flowchart LR
 
 ## 로컬 실행
 
-요구 사항: Node.js 20+, [Kakao Developers](https://developers.kakao.com/) JavaScript 키, Supabase 프로젝트
+요구 사항: Node.js 20+ (`.nvmrc` 기준 24), [Kakao Developers](https://developers.kakao.com/) JavaScript 키, Supabase 프로젝트
 
 ```bash
 # 1. 의존성 설치
@@ -107,16 +115,21 @@ npm run dev            # 개발 서버
 npm run build          # 타입 체크(tsc -b) + 프로덕션 빌드
 npm run lint           # ESLint
 npm run format         # Prettier
+npm run test           # Vitest (watch 모드)
+npm run test:run       # Vitest 1회 실행
+npm run test:edge      # Deno 엣지 함수 테스트
+npm run test:all       # 프론트 + 엣지 전체 테스트
 ```
 
 ## 폴더 구조
 
 ```
 src/
-├─ features/          # 도메인별 기능 (map, details, favorites, search, auth, layout)
+├─ features/          # 도메인별 기능 (map, details, favorites, search, routes, auth, layout)
 ├─ shared/            # 공용 컴포넌트, 유틸, 타입 (ui 프리미티브, cn, 진행선 등)
 ├─ lib/               # API 클라이언트(busApi), Query 옵션(busQueries)
-└─ app/               # 앱 전역 provider (QueryProvider)
+├─ app/               # 앱 전역 provider (QueryProvider)
+└─ test/              # 테스트 설정·픽스처 (Vitest)
 
 supabase/functions/bus-api/   # 공공 API 프록시 엣지 함수 (Deno)
 └─ gyeonggi/                   # 경기도 버스 API 연동, 정규화, 테스트
