@@ -43,7 +43,9 @@ export function ArrivalSummary({ arrival, status }: ArrivalSummaryProps) {
       </div>
 
       <p className="mt-1 truncate text-xs text-muted-foreground">
-        {first?.remainingStops != null ? `${first.remainingStops}정거장 전` : '남은 정거장 정보 없음'}
+        {first?.remainingStops != null
+          ? `${first.remainingStops}정거장 전`
+          : '남은 정거장 정보 없음'}
         {first?.isLowFloor ? ' · 저상버스' : ''}
         {first?.currentStationName ? ` · 현재 ${first.currentStationName} 통과` : ''}
       </p>

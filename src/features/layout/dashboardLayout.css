@@ -38,7 +38,7 @@
     .dashboard-shell {
       --details-panel: clamp(320px, 26vw, 400px);
     }
- 
+
     .dashboard-stage {
       height: 100dvh;
     }

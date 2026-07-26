@@ -40,10 +40,8 @@
   --radius-xl: 1rem;
 
   --shadow-xs: 0 1px 2px 0 rgb(17 22 29 / 0.05);
-  --shadow-sm:
-    0 1px 3px 0 rgb(17 22 29 / 0.08), 0 1px 2px -1px rgb(17 22 29 / 0.06);
-  --shadow-md:
-    0 4px 12px -2px rgb(17 22 29 / 0.1), 0 2px 4px -2px rgb(17 22 29 / 0.06);
+  --shadow-sm: 0 1px 3px 0 rgb(17 22 29 / 0.08), 0 1px 2px -1px rgb(17 22 29 / 0.06);
+  --shadow-md: 0 4px 12px -2px rgb(17 22 29 / 0.1), 0 2px 4px -2px rgb(17 22 29 / 0.06);
   --shadow-lg: 0 12px 28px -6px rgb(17 22 29 / 0.14);
 }
 
@@ -331,8 +329,7 @@
 
   .hover-scrollbar:hover,
   .hover-scrollbar:focus-within {
-    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 55%, transparent)
-      transparent;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 55%, transparent) transparent;
   }
 
   .hover-scrollbar::-webkit-scrollbar {

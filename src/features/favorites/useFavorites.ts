@@ -1,7 +1,7 @@
-import { useCallback } from "react";
-import { getFavoriteId } from "./favorite";
-import { useFavoritesStore } from "./favoritesStore";
-import type { FavoritesApi } from "./types";
+import { useCallback } from 'react';
+import { getFavoriteId } from './favorite';
+import { useFavoritesStore } from './favoritesStore';
+import type { FavoritesApi } from './types';
 
 export function useFavorites(): FavoritesApi {
   // 지금은 게스트(localStorage)만 존재한다. 로그인이 붙으면 여기서만 분기하고,
@@ -32,9 +32,7 @@ function useGuestFavorites(): FavoritesApi {
   // favorites가 바뀌어도 소비처 리렌더가 안 걸린다(별표가 갱신되지 않음).
   const isFavorite = useCallback(
     (stationId: string, routeId: string) =>
-      favorites.some((favorite) =>
-        favorite.id === getFavoriteId(stationId, routeId)
-      ),
+      favorites.some((favorite) => favorite.id === getFavoriteId(stationId, routeId)),
     [favorites],
   );
 

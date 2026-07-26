@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from 'react';
 
 /**
  * 미디어쿼리 매칭 여부를 구독한다.
@@ -15,14 +15,11 @@ export function useMediaQuery(query: string): boolean {
   const subscribe = useCallback(
     (onChange: () => void) => {
       const mql = window.matchMedia(query);
-      mql.addEventListener("change", onChange);
-      return () => mql.removeEventListener("change", onChange);
+      mql.addEventListener('change', onChange);
+      return () => mql.removeEventListener('change', onChange);
     },
     [query],
   );
 
-  return useSyncExternalStore(
-    subscribe,
-    () => window.matchMedia(query).matches,
-  );
+  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches);
 }
