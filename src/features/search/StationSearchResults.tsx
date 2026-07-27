@@ -1,12 +1,14 @@
 import type { BusStation } from '../../shared/types/bus';
-import type { StationSearchState } from './useStationSearch';
 
 type StationSearchResultsProps = {
-  searchState: Exclude<StationSearchState, { status: 'idle' }>;
+  isLoading: boolean;
+  isError: boolean;
+  stations: BusStation[];
   onSelect: (station: BusStation) => void;
 };
 
 const MAX_VISIBLE_RESULTS = 12;
+const SEARCH_FAILED_MESSAGE = '정류장을 검색하지 못했어요. 잠시 후 다시 시도해 주세요.';
 
 function LoadingResults() {
   return (
@@ -19,30 +21,35 @@ function LoadingResults() {
   );
 }
 
-export function StationSearchResults({ searchState, onSelect }: StationSearchResultsProps) {
-  if (searchState.status === 'loading') {
+export function StationSearchResults({
+  isLoading,
+  isError,
+  stations,
+  onSelect,
+}: StationSearchResultsProps) {
+  if (isLoading) {
     return <LoadingResults />;
   }
 
-  if (searchState.status === 'error') {
+  if (isError) {
     return (
       <p className="px-3 py-5 text-center text-sm text-red-600" role="alert">
-        {searchState.message}
+        {SEARCH_FAILED_MESSAGE}
       </p>
     );
   }
 
-  if (searchState.stations.length === 0) {
+  if (stations.length === 0) {
     return <p className="px-3 py-5 text-center text-sm text-slate-500">검색 결과가 없습니다.</p>;
   }
 
-  const visibleStations = searchState.stations.slice(0, MAX_VISIBLE_RESULTS);
+  const visibleStations = stations.slice(0, MAX_VISIBLE_RESULTS);
 
   return (
     <>
-      {searchState.stations.length > MAX_VISIBLE_RESULTS && (
+      {stations.length > MAX_VISIBLE_RESULTS && (
         <p className="px-3 pb-2 pt-1 text-xs text-slate-400">
-          전체 {searchState.stations.length}개 중 {MAX_VISIBLE_RESULTS}개를 표시합니다.
+          전체 {stations.length}개 중 {MAX_VISIBLE_RESULTS}개를 표시합니다.
         </p>
       )}
       <ul className="space-y-0.5">
