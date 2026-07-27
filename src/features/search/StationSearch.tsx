@@ -38,7 +38,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    void submitSearch();
+    submitSearch();
   }
 
   function handleSelect(station: BusStation) {
