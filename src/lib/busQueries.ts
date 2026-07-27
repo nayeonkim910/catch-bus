@@ -1,5 +1,11 @@
 import { queryOptions } from '@tanstack/react-query';
-import { getBusLocations, getRouteLine, getRouteStations, getStationArrivals } from './busApi';
+import {
+  getBusLocations,
+  getRouteLine,
+  getRouteStations,
+  getStationArrivals,
+  searchStations,
+} from './busApi';
 
 // 도착정보는 실시간성이 중요하므로 짧게 잡아 자주 갱신될 수 있게 한다.
 const STATION_ARRIVALS_STALE_TIME_MS = 30 * 1000;
@@ -7,6 +13,8 @@ const STATION_ARRIVALS_STALE_TIME_MS = 30 * 1000;
 const ROUTE_STATIC_STALE_TIME_MS = 24 * 60 * 60 * 1000;
 // 실시간 차량 위치는 자주 바뀌므로 짧게 잡는다.
 const BUS_LOCATIONS_STALE_TIME_MS = 10 * 1000;
+// 같은 검색어 결과는 자주 바뀌지 않으므로 5분간 캐시한다.
+const STATION_SEARCH_STALE_TIME_MS = 5 * 60 * 1000;
 
 /**
  * 정류장 도착정보 조회를 위한 재사용 가능한 TanStack Query 옵션.
@@ -58,5 +66,19 @@ export function busLocationsQueryOptions(routeId: string) {
     staleTime: BUS_LOCATIONS_STALE_TIME_MS,
     retry: 2,
     select: (response) => response.data.locations,
+  });
+}
+
+/**
+ * 정류장 이름 검색 조회용 옵션.
+ *
+ * 제출된 검색어를 queryKey로 삼아, 같은 검색어를 다시 검색하면 캐시를 재사용한다.
+ */
+export function searchStationsQueryOptions(query: string) {
+  return queryOptions({
+    queryKey: ['station-search', query],
+    queryFn: ({ signal }) => searchStations(query, signal),
+    staleTime: STATION_SEARCH_STALE_TIME_MS,
+    select: (response) => response.data.stations,
   });
 }

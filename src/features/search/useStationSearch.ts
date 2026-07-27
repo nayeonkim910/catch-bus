@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { searchStations } from '../../lib/busApi';
+import { useCallback, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { searchStationsQueryOptions } from '../../lib/busQueries';
 import type { BusStation } from '../../shared/types/bus';
 
 export type StationSearchState =
@@ -8,110 +9,54 @@ export type StationSearchState =
   | { status: 'success'; stations: BusStation[] }
   | { status: 'error'; message: string };
 
-type CacheEntry = {
-  expiresAt: number;
-  stations: BusStation[];
-};
-
-const CACHE_DURATION_MS = 5 * 60 * 1000;
-const stationCache = new Map<string, CacheEntry>();
-
-function getCacheKey(query: string) {
-  return query.trim().toLocaleLowerCase('ko-KR');
-}
-
-function getCachedStations(query: string) {
-  const cacheKey = getCacheKey(query);
-  const cached = stationCache.get(cacheKey);
-
-  if (!cached) return null;
-
-  if (cached.expiresAt <= Date.now()) {
-    stationCache.delete(cacheKey);
-    return null;
-  }
-
-  return cached.stations;
-}
-
-function cacheStations(query: string, stations: BusStation[]) {
-  stationCache.set(getCacheKey(query), {
-    expiresAt: Date.now() + CACHE_DURATION_MS,
-    stations,
-  });
-}
+const EMPTY_QUERY_MESSAGE = '검색어를 입력해 주세요.';
+const SEARCH_FAILED_MESSAGE = '정류장을 검색하지 못했어요. 잠시 후 다시 시도해 주세요.';
 
 export function useStationSearch() {
   const [query, setQueryState] = useState('');
-  const [searchState, setSearchState] = useState<StationSearchState>({ status: 'idle' });
-  const requestRef = useRef<AbortController | null>(null);
+  // 입력값(query)과 분리된 '제출된 검색어'. 이 값이 바뀔 때만 조회가 나간다.
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  // 빈 검색어 안내는 서버 상태가 아니므로 로컬 UI 상태로 둔다.
+  const [isEmptyQuery, setIsEmptyQuery] = useState(false);
 
-  const cancelRequest = useCallback(() => {
-    requestRef.current?.abort();
-    requestRef.current = null;
+  const { data, isPending, isError } = useQuery({
+    ...searchStationsQueryOptions(submittedQuery),
+    enabled: submittedQuery.length > 0,
+  });
+
+  // 제출 여부(submittedQuery)를 먼저 보고, 그다음 Query 상태를 화면용 상태로 매핑한다.
+  // 제출 전에는 enabled:false라 isPending이 true이므로, 그 값에 앞서 idle로 처리해야 한다.
+  function resolveSearchState(): StationSearchState {
+    if (isEmptyQuery) return { status: 'error', message: EMPTY_QUERY_MESSAGE };
+    if (submittedQuery.length === 0) return { status: 'idle' };
+    if (isError) return { status: 'error', message: SEARCH_FAILED_MESSAGE };
+    if (isPending) return { status: 'loading' };
+    return { status: 'success', stations: data ?? [] };
+  }
+
+  // 소비 컴포넌트의 effect 의존성으로 쓰이므로 참조를 고정한다.
+  const setQuery = useCallback((next: string) => {
+    setQueryState(next);
+    // 입력을 바꾸면 이전 결과 창을 닫고 대기 상태로 되돌린다.
+    setSubmittedQuery('');
+    setIsEmptyQuery(false);
   }, []);
 
-  const resetResults = useCallback(() => {
-    cancelRequest();
-    setSearchState({ status: 'idle' });
-  }, [cancelRequest]);
-
-  const setQuery = useCallback(
-    (nextQuery: string) => {
-      cancelRequest();
-      setQueryState(nextQuery);
-      setSearchState({ status: 'idle' });
-    },
-    [cancelRequest],
-  );
-
-  const submitSearch = useCallback(async () => {
+  const submitSearch = useCallback(() => {
     const trimmedQuery = query.trim();
-
     if (!trimmedQuery) {
-      setSearchState({ status: 'error', message: '검색어를 입력해 주세요.' });
+      setSubmittedQuery('');
+      setIsEmptyQuery(true);
       return;
     }
+    setIsEmptyQuery(false);
+    setSubmittedQuery(trimmedQuery);
+  }, [query]);
 
-    const cachedStations = getCachedStations(trimmedQuery);
-    if (cachedStations) {
-      setSearchState({ status: 'success', stations: cachedStations });
-      return;
-    }
+  const resetResults = useCallback(() => {
+    setSubmittedQuery('');
+    setIsEmptyQuery(false);
+  }, []);
 
-    cancelRequest();
-    const controller = new AbortController();
-    requestRef.current = controller;
-    setSearchState({ status: 'loading' });
-
-    try {
-      const result = await searchStations(trimmedQuery, controller.signal);
-
-      if (controller.signal.aborted) return;
-
-      cacheStations(trimmedQuery, result.data.stations);
-      setSearchState({ status: 'success', stations: result.data.stations });
-    } catch {
-      if (controller.signal.aborted) return;
-
-      setSearchState({
-        status: 'error',
-        message: '정류장을 검색하지 못했어요. 잠시 후 다시 시도해 주세요.',
-      });
-    } finally {
-      if (requestRef.current === controller) {
-        requestRef.current = null;
-      }
-    }
-  }, [cancelRequest, query]);
-
-  useEffect(() => cancelRequest, [cancelRequest]);
-
-  return {
-    query,
-    searchState,
-    setQuery,
-    submitSearch,
-    resetResults,
-  };
+  return { query, searchState: resolveSearchState(), setQuery, submitSearch, resetResults };
 }
