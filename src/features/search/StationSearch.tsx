@@ -20,21 +20,21 @@ const inlineSearchContainerClassName = 'lg:ml-6 lg:w-[min(420px,calc(100%-48px))
 
 export function StationSearch({ onSelect, floating = false }: StationSearchProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { query, searchState, setQuery, submitSearch, resetResults } = useStationSearch();
-  const isOpen = searchState.status !== 'idle';
+  const { query, setQuery, submitSearch, reset, isOpen, isLoading, isError, stations } =
+    useStationSearch();
 
   useEffect(() => {
     if (!isOpen) return;
 
     function handlePointerDown(event: PointerEvent) {
       if (!containerRef.current?.contains(event.target as Node)) {
-        resetResults();
+        reset();
       }
     }
 
     document.addEventListener('pointerdown', handlePointerDown);
     return () => document.removeEventListener('pointerdown', handlePointerDown);
-  }, [isOpen, resetResults]);
+  }, [isOpen, reset]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,7 +62,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
           className="min-w-0 flex-1 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-400 sm:text-base"
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Escape') resetResults();
+            if (event.key === 'Escape') reset();
           }}
           placeholder="정류장 검색"
           type="search"
@@ -72,10 +72,10 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
           variant="primary"
           size="sm"
           className="shrink-0"
-          disabled={searchState.status === 'loading'}
+          disabled={isLoading || query.trim().length === 0}
           type="submit"
         >
-          {searchState.status === 'loading' ? '검색 중' : '검색'}
+          {isLoading ? '검색 중' : '검색'}
         </Button>
       </form>
 
@@ -84,7 +84,12 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
           className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-[min(420px,60vh)] overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10"
           id="station-search-results"
         >
-          <StationSearchResults searchState={searchState} onSelect={handleSelect} />
+          <StationSearchResults
+            isLoading={isLoading}
+            isError={isError}
+            stations={stations}
+            onSelect={handleSelect}
+          />
         </div>
       )}
     </div>
