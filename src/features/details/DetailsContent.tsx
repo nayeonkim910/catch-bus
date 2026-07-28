@@ -1,4 +1,4 @@
-import { EmptyState } from '../../shared/components/EmptyState';
+import { EmptyState } from '../../shared/components/ui/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../shared/components/ui/Tabs';
 import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { FavoritesTab } from './FavoritesTab';

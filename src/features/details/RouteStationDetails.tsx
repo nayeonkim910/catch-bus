@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from 'react';
-import { BusIcon } from '../../shared/components/BusIcon';
+import { BusIcon } from '../../shared/components/ui/BusIcon';
 import type { RouteStation } from '../../shared/types/bus';
 import { getRouteTheme } from '../../shared/utils/routeTheme';
 

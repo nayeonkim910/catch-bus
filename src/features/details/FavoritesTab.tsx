@@ -1,4 +1,4 @@
-import { EmptyState } from '../../shared/components/EmptyState';
+import { EmptyState } from '../../shared/components/ui/EmptyState';
 import { FavoriteCard } from '../favorites/FavoriteCard';
 import { useFavoriteArrivals } from '../favorites/useFavoriteArrivals';
 import { useFavorites } from '../favorites/useFavorites';
