@@ -58,13 +58,18 @@ export function routeLineQueryOptions(routeId: string) {
   });
 }
 
-/** 실시간 차량 위치 조회용 옵션. 공공 API가 간헐적으로 타임아웃을 내므로 재시도를 늘린다. */
+/**
+ * 실시간 차량 위치 조회용 옵션.
+ *
+ * retry는 앱 기본값(QueryProvider의 retry: 1)을 그대로 상속한다. 8초 타임아웃이 붙은 뒤로
+ * 재시도 1회당 대기가 커졌고, 이 쿼리는 20초 폴링(useBusLocations)이 뒤를 받쳐 연속 실패도
+ * 다음 주기에 재시도되므로, 단발 복구만 노리는 기본값 1로 충분하다.
+ */
 export function busLocationsQueryOptions(routeId: string) {
   return queryOptions({
     queryKey: ['bus-locations', routeId],
     queryFn: ({ signal }) => getBusLocations(routeId, signal),
     staleTime: BUS_LOCATIONS_STALE_TIME_MS,
-    retry: 2,
     select: (response) => response.data.locations,
   });
 }
