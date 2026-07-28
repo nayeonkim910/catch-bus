@@ -1,4 +1,4 @@
-import { getRouteTheme } from '../utils/routeTheme';
+import { getRouteTheme } from '../../shared/utils/routeTheme';
 
 type RouteBadgeProps = {
   routeName: string;
