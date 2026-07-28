@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { RouteBadge } from '../../shared/components/RouteBadge';
+import { RouteBadge } from '../routes/RouteBadge';
 import { Button } from '../../shared/components/ui/Button';
 import type { SelectedRoute } from './selectedRoute';
 

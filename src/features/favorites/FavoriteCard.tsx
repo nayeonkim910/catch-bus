@@ -1,6 +1,6 @@
 import type { BusArrival, Favorite } from '../../shared/types/bus';
-import { RouteProgress } from '../../shared/components/RouteProgress';
-import { RouteBadge } from '../../shared/components/RouteBadge';
+import { RouteProgress } from '../routes/RouteProgress';
+import { RouteBadge } from '../routes/RouteBadge';
 import { formatArrivalTime } from '../../shared/utils/arrival';
 import { useRouteStationData } from '../routes/useRouteStationData';
 import { getFavoriteArrivalLabel } from './favoriteCardStatus';

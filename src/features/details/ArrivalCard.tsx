@@ -1,7 +1,7 @@
 import { useId, useState, type KeyboardEvent } from 'react';
 import { Star } from 'lucide-react';
 import { Button } from '../../shared/components/ui/Button';
-import { RouteBadge } from '../../shared/components/RouteBadge';
+import { RouteBadge } from '../routes/RouteBadge';
 import type { BusArrival, BusStation } from '../../shared/types/bus';
 import { useFavorites } from '../favorites/useFavorites';
 import { useRouteStationData } from '../routes/useRouteStationData';
