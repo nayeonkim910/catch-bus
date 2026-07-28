@@ -28,6 +28,20 @@ function getRequestErrorMessage(payload: ErrorResponse | null) {
   return payload?.error?.message ?? '버스정보 요청에 실패했습니다.';
 }
 
+const REQUEST_TIMEOUT_MS = 8_000;
+export const REQUEST_TIMEOUT_MESSAGE =
+  '버스정보 요청이 시간 내에 완료되지 않았습니다. 잠시 후 다시 시도해 주세요.';
+
+// 타임아웃(AbortSignal.timeout)으로 끊긴 경우만 사용자용 Error로 바꾸고, 그 외는 null을 돌려준다.
+// null이면 호출부는 원본 에러를 그대로 던진다. 즉 타임아웃만 메시지를 갈아끼우고,
+// 취소(AbortError)·네트워크 실패 등은 정체를 왜곡하지 않고 그대로 흘려보낸다.
+export function toTimeoutError(error: unknown): Error | null {
+  if (error instanceof DOMException && error.name === 'TimeoutError') {
+    return new Error(REQUEST_TIMEOUT_MESSAGE);
+  }
+  return null;
+}
+
 // env는 빌드 타임에 고정되므로 첫 요청에 한 번만 읽어 캐시한다. 매 요청마다 재계산하지 않는다.
 // (최상위에서 즉시 호출하지 않는 이유: env 없는 환경에서 이 모듈을 import만 해도 throw나는 걸 피하기 위함)
 let cachedApiConfig: { baseUrl: string; publishableKey: string } | null = null;
@@ -59,10 +73,22 @@ async function requestBusApi<T>(
     endpoint.searchParams.set(key, value);
   }
 
-  const response = await fetch(endpoint, {
-    headers: { apikey: publishableKey },
-    signal,
-  });
+  const timeoutSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const requestSignal = signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal;
+
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      headers: { apikey: publishableKey },
+      signal: requestSignal,
+    });
+  } catch (error) {
+    // 타임아웃이면 사용자용 메시지로 바꾸고, 그 외(취소·네트워크 실패 등)는 원본을 그대로 던진다.
+    const timeoutError = toTimeoutError(error);
+    if (timeoutError) throw timeoutError;
+    throw error;
+  }
+
   const payload: unknown = await response.json().catch(() => null);
 
   if (!response.ok) {
