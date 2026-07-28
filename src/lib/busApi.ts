@@ -6,7 +6,7 @@ import type {
   RouteStation,
   RouteSummary,
   VehicleLocation,
-} from '../shared/types/bus';
+} from '@shared/types/bus';
 
 type ApiResponse<T> = {
   data: T;

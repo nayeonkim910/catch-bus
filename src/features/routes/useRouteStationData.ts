@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { routeStationsQueryOptions } from '../../lib/busQueries';
-import type { RouteStation } from '../../shared/types/bus';
+import { routeStationsQueryOptions } from '@lib/busQueries';
+import type { RouteStation } from '@shared/types/bus';
 
 const TIMELINE_STATION_COUNT = 5;
 

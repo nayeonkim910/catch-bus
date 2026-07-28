@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { buildFavoriteArrivals } from './useFavoriteArrivals';
-import { makeArrival, makeFavorite } from '../../test/fixtures';
-import type { BusArrival } from '../../shared/types/bus';
+import { makeArrival, makeFavorite } from '@test/fixtures';
+import type { BusArrival } from '@shared/types/bus';
 
 type StationResult = UseQueryResult<BusArrival[]>;
 

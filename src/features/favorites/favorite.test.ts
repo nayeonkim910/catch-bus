@@ -1,5 +1,5 @@
 import { createFavorite, getFavoriteId } from './favorite';
-import { makeArrival, makeStation } from '../../test/fixtures';
+import { makeArrival, makeStation } from '@test/fixtures';
 
 describe('getFavoriteId', () => {
   it('stationId와 routeId를 콜론으로 결합한다', () => {

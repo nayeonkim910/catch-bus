@@ -1,6 +1,6 @@
 import { X } from 'lucide-react';
-import { RouteBadge } from '../routes/RouteBadge';
-import { Button } from '../../shared/components/ui/Button';
+import { RouteBadge } from '@features/routes/RouteBadge';
+import { Button } from '@shared/components/ui/Button';
 import type { SelectedRoute } from './selectedRoute';
 
 type RouteOverlayPanelProps = {

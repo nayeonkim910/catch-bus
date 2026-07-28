@@ -1,7 +1,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import type { ComponentPropsWithRef } from 'react';
-import { cn } from '../../utils/cn';
+import { cn } from '@shared/utils/cn';
 
 /*
   공통 Dialog 컴포넌트

@@ -1,4 +1,4 @@
-import type { ArrivalVehicle, BusArrival, BusStation, Favorite } from '../shared/types/bus';
+import type { ArrivalVehicle, BusArrival, BusStation, Favorite } from '@shared/types/bus';
 
 // 테스트용 도메인 객체 팩토리. 기본값 + overrides로 필요한 필드만 바꿔 쓴다.
 // as any 없이 타입이 맞는 픽스처를 만들어, 인자 실수를 컴파일 타임에 잡는다.

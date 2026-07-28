@@ -1,6 +1,6 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import type { ComponentPropsWithRef } from 'react';
-import { cn } from '../../utils/cn';
+import { cn } from '@shared/utils/cn';
 
 /*
   공통 Tabs 컴포넌트

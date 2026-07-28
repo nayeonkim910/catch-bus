@@ -1,4 +1,4 @@
-import type { BusStation } from '../../shared/types/bus';
+import type { BusStation } from '@shared/types/bus';
 
 type StationSearchResultsProps = {
   isLoading: boolean;

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { RouteLinePoint } from '../../shared/types/bus';
+import type { RouteLinePoint } from '@shared/types/bus';
 
 /**
  * 선택한 노선의 형상을 지도에 폴리라인으로 그린다.

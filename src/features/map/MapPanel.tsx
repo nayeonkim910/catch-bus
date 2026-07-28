@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import type { BusStation } from '../../shared/types/bus';
-import { Button } from '../../shared/components/ui/Button';
-import { getRouteTheme } from '../../shared/utils/routeTheme';
+import type { BusStation } from '@shared/types/bus';
+import { Button } from '@shared/components/ui/Button';
+import { getRouteTheme } from '@shared/utils/routeTheme';
 import { RouteOverlayPanel } from './RouteOverlayPanel';
 import type { SelectedRoute } from './selectedRoute';
 import { useBusLocations } from './useBusLocations';

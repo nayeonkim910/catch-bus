@@ -1,5 +1,5 @@
-import { ROUTE_PROGRESS_LABEL_WIDTH } from '../../shared/utils/routeProgress';
-import { BusIcon } from '../../shared/components/ui/BusIcon';
+import { ROUTE_PROGRESS_LABEL_WIDTH } from '@shared/utils/routeProgress';
+import { BusIcon } from '@shared/components/ui/BusIcon';
 
 export type RouteProgressNode = {
   index: number;

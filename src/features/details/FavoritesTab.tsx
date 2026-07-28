@@ -1,7 +1,7 @@
-import { EmptyState } from '../../shared/components/ui/EmptyState';
-import { FavoriteCard } from '../favorites/FavoriteCard';
-import { useFavoriteArrivals } from '../favorites/useFavoriteArrivals';
-import { useFavorites } from '../favorites/useFavorites';
+import { EmptyState } from '@shared/components/ui/EmptyState';
+import { FavoriteCard } from '@features/favorites/FavoriteCard';
+import { useFavoriteArrivals } from '@features/favorites/useFavoriteArrivals';
+import { useFavorites } from '@features/favorites/useFavorites';
 
 export function FavoritesTab() {
   const { favorites } = useFavorites(); // 즐겨찾기 목록을 store에서 직접 구독

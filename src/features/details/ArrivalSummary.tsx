@@ -1,5 +1,5 @@
-import type { BusArrival } from '../../shared/types/bus';
-import { formatArrivalTime } from '../../shared/utils/arrival';
+import type { BusArrival } from '@shared/types/bus';
+import { formatArrivalTime } from '@shared/utils/arrival';
 import { getNoArrivalLabel, type ArrivalCardStatus } from './arrivalCardStatus';
 
 type ArrivalSummaryProps = {
