@@ -1,4 +1,4 @@
-import type { BusArrival } from '../../shared/types/bus';
+import type { BusArrival } from '@shared/types/bus';
 
 /**
  * 지도에 시각화할 "선택 노선". 어떤 정류장(targetStation) 맥락에서 골랐는지 함께 담아,

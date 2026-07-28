@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation, Favorite } from '@shared/types/bus';
 import { createFavorite, getFavoriteId } from './favorite';
 
 type FavoritesStore = {

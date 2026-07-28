@@ -1,6 +1,6 @@
-import { SectionHeading } from '../../shared/components/ui/PanelSection';
-import type { BusStation } from '../../shared/types/bus';
-import { formatUpdatedTime } from '../../shared/utils/arrival';
+import { SectionHeading } from '@shared/components/ui/PanelSection';
+import type { BusStation } from '@shared/types/bus';
+import { formatUpdatedTime } from '@shared/utils/arrival';
 import { StationSummary } from './StationSummary';
 
 type DetailsPanelHeaderProps = {

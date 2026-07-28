@@ -1,7 +1,7 @@
 import { useEffect, useRef, type FormEvent } from 'react';
 import { Search } from 'lucide-react';
-import { Button } from '../../shared/components/ui/Button';
-import type { BusStation } from '../../shared/types/bus';
+import { Button } from '@shared/components/ui/Button';
+import type { BusStation } from '@shared/types/bus';
 import { StationSearchResults } from './StationSearchResults';
 import { useStationSearch } from './useStationSearch';
 

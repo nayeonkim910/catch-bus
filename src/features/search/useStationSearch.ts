@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { searchStationsQueryOptions } from '../../lib/busQueries';
+import { searchStationsQueryOptions } from '@lib/busQueries';
 
 export function useStationSearch() {
   const [query, setQueryText] = useState('');

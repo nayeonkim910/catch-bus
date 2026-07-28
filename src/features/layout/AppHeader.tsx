@@ -1,8 +1,8 @@
 import { User } from 'lucide-react';
-import { Button } from '../../shared/components/ui/Button';
-import type { BusStation } from '../../shared/types/bus';
-import { StationSearch } from '../search/StationSearch';
-import { LoginDialog } from '../auth/LoginDialog';
+import { Button } from '@shared/components/ui/Button';
+import type { BusStation } from '@shared/types/bus';
+import { StationSearch } from '@features/search/StationSearch';
+import { LoginDialog } from '@features/auth/LoginDialog';
 
 type AppHeaderProps = {
   onStationSelect: (station: BusStation) => void;

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { stationArrivalsQueryOptions } from '../../lib/busQueries';
+import { stationArrivalsQueryOptions } from '@lib/busQueries';
 
 // 도착정보는 서버에서도 30초 간격 안팎으로 갱신되므로 그보다 자주 당길 필요가 없다.
 const POLL_INTERVAL_MS = 30 * 1000;

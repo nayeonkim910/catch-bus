@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { routeStationsQueryOptions } from '../../lib/busQueries';
+import { routeStationsQueryOptions } from '@lib/busQueries';
 
 /**
  * 선택한 노선의 경유 정류장을 조회한다(지도 좌표 조인용).

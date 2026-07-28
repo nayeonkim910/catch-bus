@@ -1,5 +1,5 @@
-import { Button } from '../../shared/components/ui/Button';
-import type { BusArrival, BusStation } from '../../shared/types/bus';
+import { Button } from '@shared/components/ui/Button';
+import type { BusArrival, BusStation } from '@shared/types/bus';
 import { ArrivalList } from './ArrivalList';
 import { DetailsPanelHeader } from './DetailsPanelHeader';
 import { useStationArrivals } from './useStationArrivals';

@@ -1,4 +1,4 @@
-import type { BusArrival, BusStation, Favorite } from '../../shared/types/bus';
+import type { BusArrival, BusStation, Favorite } from '@shared/types/bus';
 
 export function getFavoriteId(stationId: string, routeId: string) {
   return `${stationId}:${routeId}`;

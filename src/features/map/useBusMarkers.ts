@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import type { RouteStation, VehicleLocation } from '../../shared/types/bus';
-import { getCrowdedness } from '../../shared/utils/crowdedness';
-import { getRouteTheme } from '../../shared/utils/routeTheme';
+import type { RouteStation, VehicleLocation } from '@shared/types/bus';
+import { getCrowdedness } from '@shared/utils/crowdedness';
+import { getRouteTheme } from '@shared/utils/routeTheme';
 import { createBusVehicleMarker } from './busVehicleMarker';
 
 type UseBusMarkersParams = {

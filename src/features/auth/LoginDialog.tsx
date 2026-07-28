@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
-import { Button } from '../../shared/components/ui/Button';
+import { Button } from '@shared/components/ui/Button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '../../shared/components/ui/Dialog';
+} from '@shared/components/ui/Dialog';
 
 /*
   로그인 모달.

@@ -1,9 +1,9 @@
-import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
-import type { BusArrival, BusStation } from '../../shared/types/bus';
-import { DetailsPanel } from '../details/DetailsPanel';
-import { DetailsSheet } from '../details/DetailsSheet';
-import { MapPanel } from '../map/MapPanel';
-import type { SelectedRoute } from '../map/selectedRoute';
+import { useMediaQuery } from '@shared/hooks/useMediaQuery';
+import type { BusArrival, BusStation } from '@shared/types/bus';
+import { DetailsPanel } from '@features/details/DetailsPanel';
+import { DetailsSheet } from '@features/details/DetailsSheet';
+import { MapPanel } from '@features/map/MapPanel';
+import type { SelectedRoute } from '@features/map/selectedRoute';
 import { AppHeader } from './AppHeader';
 import './dashboardLayout.css';
 

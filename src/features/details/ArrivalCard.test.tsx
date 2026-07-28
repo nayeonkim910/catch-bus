@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ArrivalCard } from './ArrivalCard';
-import { useFavoritesStore } from '../favorites/favoritesStore';
-import { makeArrival, makeStation } from '../../test/fixtures';
+import { useFavoritesStore } from '@features/favorites/favoritesStore';
+import { makeArrival, makeStation } from '@test/fixtures';
 
 // 상세 노선 조회(TanStack Query)는 이 컴포넌트 테스트의 관심사가 아니므로 대체한다.
 // → QueryClientProvider 없이 즐겨찾기 상호작용만 격리해 검증한다.

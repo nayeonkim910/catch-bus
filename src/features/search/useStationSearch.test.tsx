@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { searchStations } from '../../lib/busApi';
-import { makeStation } from '../../test/fixtures';
-import type { BusStation } from '../../shared/types/bus';
+import { searchStations } from '@lib/busApi';
+import { makeStation } from '@test/fixtures';
+import type { BusStation } from '@shared/types/bus';
 import { useStationSearch } from './useStationSearch';
 
 // 실제 네트워크 대신 검색 API만 대체한다. 나머지 busApi 함수는 원본을 유지한다.
 vi.mock('../../lib/busApi', async (importActual) => ({
-  ...(await importActual<typeof import('../../lib/busApi')>()),
+  ...(await importActual<typeof import('@lib/busApi')>()),
   searchStations: vi.fn(),
 }));
 

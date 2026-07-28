@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Drawer } from 'vaul';
-import type { BusArrival, BusStation } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '@shared/types/bus';
 import { DetailsContent } from './DetailsContent';
 
 type DetailsSheetProps = {

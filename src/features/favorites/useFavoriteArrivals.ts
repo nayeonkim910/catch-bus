@@ -1,7 +1,7 @@
 import { useQueries, type UseQueryResult } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import { stationArrivalsQueryOptions } from '../../lib/busQueries';
-import type { BusArrival, Favorite } from '../../shared/types/bus';
+import { stationArrivalsQueryOptions } from '@lib/busQueries';
+import type { BusArrival, Favorite } from '@shared/types/bus';
 import { getFavoriteId } from './favorite';
 
 export type FavoriteArrivalEntry = {

@@ -1,5 +1,5 @@
-import { getRouteProgressModel } from '../../shared/utils/routeProgress';
-import { getRouteTheme } from '../../shared/utils/routeTheme';
+import { getRouteProgressModel } from '@shared/utils/routeProgress';
+import { getRouteTheme } from '@shared/utils/routeTheme';
 import { FallbackStationLabels, RouteProgressTrack } from './RouteProgressTrack';
 
 type RouteProgressProps = {

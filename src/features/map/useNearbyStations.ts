@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getNearbyStations } from '../../lib/busApi';
+import { getNearbyStations } from '@lib/busApi';
 import type { Coordinates } from './useCurrentLocation';
 
 export function useNearbyStations(coordinates: Coordinates | null) {

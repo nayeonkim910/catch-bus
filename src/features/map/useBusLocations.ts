@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { busLocationsQueryOptions } from '../../lib/busQueries';
+import { busLocationsQueryOptions } from '@lib/busQueries';
 
 // 실제 차량 위치 API도 서버에서 15~30초 간격으로 갱신되므로 그보다 자주 당길 필요가 없다.
 const POLL_INTERVAL_MS = 20 * 1000;

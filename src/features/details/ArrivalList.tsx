@@ -1,4 +1,4 @@
-import type { BusArrival, BusStation } from '../../shared/types/bus';
+import type { BusArrival, BusStation } from '@shared/types/bus';
 import { ArrivalCard } from './ArrivalCard';
 
 type ArrivalListProps = {

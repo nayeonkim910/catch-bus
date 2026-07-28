@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { BusStation } from '../../shared/types/bus';
+import type { BusStation } from '@shared/types/bus';
 import { createBusStopMarker } from './busStopMarker';
 import type { Coordinates } from './useCurrentLocation';
 

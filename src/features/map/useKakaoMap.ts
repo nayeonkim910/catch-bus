@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { BusStation } from '../../shared/types/bus';
+import type { BusStation } from '@shared/types/bus';
 import type { Coordinates } from './useCurrentLocation';
 import { loadKakaoMapsSdk } from './kakaoMapsSdk';
 
