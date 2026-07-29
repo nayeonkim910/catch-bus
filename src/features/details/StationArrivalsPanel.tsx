@@ -56,7 +56,7 @@ function LoadingArrivals() {
     <div className="space-y-3" aria-live="polite" aria-label="도착정보를 불러오는 중">
       {[0, 1, 2].map((item) => (
         <div
-          className="h-40 animate-pulse rounded-xl border border-slate-200 bg-white lg:h-24"
+          className="h-36 animate-pulse rounded-xl border border-slate-200 bg-white"
           key={item}
         />
       ))}
