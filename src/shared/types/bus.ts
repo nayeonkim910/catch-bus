@@ -64,6 +64,7 @@ export type VehicleLocation = {
 export type ArrivalVehicle = {
   vehicleId: string;
   plateNo: string;
+  /** 도착까지 남은 초. null이면 도착 예정 없음. */
   arrivalSeconds: number | null;
   remainingStops: number | null;
   currentStationName: string | null;

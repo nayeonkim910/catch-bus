@@ -1,12 +1,11 @@
 import { useId, useState, type KeyboardEvent } from 'react';
-import { Star } from 'lucide-react';
+import { ChevronDown, Star } from 'lucide-react';
 import { Button } from '@shared/components/ui/Button';
 import { RouteBadge } from '@features/routes/RouteBadge';
 import type { BusArrival, BusStation } from '@shared/types/bus';
 import { useFavorites } from '@features/favorites/useFavorites';
 import { useRouteStationData } from '@features/routes/useRouteStationData';
-import { getArrivalCardStatus } from './arrivalCardStatus';
-import { ArrivalSummary } from './ArrivalSummary';
+import { ArrivalHero } from './ArrivalHero';
 import { RouteStationDetails } from './RouteStationDetails';
 
 type ArrivalCardProps = {
@@ -27,9 +26,9 @@ export function ArrivalCard({
   const isFavorited = isFavorite(station.id, arrival.routeId);
   const [isRouteExpanded, setIsRouteExpanded] = useState(false);
   const routeDetailsId = useId();
-  const arrivalSeconds = arrival.first?.arrivalSeconds ?? null;
-  // 도착 예정 시간이 있을 때만 강조 상태를 계산한다. 없으면 ArrivalSummary가 운행 상태만 표시한다.
-  const arrivalStatus = arrivalSeconds != null ? getArrivalCardStatus(arrivalSeconds) : null;
+  // 곧 도착할 첫 번째 버스. 도착 시간·남은 정거장·저상 여부가 전부 이 차량 기준이다.
+  const firstBus = arrival.first;
+  const arrivalSeconds = firstBus?.arrivalSeconds ?? null;
   const routeStationData = useRouteStationData(
     arrival.routeId,
     arrival.stationId,
@@ -47,11 +46,11 @@ export function ArrivalCard({
   return (
     <div>
       {/* 카드 전체가 클릭 트리거다. 클릭하면 지도에서 이 노선을 보여준다(onSelectRoute).
-          안의 별과 상세 노선 보기 버튼은 stopPropagation으로 카드 클릭과 분리한다. */}
+          안의 별과 상세 노선 버튼은 stopPropagation으로 카드 클릭과 분리한다. */}
       <article
-        className={`flex h-36 cursor-pointer flex-col rounded-xl border-2 bg-card p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:border-primary/60 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring ${
+        className={`flex min-h-36 cursor-pointer flex-col rounded-xl border-2 bg-card p-4 shadow-sm transition-[border-color,box-shadow,background-color] hover:border-primary/60 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring ${
           isRouteSelected ? 'border-primary bg-accent/60' : 'border-border'
-        } ${arrivalStatus?.cardClassName ?? ''}`}
+        }`}
         role="button"
         tabIndex={0}
         aria-pressed={isRouteSelected}
@@ -81,21 +80,35 @@ export function ArrivalCard({
           </Button>
         </div>
 
-        <ArrivalSummary arrival={arrival} status={arrivalStatus} />
-
-        <Button
-          variant="tertiary"
-          size="sm"
-          className="mt-auto self-start"
-          aria-expanded={isRouteExpanded}
-          aria-controls={routeDetailsId}
-          onClick={(event) => {
-            event.stopPropagation();
-            setIsRouteExpanded((expanded) => !expanded);
-          }}
-        >
-          {isRouteExpanded ? '상세 노선 닫기' : '상세 노선 보기'}
-        </Button>
+        <ArrivalHero arrival={arrival} />
+        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+          <p className="truncate text-xs text-muted-foreground">
+            {arrivalSeconds != null && (
+              <>
+                {firstBus?.remainingStops != null
+                  ? `${firstBus.remainingStops}정거장 전`
+                  : '남은 정거장 정보 없음'}
+                {firstBus?.isLowFloor ? ' · 저상버스' : ''}
+              </>
+            )}
+          </p>
+          <Button
+            variant="link"
+            size="xs"
+            className="shrink-0"
+            aria-expanded={isRouteExpanded}
+            aria-controls={routeDetailsId}
+            onClick={(event) => {
+              event.stopPropagation();
+              setIsRouteExpanded((expanded) => !expanded);
+            }}
+          >
+            상세 노선
+            <ChevronDown
+              className={`size-3.5 transition-transform ${isRouteExpanded ? 'rotate-180' : ''}`}
+            />
+          </Button>
+        </div>
       </article>
 
       {isRouteExpanded && (
@@ -104,7 +117,7 @@ export function ArrivalCard({
           stations={routeStationData.data?.stations}
           targetStationId={arrival.stationId}
           targetStationOrder={arrival.stationOrder}
-          currentStationSequence={arrival.first?.currentStationSequence ?? null}
+          currentStationSequence={firstBus?.currentStationSequence ?? null}
           routeTypeCode={arrival.routeTypeCode}
           isLoading={routeStationData.isLoading}
         />

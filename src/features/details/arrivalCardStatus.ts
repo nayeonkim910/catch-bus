@@ -1,33 +1,9 @@
-export type ArrivalCardStatus = {
-  label: string;
-  className: string;
-  cardClassName: string;
-};
+// 긴급도는 배지가 아니라 도착 숫자의 '색'으로만 표시한다.
+// 실제 탑승 가능성 판단은 도보 시간이 필요하므로 여기서 처리하지 않는다.
+const IMMINENT_SECONDS = 180;
 
-// 도착 초 기준의 UI 강조 정책이다. 실제 탑승 가능성 판단은 도보 시간이 필요하므로 여기서 처리하지 않는다.
-// 도착 예정 시간이 없는 경우(seconds null)는 카드에서 별도로 "도착 예정 정보 없음"으로 처리한다.
-export function getArrivalCardStatus(seconds: number): ArrivalCardStatus {
-  if (seconds <= 180) {
-    return {
-      label: '곧 도착',
-      className: 'bg-red-50 text-red-700',
-      cardClassName: 'border-red-300 bg-red-50/45 hover:border-red-500 hover:bg-red-50',
-    };
-  }
-
-  if (seconds <= 600) {
-    return {
-      label: '도착 임박',
-      className: 'bg-amber-50 text-amber-700',
-      cardClassName: 'border-amber-300 bg-amber-50/35 hover:border-amber-500 hover:bg-amber-50',
-    };
-  }
-
-  return {
-    label: '여유 있음',
-    className: 'bg-blue-50 text-blue-700',
-    cardClassName: 'border-slate-300 hover:border-blue-700 hover:bg-blue-50',
-  };
+export function isArrivalImminent(seconds: number) {
+  return seconds <= IMMINENT_SECONDS;
 }
 
 /**
