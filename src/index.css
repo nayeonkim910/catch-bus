@@ -130,6 +130,10 @@
   --orange-800: #6b2a08;
   --orange-900: #4a1d07;
   --orange-950: #3a1706;
+
+  /* 임박 도착 전용. 빨강(노선)·파랑(브랜드)과 색 이름 채널이 분리된 긴급 잉크. */
+  --magenta-400: #fb6f9d;
+  --magenta-600: #c41d5b;
 }
 
 /* 2. semantic (라이트) */
@@ -183,9 +187,10 @@
   --congestion-3: var(--orange-500); /* 혼잡 */
   --congestion-4: var(--red-600); /* 매우혼잡 */
 
-  /* 곧 도착 강조색. background 위 5.09로 AA 본문 4.5 충족(크기 무관).
-     기본 도착숫자는 --foreground(17:1, AAA). ArrivalCard 30px는 큰 텍스트, FavoriteCard 18px는 본문. */
-  --arrival-imminent: var(--orange-600);
+  /* 곧 도착 강조색. card 위 5.72, background 위 5.39로 AA 본문 4.5 충족(크기 무관).
+     기본 도착숫자는 --foreground(17:1, AAA). ArrivalCard 30px는 큰 텍스트, FavoriteCard 18px는 본문.
+     orange-600에서 교체(2026-07-30): AA를 맞춘 주황은 갈색으로 읽혀 긴급감 상실 + brand 파랑과 채도 불일치. */
+  --arrival-imminent: var(--magenta-600);
 
   /* 재사용으로 새 토큰을 만들지 않은 것(누락 아니라 판단):
      데이터 신선도 = 방금:success, 갱신중:muted-foreground+애니메이션, 오래됨:warning, 실패:danger
@@ -242,7 +247,7 @@
   --congestion-3: var(--orange-400);
   --congestion-4: var(--red-400);
 
-  --arrival-imminent: var(--orange-400);
+  --arrival-imminent: var(--magenta-400); /* card 6.75, background 7.35 */
 
   --map-overlay: var(--gray-900);
   --map-marker-stroke: var(--gray-900);
