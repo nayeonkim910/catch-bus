@@ -1,6 +1,7 @@
 import { EmptyState } from '@shared/components/ui/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui/Tabs';
 import type { BusArrival, BusStation } from '@shared/types/bus';
+import { useFavorites } from '@features/favorites/useFavorites';
 import { FavoritesTab } from './FavoritesTab';
 import { StationArrivalsPanel } from './StationArrivalsPanel';
 
@@ -15,8 +16,12 @@ type DetailsContentProps = {
  * 데스크톱은 좌측 고정 패널(DetailsPanel), 모바일은 바텀시트가 이 콘텐츠를 담는다.
  */
 export function DetailsContent({ station, selectedRouteId, onSelectRoute }: DetailsContentProps) {
+  const { favorites } = useFavorites();
+  // 이미 저장해 둔 즐겨찾기가 있으면(재방문) 즐겨찾기 탭을 먼저 보여준다.
+  const defaultTab = station === null && favorites.length > 0 ? 'favorites' : 'station-detail';
+
   return (
-    <Tabs defaultValue="station-detail" className="flex min-h-0 flex-1 flex-col">
+    <Tabs defaultValue={defaultTab} className="flex min-h-0 flex-1 flex-col">
       <div className="flex shrink-0 items-center gap-3 border-b border-slate-200/70 px-4 py-3 sm:px-5">
         {/* 데스크톱에선 로고가 패널 헤더의 탭 왼쪽에 온다. 모바일은 AppHeader가 로고를 보여준다. */}
         <a
