@@ -19,16 +19,23 @@ export class BusApiError extends Error {
 
 export function errorResponse(error: unknown): Response {
   if (error instanceof BusApiError) {
+    const log = error.status >= 500 ? console.error : console.warn;
+    log("BusApiError", {
+      code: error.code,
+      status: error.status,
+      message: error.message,
+    });
+
     return Response.json(
       { error: { code: error.code, message: error.message } },
       { status: error.status },
     );
   }
 
-  console.error(
-    "Unexpected bus-api error",
-    error instanceof Error ? error.message : "Unknown error",
-  );
+  console.error("Unexpected bus-api error", {
+    message: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack : undefined,
+  });
 
   return Response.json(
     {
