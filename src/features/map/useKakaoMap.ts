@@ -20,7 +20,9 @@ export function useKakaoMap({ station }: UseKakaoMapParams) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [mapLevel, setMapLevel] = useState(INITIAL_MAP_LEVEL);
-  const [searchCenter, setSearchCenter] = useState<Coordinates | null>(null);
+  // 초기 중심 상수로 seed한다. 근처정류장 조회가 지도 SDK 로딩을 기다리지 않고 마운트 즉시 진행되도록.
+  // 지도 생성 후 center도 같은 상수라 queryKey가 같아 중복 요청은 없다.
+  const [searchCenter, setSearchCenter] = useState<Coordinates | null>(INITIAL_MAP_CENTER);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,7 +42,6 @@ export function useKakaoMap({ station }: UseKakaoMapParams) {
         });
 
         setMap(nextMap);
-        setSearchCenter(INITIAL_MAP_CENTER);
       } catch (error) {
         if (isCancelled) return;
 
@@ -57,7 +58,11 @@ export function useKakaoMap({ station }: UseKakaoMapParams) {
 
   useEffect(() => {
     if (!map || !station) return;
-    map.setCenter(new kakao.maps.LatLng(station.latitude, station.longitude));
+    const position = new kakao.maps.LatLng(station.latitude, station.longitude);
+    // 이미 화면 안이면(지도 마커를 클릭한 흔한 경우) 지도를 움직이지 않는다. 움직이면 idle →
+    // 근처정류장 재조회 → 마커가 다시 그려지는 깜빡임이 생긴다. 검색 등 화면 밖 정류장만 데려온다.
+    if (map.getBounds().contain(position)) return;
+    map.setCenter(position);
   }, [map, station]);
 
   useEffect(() => {
