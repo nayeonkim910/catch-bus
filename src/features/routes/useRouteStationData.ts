@@ -45,9 +45,11 @@ export function useRouteStationData(
   routeId: string,
   targetStationId: string,
   targetStationOrder: number,
+  enabled = true,
 ) {
   return useQuery({
     ...routeStationsQueryOptions(routeId),
+    enabled,
     select: (response) => ({
       stations: response.data.stations,
       timeline: createTimeline(response.data.stations, targetStationId, targetStationOrder),
