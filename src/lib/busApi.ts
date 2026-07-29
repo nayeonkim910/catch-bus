@@ -20,12 +20,18 @@ type ErrorResponse = {
   };
 };
 
-function getRequestErrorMessage(payload: ErrorResponse | null) {
-  if (payload?.error?.code === 'UPSTREAM_ERROR') {
-    return '공공 버스 API 응답이 지연되고 있습니다. 잠시 후 다시 시도해 주세요.';
+// 화면에는 앱이 쓴 한글 메시지만 노출한다(서버 원문 passthrough 금지). 구체 사유는 서버 로그가 담당.
+export function getRequestErrorMessage(payload: ErrorResponse | null): string {
+  switch (payload?.error?.code) {
+    case 'UPSTREAM_ERROR':
+      return '버스정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
+    case 'CONFIGURATION_ERROR':
+    case 'INTERNAL_ERROR':
+      return '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+    // BAD_REQUEST / METHOD_NOT_ALLOWED / NOT_FOUND
+    default:
+      return '버스정보 요청에 실패했습니다.';
   }
-
-  return payload?.error?.message ?? '버스정보 요청에 실패했습니다.';
 }
 
 const REQUEST_TIMEOUT_MS = 8_000;
