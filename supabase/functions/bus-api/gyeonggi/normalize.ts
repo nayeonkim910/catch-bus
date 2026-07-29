@@ -13,18 +13,18 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function requireString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim() === "") {
-    throw invalidStation(field);
+    throw invalidField(field);
   }
 
   return value.trim();
 }
 
-function requireId(value: unknown, field: string): string {
+function requireStringOrNumber(value: unknown, field: string): string {
   if (
     !((typeof value === "string" && value.trim() !== "") ||
       (typeof value === "number" && Number.isFinite(value)))
   ) {
-    throw invalidStation(field);
+    throw invalidField(field);
   }
 
   return String(value).trim();
@@ -34,29 +34,29 @@ function requireNumber(value: unknown, field: string): number {
   const parsed = typeof value === "number" ? value : Number(value);
 
   if (!Number.isFinite(parsed)) {
-    throw invalidStation(field);
+    throw invalidField(field);
   }
 
   return parsed;
 }
 
-function invalidStation(field: string): BusApiError {
+function invalidField(field: string): BusApiError {
   return new BusApiError(
     502,
     "UPSTREAM_ERROR",
-    `The public bus API returned an invalid station field: ${field}.`,
+    `The public bus API returned an invalid field: ${field}.`,
   );
 }
 
 export function normalizeStation(value: unknown): BusStation {
   if (!isRecord(value)) {
-    throw invalidStation("station");
+    throw invalidField("station");
   }
 
   const centerYn = requireString(value.centerYn, "centerYn");
 
   if (centerYn !== "Y" && centerYn !== "N") {
-    throw invalidStation("centerYn");
+    throw invalidField("centerYn");
   }
 
   const mobileNo = typeof value.mobileNo === "string"
@@ -64,7 +64,7 @@ export function normalizeStation(value: unknown): BusStation {
     : null;
 
   return {
-    id: requireId(value.stationId, "stationId"),
+    id: requireStringOrNumber(value.stationId, "stationId"),
     name: requireString(value.stationName, "stationName"),
     mobileNo,
     regionName: requireString(value.regionName, "regionName"),
@@ -135,7 +135,7 @@ function normalizeArrivalVehicle(
   );
 
   return {
-    vehicleId: requireId(vehicleId, `vehId${index}`),
+    vehicleId: requireStringOrNumber(vehicleId, `vehId${index}`),
     plateNo: optionalString(value[`plateNo${index}`]) ?? "",
     arrivalSeconds: seconds ?? (minutes === null ? null : minutes * 60),
     remainingStops,
@@ -176,9 +176,9 @@ export function normalizeArrival(
   const stationOrder = requireNumber(value.staOrder, "staOrder");
 
   return {
-    stationId: requireId(value.stationId, "stationId"),
-    routeId: requireId(value.routeId, "routeId"),
-    routeName: requireId(value.routeName, "routeName"),
+    stationId: requireStringOrNumber(value.stationId, "stationId"),
+    routeId: requireStringOrNumber(value.routeId, "routeId"),
+    routeName: requireStringOrNumber(value.routeName, "routeName"),
     destinationName: requireString(value.routeDestName, "routeDestName"),
     stationOrder,
     routeTypeCode: requireNumber(value.routeTypeCd, "routeTypeCd"),
