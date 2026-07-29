@@ -1,19 +1,25 @@
 name: CI
 
-# main으로의 push와 모든 PR에서 품질 게이트를 자동 실행한다.
+# 모든 PR·main push에서 품질 게이트(verify)를 실행하고, main push는 추가로 엣지 함수를 배포한다.
 on:
   push:
     branches: [main]
   pull_request:
 
-# 같은 브랜치에서 새 커밋이 오면 진행 중인 낡은 실행은 취소한다.
+# GITHUB_TOKEN 최소권한: 이 워크플로는 리포에 쓰지 않는다(배포 인증은 SUPABASE_ACCESS_TOKEN).
+permissions:
+  contents: read
+
+# PR은 새 커밋 오면 낡은 실행을 취소(빠른 반복). 단 main은 취소하지 않는다
+# = 배포(deploy-edge)가 중간에 끊기지 않게. 같은 그룹 + 미취소라 main 실행은 대기·직렬화된다.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,3 +49,26 @@ jobs:
 
       - name: Edge function tests (Deno)
         run: npm run test:edge
+
+  deploy-edge:
+    # main에 머지(push)될 때만, verify(테스트) 통과 후에만 엣지 함수를 배포한다. PR에선 배포하지 않는다.
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          # 재현성을 위해 정확한 버전 고정. 갱신은 의도적으로(수동 bump).
+          version: 2.110.0
+
+      - name: Deploy edge function
+        run: supabase functions deploy bus-api --project-ref "$SUPABASE_PROJECT_ID"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          # project ref는 공개값이라 secret이 아닌 vars로 관리(비밀 아닌 걸 비밀처럼 다루지 않음).
+          SUPABASE_PROJECT_ID: ${{ vars.SUPABASE_PROJECT_ID }}
