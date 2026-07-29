@@ -34,6 +34,7 @@ export function ArrivalCard({
     arrival.routeId,
     arrival.stationId,
     arrival.stationOrder,
+    isRouteExpanded,
   );
 
   function handleCardKeyDown(event: KeyboardEvent<HTMLElement>) {
