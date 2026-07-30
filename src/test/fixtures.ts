@@ -49,8 +49,7 @@ export function makeArrival(overrides: Partial<BusArrival> = {}): BusArrival {
 export function makeFavorite(overrides: Partial<Favorite> = {}): Favorite {
   return {
     id: 'S1:R1',
-    stationId: 'S1',
-    stationName: '강남역',
+    station: makeStation(),
     routeId: 'R1',
     routeName: '360',
     routeTypeCode: 11,

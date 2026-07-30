@@ -1,26 +1,21 @@
 import { useState } from 'react';
 import { Drawer } from 'vaul';
-import type { BusArrival, BusStation } from '@shared/types/bus';
+import { useSelectionStore } from '@features/selection/selectionStore';
 import { DetailsContent } from './DetailsContent';
-
-type DetailsSheetProps = {
-  station: BusStation | null;
-  selectionSeq: number;
-  selectedRouteId: string | null;
-  onSelectRoute: (arrival: BusArrival) => void;
-};
 
 /**
  * 상세 패널의 모바일 컨테이너. 지도 위로 바텀시트가 떠오른다.
  * (데스크톱은 DetailsPanel이 같은 DetailsContent를 좌측 고정 패널로 담는다.)
  *
- * 정류장을 선택할 때마다 열린다(같은 정류장 재선택 포함 — App의 selectionSeq 증가를 감지).
+ * 정류장을 선택할 때마다 열린다(같은 정류장 재선택 포함 — selectionSeq 증가를 감지).
  * 배경을 탭하거나 아래로 내리면 닫히고, 마커를 다시 탭하면 다시 열린다. 열림 상태는 시트가 소유.
  */
-export function DetailsSheet({ station, selectionSeq, ...content }: DetailsSheetProps) {
+export function DetailsSheet() {
+  const station = useSelectionStore((state) => state.station);
+  const selectionSeq = useSelectionStore((state) => state.selectionSeq);
   const [open, setOpen] = useState(false);
 
-  // 정류장 선택 이벤트(selectionSeq)마다 연다. prop 변경 조정이라 effect 대신 렌더 중 비교한다.
+  // 정류장 선택(selectionSeq 증가)마다 연다. 상태 변경 조정이라 effect 대신 렌더 중 비교한다.
   const [prevSeq, setPrevSeq] = useState(selectionSeq);
   if (selectionSeq !== prevSeq) {
     setPrevSeq(selectionSeq);
@@ -38,7 +33,7 @@ export function DetailsSheet({ station, selectionSeq, ...content }: DetailsSheet
           <div className="mx-auto my-3 h-1.5 w-10 shrink-0 rounded-full bg-muted" aria-hidden />
           <Drawer.Title className="sr-only">정류장 상세</Drawer.Title>
           {/* 정류장이 바뀌면 콘텐츠를 리마운트해 탭을 기본값(버스 상세)으로 되돌린다. */}
-          <DetailsContent key={station?.id ?? 'no-station'} station={station} {...content} />
+          <DetailsContent key={station?.id ?? 'no-station'} station={station} />
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>

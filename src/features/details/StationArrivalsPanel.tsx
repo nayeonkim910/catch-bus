@@ -1,13 +1,11 @@
 import { Button } from '@shared/components/ui/Button';
-import type { BusArrival, BusStation } from '@shared/types/bus';
+import type { BusStation } from '@shared/types/bus';
 import { ArrivalList } from './ArrivalList';
 import { DetailsPanelHeader } from './DetailsPanelHeader';
 import { useStationArrivals } from './useStationArrivals';
 
 type StationArrivalsPanelProps = {
   station: BusStation;
-  selectedRouteId: string | null;
-  onSelectRoute: (arrival: BusArrival) => void;
 };
 
 /**
@@ -17,11 +15,7 @@ type StationArrivalsPanelProps = {
  * 같은 queryKey를 공유하므로 네트워크 요청은 정류장당 한 번이다. 로딩·에러는 React Query
  * 상태로 바로 분기하고, 별도 상태 enum(ArrivalStatus)을 만들어 내리지 않는다.
  */
-export function StationArrivalsPanel({
-  station,
-  selectedRouteId,
-  onSelectRoute,
-}: StationArrivalsPanelProps) {
+export function StationArrivalsPanel({ station }: StationArrivalsPanelProps) {
   const { data, isPending, isError, error, refetch } = useStationArrivals(station.id);
   const arrivals = data ?? [];
 
@@ -39,12 +33,7 @@ export function StationArrivalsPanel({
         ) : arrivals.length === 0 ? (
           <EmptyArrivals />
         ) : (
-          <ArrivalList
-            station={station}
-            arrivals={arrivals}
-            selectedRouteId={selectedRouteId}
-            onSelectRoute={onSelectRoute}
-          />
+          <ArrivalList station={station} arrivals={arrivals} />
         )}
       </section>
     </>

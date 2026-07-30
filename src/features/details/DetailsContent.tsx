@@ -1,21 +1,19 @@
 import { EmptyState } from '@shared/components/ui/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui/Tabs';
-import type { BusArrival, BusStation } from '@shared/types/bus';
+import type { BusStation } from '@shared/types/bus';
 import { useFavorites } from '@features/favorites/useFavorites';
 import { FavoritesTab } from './FavoritesTab';
 import { StationArrivalsPanel } from './StationArrivalsPanel';
 
 type DetailsContentProps = {
   station: BusStation | null;
-  selectedRouteId: string | null;
-  onSelectRoute: (arrival: BusArrival) => void;
 };
 
 /**
  * 상세 패널의 순수 콘텐츠(버스 상세/즐겨찾기 탭 + 내용). 담는 그릇과 무관하다.
  * 데스크톱은 좌측 고정 패널(DetailsPanel), 모바일은 바텀시트가 이 콘텐츠를 담는다.
  */
-export function DetailsContent({ station, selectedRouteId, onSelectRoute }: DetailsContentProps) {
+export function DetailsContent({ station }: DetailsContentProps) {
   const { favorites } = useFavorites();
   const defaultTab = station === null && favorites.length > 0 ? 'favorites' : 'station-detail';
 
@@ -38,11 +36,7 @@ export function DetailsContent({ station, selectedRouteId, onSelectRoute }: Deta
 
       <TabsContent value="station-detail" className="flex min-h-0 flex-1 flex-col">
         {station ? (
-          <StationArrivalsPanel
-            station={station}
-            selectedRouteId={selectedRouteId}
-            onSelectRoute={onSelectRoute}
-          />
+          <StationArrivalsPanel station={station} />
         ) : (
           <EmptyState
             title="정류장을 선택해 주세요"
@@ -51,7 +45,7 @@ export function DetailsContent({ station, selectedRouteId, onSelectRoute }: Deta
         )}
       </TabsContent>
       <TabsContent value="favorites" className="flex min-h-0 flex-1 flex-col">
-        <FavoritesTab selectedRouteId={selectedRouteId} onSelectRoute={onSelectRoute} />
+        <FavoritesTab />
       </TabsContent>
     </Tabs>
   );
