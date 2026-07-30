@@ -5,7 +5,8 @@ import { createFavorite, getFavoriteId } from './favorite';
 
 type FavoritesStore = {
   favorites: Favorite[];
-  toggle: (station: BusStation, arrival: BusArrival) => void;
+  toggle: (station: Pick<BusStation, 'id' | 'name'>, arrival: BusArrival) => void;
+  remove: (id: string) => void;
 };
 
 // 게스트(비로그인) 즐겨찾기를 localStorage에 영속화한다.
@@ -25,6 +26,9 @@ export const useFavoritesStore = create<FavoritesStore>()(
             : [...favorites, createFavorite(station, arrival)],
         });
       },
+      // 사용자가 직접 누른 삭제 전용(자동 삭제 아님). 도착 응답에 없는 즐겨찾기는
+      // toggle에 넘길 arrival이 없어서, 그 카드의 별도 동작하려면 id만으로 지우는 경로가 필요하다.
+      remove: (id) => set({ favorites: get().favorites.filter((favorite) => favorite.id !== id) }),
       // 로그인 확장 시 추가할 것: clear() — 게스트 목록을 서버로 병합한 뒤 localStorage를 비울 때 쓴다.
       // 지금은 호출부(merge 로직)가 없어 미리 두지 않는다.
       //   clear: () => set({ favorites: [] }),
