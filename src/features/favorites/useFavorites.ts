@@ -13,9 +13,8 @@ export function useFavorites(): FavoritesApi {
   //
   //   [useServerFavorites — 나중 구현] 반환 타입은 동일하게 FavoritesApi
   //   - useQuery(favoritesQueryOptions)로 서버 목록 조회
-  //   - toggle은 useMutation + 낙관적 업데이트
-  //       onMutate: cancelQueries → 이전 값 백업 → setQueryData로 즉시 반영
-  //       onError: 백업으로 롤백 / onSettled: invalidateQueries
+  //   - toggle을 mutation에 직접 태우지 말 것(재시도 시 비멱등).
+  //     훅에서 캐시 보고 add/remove로 번역해 멱등 엔드포인트(PUT/DELETE)에 매핑한다.
   //
   //   [로그인 시 게스트→서버 병합 — 나중 구현]
   //   - 게스트 목록 읽기(빈 배열이면 종료) → 서버 목록과 id 기준 dedup
@@ -27,6 +26,7 @@ export function useFavorites(): FavoritesApi {
 function useGuestFavorites(): FavoritesApi {
   const favorites = useFavoritesStore((state) => state.favorites);
   const toggle = useFavoritesStore((state) => state.toggle);
+  const remove = useFavoritesStore((state) => state.remove);
 
   // isFavorite는 구독한 favorites 배열에서 파생한다. store 메서드로 두면 안정 함수 참조라
   // favorites가 바뀌어도 소비처 리렌더가 안 걸린다(별표가 갱신되지 않음).
@@ -36,5 +36,5 @@ function useGuestFavorites(): FavoritesApi {
     [favorites],
   );
 
-  return { favorites, isFavorite, toggle };
+  return { favorites, isFavorite, toggle, remove };
 }

@@ -4,7 +4,10 @@ export function getFavoriteId(stationId: string, routeId: string) {
   return `${stationId}:${routeId}`;
 }
 
-export function createFavorite(station: BusStation, arrival: BusArrival): Favorite {
+export function createFavorite(
+  station: Pick<BusStation, 'id' | 'name'>,
+  arrival: BusArrival,
+): Favorite {
   return {
     id: getFavoriteId(station.id, arrival.routeId),
     stationId: station.id,

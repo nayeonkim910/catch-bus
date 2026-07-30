@@ -17,7 +17,6 @@ type DetailsContentProps = {
  */
 export function DetailsContent({ station, selectedRouteId, onSelectRoute }: DetailsContentProps) {
   const { favorites } = useFavorites();
-  // 이미 저장해 둔 즐겨찾기가 있으면(재방문) 즐겨찾기 탭을 먼저 보여준다.
   const defaultTab = station === null && favorites.length > 0 ? 'favorites' : 'station-detail';
 
   return (
@@ -52,7 +51,7 @@ export function DetailsContent({ station, selectedRouteId, onSelectRoute }: Deta
         )}
       </TabsContent>
       <TabsContent value="favorites" className="flex min-h-0 flex-1 flex-col">
-        <FavoritesTab />
+        <FavoritesTab selectedRouteId={selectedRouteId} onSelectRoute={onSelectRoute} />
       </TabsContent>
     </Tabs>
   );

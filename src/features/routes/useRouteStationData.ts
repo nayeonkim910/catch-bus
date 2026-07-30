@@ -45,7 +45,7 @@ export function useRouteStationData(
   routeId: string,
   targetStationId: string,
   targetStationOrder: number,
-  enabled = true,
+  enabled: boolean,
 ) {
   return useQuery({
     ...routeStationsQueryOptions(routeId),

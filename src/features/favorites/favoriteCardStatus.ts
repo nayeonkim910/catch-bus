@@ -1,15 +1,10 @@
 import type { FavoriteArrivalEntry } from './useFavoriteArrivals';
 
-// 즐겨찾기 카드 하단 라벨 정책. 로딩·에러·무정보·정상 상태를 명확히 구분해 안내한다.
-export function getFavoriteArrivalLabel({
-  arrival,
+// 도착 응답이 없는 즐겨찾기의 상태 문구. '운행 종료'라 단정하지 않는다(응답에 없을 뿐, 모르는 건 모른다고).
+export function getFavoriteStatusLabel({
   isLoading,
   isError,
-}: FavoriteArrivalEntry): string {
+}: Pick<FavoriteArrivalEntry, 'isLoading' | 'isError'>): string {
   if (isError) return '도착정보를 불러오지 못했어요';
-  if (!arrival) return isLoading ? '도착정보 확인 중…' : '운행 정보 없음';
-
-  const remainingStops = arrival.first?.remainingStops;
-  if (remainingStops == null) return '위치 정보 없음';
-  return remainingStops === 0 ? '정류장 도착' : `${remainingStops}정거장 전`;
+  return isLoading ? '도착정보 확인 중…' : '운행 정보 없음';
 }

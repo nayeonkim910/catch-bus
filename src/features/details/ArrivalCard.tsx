@@ -9,10 +9,11 @@ import { ArrivalHero } from './ArrivalHero';
 import { RouteStationDetails } from './RouteStationDetails';
 
 type ArrivalCardProps = {
-  station: BusStation;
+  station: Pick<BusStation, 'id' | 'name'>;
   arrival: BusArrival;
   isRouteSelected: boolean;
   onSelectRoute: () => void;
+  stationLabel?: string;
 };
 
 export function ArrivalCard({
@@ -20,6 +21,7 @@ export function ArrivalCard({
   arrival,
   isRouteSelected,
   onSelectRoute,
+  stationLabel,
 }: ArrivalCardProps) {
   // 즐겨찾기 상태는 store에서 직접 구독하며 favorites 변경 시 리렌더되어 별표 반영함.
   const { isFavorite, toggle } = useFavorites();
@@ -79,6 +81,9 @@ export function ArrivalCard({
             <Star className="size-5 shrink-0" fill={isFavorited ? 'currentColor' : 'none'} />
           </Button>
         </div>
+        {stationLabel && (
+          <p className="mt-1 truncate text-xs font-medium text-muted-foreground">{stationLabel}</p>
+        )}
 
         <ArrivalHero arrival={arrival} />
         <div className="mt-auto flex items-center justify-between gap-2 pt-2">
