@@ -13,11 +13,8 @@ export function useFavorites(): FavoritesApi {
   //
   //   [useServerFavorites — 나중 구현] 반환 타입은 동일하게 FavoritesApi
   //   - useQuery(favoritesQueryOptions)로 서버 목록 조회
-  //   - toggle을 mutation에 직접 태우지 말 것(재시도 시 두 번 뒤집히는 비멱등).
-  //     스토어를 add/remove 원시 연산으로 쪼개고 toggle은 훅에서 캐시를 보고 분기해
-  //     멱등 엔드포인트(PUT/DELETE)에 1:1 매핑한다. 낙관적 업데이트는 add/remove 단위로:
-  //       onMutate: cancelQueries → 이전 값 백업 → setQueryData로 즉시 반영
-  //       onError: 백업으로 롤백 / onSettled: invalidateQueries
+  //   - toggle을 mutation에 직접 태우지 말 것(재시도 시 비멱등).
+  //     훅에서 캐시 보고 add/remove로 번역해 멱등 엔드포인트(PUT/DELETE)에 매핑한다.
   //
   //   [로그인 시 게스트→서버 병합 — 나중 구현]
   //   - 게스트 목록 읽기(빈 배열이면 종료) → 서버 목록과 id 기준 dedup
