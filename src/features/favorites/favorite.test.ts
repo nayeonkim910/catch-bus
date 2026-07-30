@@ -24,8 +24,7 @@ describe('createFavorite', () => {
 
     expect(createFavorite(station, arrival)).toEqual({
       id: 'S1:R1',
-      stationId: 'S1',
-      stationName: '강남역',
+      station,
       routeId: 'R1',
       routeName: '360',
       routeTypeCode: 11,

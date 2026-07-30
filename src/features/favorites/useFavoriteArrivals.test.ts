@@ -1,6 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { buildFavoriteArrivals } from './useFavoriteArrivals';
-import { makeArrival, makeFavorite } from '@test/fixtures';
+import { makeArrival, makeFavorite, makeStation } from '@test/fixtures';
 import type { BusArrival } from '@shared/types/bus';
 
 type StationResult = UseQueryResult<BusArrival[]>;
@@ -24,17 +24,17 @@ describe('buildFavoriteArrivals', () => {
     const arrivals = buildFavoriteArrivals(['S1'], [stationResult({ data: [bus360, bus402] })]);
 
     expect(
-      arrivals.getEntry(makeFavorite({ id: 'S1:R360', stationId: 'S1', routeId: 'R360' })).arrival,
+      arrivals.getEntry(makeFavorite({ id: 'S1:R360', station: makeStation({ id: 'S1' }), routeId: 'R360' })).arrival,
     ).toBe(bus360);
     expect(
-      arrivals.getEntry(makeFavorite({ id: 'S1:R402', stationId: 'S1', routeId: 'R402' })).arrival,
+      arrivals.getEntry(makeFavorite({ id: 'S1:R402', station: makeStation({ id: 'S1' }), routeId: 'R402' })).arrival,
     ).toBe(bus402);
   });
 
   it('도착정보가 없는 즐겨찾기는 arrival이 undefined다', () => {
     const arrivals = buildFavoriteArrivals(['S1'], [stationResult({ data: [] })]);
 
-    const entry = arrivals.getEntry(makeFavorite({ id: 'S1:R1', stationId: 'S1', routeId: 'R1' }));
+    const entry = arrivals.getEntry(makeFavorite({ id: 'S1:R1', station: makeStation({ id: 'S1' }), routeId: 'R1' }));
 
     expect(entry.arrival).toBeUndefined();
   });
@@ -45,8 +45,8 @@ describe('buildFavoriteArrivals', () => {
       [stationResult({ isLoading: true }), stationResult({ isError: true })],
     );
 
-    const s1 = arrivals.getEntry(makeFavorite({ stationId: 'S1' }));
-    const s2 = arrivals.getEntry(makeFavorite({ stationId: 'S2' }));
+    const s1 = arrivals.getEntry(makeFavorite({ station: makeStation({ id: 'S1' }) }));
+    const s2 = arrivals.getEntry(makeFavorite({ station: makeStation({ id: 'S2' }) }));
 
     expect(s1.isLoading).toBe(true);
     expect(s1.isError).toBe(false);

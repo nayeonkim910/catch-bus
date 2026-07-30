@@ -40,7 +40,7 @@ export function buildFavoriteArrivals(
 
   return {
     getEntry: (favorite) => {
-      const status = statusByStation.get(favorite.stationId);
+      const status = statusByStation.get(favorite.station.id);
       return {
         arrival: arrivalByFavoriteId.get(favorite.id),
         isLoading: status?.isLoading ?? false,
@@ -56,7 +56,7 @@ export function buildFavoriteArrivals(
  */
 export function useFavoriteArrivals(favorites: Favorite[]): FavoriteArrivals {
   const stationIds = useMemo(
-    () => [...new Set(favorites.map((favorite) => favorite.stationId))],
+    () => [...new Set(favorites.map((favorite) => favorite.station.id))],
     [favorites],
   );
 

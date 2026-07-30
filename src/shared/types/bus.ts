@@ -91,8 +91,7 @@ export type BusArrival = {
 
 export type Favorite = {
   id: string;
-  stationId: string;
-  stationName: string;
+  station: BusStation;
   routeId: string;
   routeName: string;
   routeTypeCode: number;

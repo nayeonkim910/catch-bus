@@ -1,32 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { routeStationsQueryOptions } from '@lib/busQueries';
 import type { RouteStation } from '@shared/types/bus';
+import { findTargetStationIndex } from './routeStationTarget';
 
 const TIMELINE_STATION_COUNT = 5;
-
-function findTargetIndex(
-  stations: RouteStation[],
-  targetStationId: string,
-  targetStationOrder: number,
-) {
-  const exactIndex = stations.findIndex(
-    (station) => station.id === targetStationId && station.sequence === targetStationOrder,
-  );
-
-  if (exactIndex >= 0) return exactIndex;
-
-  const sequenceIndex = stations.findIndex((station) => station.sequence === targetStationOrder);
-  return sequenceIndex >= 0
-    ? sequenceIndex
-    : stations.findIndex((station) => station.id === targetStationId);
-}
 
 function createTimeline(
   stations: RouteStation[],
   targetStationId: string,
   targetStationOrder: number,
 ) {
-  const targetIndex = findTargetIndex(stations, targetStationId, targetStationOrder);
+  const targetIndex = findTargetStationIndex(stations, targetStationId, targetStationOrder);
   if (targetIndex < 0) return null;
 
   const visibleStations = stations.slice(

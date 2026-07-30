@@ -6,20 +6,19 @@ import { RouteBadge } from '@features/routes/RouteBadge';
 import { getFavoriteStatusLabel } from '@features/favorites/favoriteCardStatus';
 import { useFavoriteArrivals } from '@features/favorites/useFavoriteArrivals';
 import { useFavorites } from '@features/favorites/useFavorites';
+import { useSelectionStore } from '@features/selection/selectionStore';
 import { ArrivalCard } from './ArrivalCard';
-
-type FavoritesTabProps = {
-  selectedRouteId: string | null;
-  onSelectRoute: (arrival: BusArrival) => void;
-};
 
 function arrivalRank(arrival?: BusArrival) {
   return arrival?.first?.arrivalSeconds ?? Number.POSITIVE_INFINITY;
 }
 
-export function FavoritesTab({ selectedRouteId, onSelectRoute }: FavoritesTabProps) {
+export function FavoritesTab() {
   const { favorites } = useFavorites();
   const arrivals = useFavoriteArrivals(favorites);
+  const selectedRouteId = useSelectionStore((state) => state.selectedRoute?.routeId ?? null);
+  // 즐겨찾기 카드는 재탭해도 해제되지 않는다. 노선과 대상 정류장을 선택한다.
+  const selectRoute = useSelectionStore((state) => state.selectRoute);
 
   if (favorites.length === 0) {
     return (
@@ -41,11 +40,11 @@ export function FavoritesTab({ selectedRouteId, onSelectRoute }: FavoritesTabPro
           arrival ? (
             <ArrivalCard
               key={favorite.id}
-              station={{ id: favorite.stationId, name: favorite.stationName }}
+              station={favorite.station}
               arrival={arrival}
-              stationLabel={favorite.stationName}
+              stationLabel={favorite.station.name}
               isRouteSelected={arrival.routeId === selectedRouteId}
-              onSelectRoute={() => onSelectRoute(arrival)}
+              onSelectRoute={() => selectRoute(arrival, favorite.station)}
             />
           ) : (
             <NoArrivalFavoriteCard
@@ -91,7 +90,7 @@ function NoArrivalFavoriteCard({ favorite, isLoading, isError }: NoArrivalFavori
         </Button>
       </div>
       <p className="mt-1 truncate text-xs font-medium text-muted-foreground">
-        {favorite.stationName}
+        {favorite.station.name}
       </p>
       <p className="mt-auto text-xs text-muted-foreground">
         {getFavoriteStatusLabel({ isLoading, isError })}

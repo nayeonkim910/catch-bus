@@ -5,7 +5,7 @@ import { createFavorite, getFavoriteId } from './favorite';
 
 type FavoritesStore = {
   favorites: Favorite[];
-  toggle: (station: Pick<BusStation, 'id' | 'name'>, arrival: BusArrival) => void;
+  toggle: (station: BusStation, arrival: BusArrival) => void;
   remove: (id: string) => void;
 };
 
@@ -34,11 +34,13 @@ export const useFavoritesStore = create<FavoritesStore>()(
     }),
     {
       name: 'catch-bus:favorites',
-      version: 1,
+      // v2 (2026-07-30): Favorite에 station 스냅샷(BusStation) 추가, stationId·stationName 평면 필드 제거.
+      version: 2,
       // 함수는 저장할 필요가 없으므로 favorites만 영속화한다.
       partialize: (state) => ({ favorites: state.favorites }),
-      // 스키마를 바꿔 version을 올릴 때 추가할 것: migrate: (persisted, from) => ...
-      // 옛 버전 데이터를 새 구조로 변환한다. 지금은 v1이라 변환할 이전 버전이 없어 두지 않는다.
+      // v1 데이터엔 station 스냅샷이 없어 변환이 불가능하다(좌표를 만들 수 없음). 비우고 재저장을 유도한다.
+      migrate: (persisted, version) =>
+        version < 2 ? { favorites: [] } : (persisted as { favorites: Favorite[] }),
     },
   ),
 );

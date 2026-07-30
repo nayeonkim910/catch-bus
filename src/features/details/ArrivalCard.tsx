@@ -9,7 +9,7 @@ import { ArrivalHero } from './ArrivalHero';
 import { RouteStationDetails } from './RouteStationDetails';
 
 type ArrivalCardProps = {
-  station: Pick<BusStation, 'id' | 'name'>;
+  station: BusStation;
   arrival: BusArrival;
   isRouteSelected: boolean;
   onSelectRoute: () => void;

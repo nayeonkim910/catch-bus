@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
-import type { BusStation } from '@shared/types/bus';
 import { Button } from '@shared/components/ui/Button';
 import { getRouteTheme } from '@shared/utils/routeTheme';
+import { useSelectionStore } from '@features/selection/selectionStore';
 import { RouteOverlayPanel } from './RouteOverlayPanel';
-import type { SelectedRoute } from './selectedRoute';
 import { useBusLocations } from './useBusLocations';
 import { useBusMarkers } from './useBusMarkers';
 import { useCurrentLocation } from './useCurrentLocation';
@@ -14,14 +13,12 @@ import { useRouteLine } from './useRouteLine';
 import { useRoutePolyline } from './useRoutePolyline';
 import { useRouteStations } from './useRouteStations';
 
-type MapPanelProps = {
-  station: BusStation | null;
-  selectedRoute: SelectedRoute | null;
-  onStationSelect: (station: BusStation) => void;
-  onClearRoute: () => void;
-};
-
-export function MapPanel({ station, selectedRoute, onStationSelect, onClearRoute }: MapPanelProps) {
+export function MapPanel() {
+  const station = useSelectionStore((state) => state.station);
+  const selectionSeq = useSelectionStore((state) => state.selectionSeq);
+  const selectedRoute = useSelectionStore((state) => state.selectedRoute);
+  const selectStation = useSelectionStore((state) => state.selectStation);
+  const clearRoute = useSelectionStore((state) => state.clearRoute);
   const location = useCurrentLocation();
   const {
     containerRef,
@@ -29,7 +26,7 @@ export function MapPanel({ station, selectedRoute, onStationSelect, onClearRoute
     errorMessage: mapError,
     searchCenter,
     canShowStations,
-  } = useKakaoMap({ station });
+  } = useKakaoMap({ station, selectionSeq });
   const nearbyStations = useNearbyStations(canShowStations ? searchCenter : null);
   const visibleStations = useMemo(() => {
     const stations = canShowStations ? (nearbyStations.data ?? []) : [];
@@ -63,7 +60,7 @@ export function MapPanel({ station, selectedRoute, onStationSelect, onClearRoute
     map,
     stations: visibleStations,
     selectedStationId: station?.id ?? null,
-    onStationSelect,
+    onStationSelect: selectStation,
   });
   useRoutePolyline(map, routeLine.data, routeAccentColor);
   useBusMarkers({
@@ -87,7 +84,7 @@ export function MapPanel({ station, selectedRoute, onStationSelect, onClearRoute
             busCount={busLocations.data?.length ?? 0}
             isLoading={busLocations.isLoading}
             isError={busLocations.isError}
-            onClear={onClearRoute}
+            onClear={clearRoute}
           />
         </div>
       )}

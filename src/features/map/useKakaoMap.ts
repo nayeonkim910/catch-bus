@@ -14,9 +14,11 @@ const MAP_IDLE_DELAY_MS = 500;
 
 type UseKakaoMapParams = {
   station: BusStation | null;
+  /** 정류장 선택 사건 카운터. 같은 정류장 재선택에도 화면 밖이면 다시 데려가기 위해 받는다. */
+  selectionSeq: number;
 };
 
-export function useKakaoMap({ station }: UseKakaoMapParams) {
+export function useKakaoMap({ station, selectionSeq }: UseKakaoMapParams) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [mapLevel, setMapLevel] = useState(INITIAL_MAP_LEVEL);
@@ -63,7 +65,7 @@ export function useKakaoMap({ station }: UseKakaoMapParams) {
     // 근처정류장 재조회 → 마커가 다시 그려지는 깜빡임이 생긴다. 검색 등 화면 밖 정류장만 데려온다.
     if (map.getBounds().contain(position)) return;
     map.setCenter(position);
-  }, [map, station]);
+  }, [map, station, selectionSeq]);
 
   useEffect(() => {
     if (!map) return;

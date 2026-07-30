@@ -1,14 +1,11 @@
 import { User } from 'lucide-react';
 import { Button } from '@shared/components/ui/Button';
-import type { BusStation } from '@shared/types/bus';
 import { StationSearch } from '@features/search/StationSearch';
 import { LoginDialog } from '@features/auth/LoginDialog';
+import { useSelectionStore } from '@features/selection/selectionStore';
 
-type AppHeaderProps = {
-  onStationSelect: (station: BusStation) => void;
-};
-
-export function AppHeader({ onStationSelect }: AppHeaderProps) {
+export function AppHeader() {
+  const selectStation = useSelectionStore((state) => state.selectStation);
   return (
     <header className="relative z-40 flex h-16 justify-between gap-2 border-b-2 border-blue-200 p-2 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:top-0 lg:block lg:h-0 lg:border-0 lg:p-0">
       <div className="flex lg:contents">
@@ -21,7 +18,7 @@ export function AppHeader({ onStationSelect }: AppHeaderProps) {
           <span className="text-brand">Bus</span>
         </a>
 
-        <StationSearch onSelect={onStationSelect} floating />
+        <StationSearch onSelect={selectStation} floating />
       </div>
 
       <nav
