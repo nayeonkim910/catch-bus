@@ -123,7 +123,7 @@ npm run test:all       # 프론트 + 엣지 전체 테스트
 
 ```
 src/
-├─ features/          # 도메인별 기능 (map, details, favorites, search, routes, auth, layout)
+├─ features/          # 도메인별 기능 (map, details, favorites, selection 등)
 ├─ shared/            # 공용 컴포넌트, 유틸, 타입 (ui 프리미티브, cn, 진행선 등)
 ├─ lib/               # API 클라이언트(busApi), Query 옵션(busQueries)
 ├─ app/               # 앱 전역 provider (QueryProvider)
