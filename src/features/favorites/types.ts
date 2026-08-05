@@ -6,6 +6,5 @@ export type FavoritesApi = {
   favorites: Favorite[];
   isFavorite: (stationId: string, routeId: string) => boolean;
   toggle: (station: BusStation, arrival: BusArrival) => void;
-  /** 도착 응답에 없는(arrival이 없는) 즐겨찾기를 지울 때 쓴다. */
   remove: (id: string) => void;
 };
