@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import type { BusArrival, BusStation } from '@shared/types/bus';
 import { getFavoriteId } from './favorite';
 import { useFavoritesStore } from './favoritesStore';
 import type { FavoritesApi } from './types';
@@ -25,7 +26,7 @@ export function useFavorites(): FavoritesApi {
 
 function useGuestFavorites(): FavoritesApi {
   const favorites = useFavoritesStore((state) => state.favorites);
-  const toggle = useFavoritesStore((state) => state.toggle);
+  const add = useFavoritesStore((state) => state.add);
   const remove = useFavoritesStore((state) => state.remove);
 
   // isFavorite는 구독한 favorites 배열에서 파생한다. store 메서드로 두면 안정 함수 참조라
@@ -34,6 +35,17 @@ function useGuestFavorites(): FavoritesApi {
     (stationId: string, routeId: string) =>
       favorites.some((favorite) => favorite.id === getFavoriteId(stationId, routeId)),
     [favorites],
+  );
+  const toggle = useCallback(
+    (station: BusStation, arrival: BusArrival) => {
+      const id = getFavoriteId(station.id, arrival.routeId);
+      if (favorites.some((favorite) => favorite.id === id)) {
+        remove(id);
+      } else {
+        add(station, arrival);
+      }
+    },
+    [favorites, add, remove],
   );
 
   return { favorites, isFavorite, toggle, remove };
