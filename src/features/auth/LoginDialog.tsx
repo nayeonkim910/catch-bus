@@ -34,7 +34,7 @@ export function LoginDialog({ children }: LoginDialogProps) {
       <DialogContent>
         <div className="flex flex-col items-center text-center">
           <DialogTitle className="text-xl font-extrabold tracking-[-0.5px] text-blue-950">
-            Catch&nbsp;<span className="text-brand">Bus</span>
+            Catch&nbsp;<span className="text-primary">Bus</span>
           </DialogTitle>
           <DialogDescription className="mt-2">
             로그인하고 즐겨찾는 정류장을 어디서든 확인하세요.

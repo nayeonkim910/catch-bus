@@ -56,7 +56,7 @@ export function StationSearchResults({
         {visibleStations.map((station) => (
           <li key={station.id}>
             <button
-              className="flex w-full cursor-pointer items-start justify-between gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-brand"
+              className="flex w-full cursor-pointer items-start justify-between gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-primary"
               onClick={() => onSelect(station)}
               type="button"
             >
@@ -70,7 +70,7 @@ export function StationSearchResults({
                 </span>
               </span>
               {station.mobileNo && (
-                <span className="shrink-0 rounded-md bg-blue-50 px-2 py-1 text-xs font-semibold text-brand">
+                <span className="shrink-0 rounded-md bg-blue-50 px-2 py-1 text-xs font-semibold text-primary">
                   {station.mobileNo}
                 </span>
               )}

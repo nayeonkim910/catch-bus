@@ -58,7 +58,7 @@ function RouteStationItem({
 
       <span className="min-w-0 flex-1">
         <strong
-          className={`block truncate text-sm ${isTarget ? 'text-brand' : 'text-slate-700'}`}
+          className={`block truncate text-sm ${isTarget ? 'text-primary' : 'text-slate-700'}`}
           title={station.name}
         >
           {station.name}

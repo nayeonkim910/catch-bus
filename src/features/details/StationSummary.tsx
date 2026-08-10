@@ -13,7 +13,7 @@ export function StationSummary({ station }: { station: BusStation }) {
         )}
         <span>{station.regionName}</span>
         {station.isCenterLane && (
-          <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-brand">
+          <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-primary">
             중앙차로
           </span>
         )}
