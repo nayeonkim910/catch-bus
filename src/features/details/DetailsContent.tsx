@@ -26,7 +26,7 @@ export function DetailsContent({ station }: DetailsContentProps) {
           aria-label="Catch Bus 홈"
           className="hidden shrink-0 text-lg font-extrabold tracking-[-0.5px] text-blue-950 no-underline lg:inline-flex"
         >
-          Catch&nbsp;<span className="text-brand">Bus</span>
+          Catch&nbsp;<span className="text-primary">Bus</span>
         </a>
         <TabsList>
           <TabsTrigger value="station-detail">버스 상세</TabsTrigger>
