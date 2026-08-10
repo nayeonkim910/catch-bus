@@ -33,7 +33,7 @@ export function LoginDialog({ children }: LoginDialogProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <div className="flex flex-col items-center text-center">
-          <DialogTitle className="text-xl font-extrabold tracking-[-0.5px] text-blue-950">
+          <DialogTitle className="text-xl font-extrabold tracking-[-0.5px] text-foreground">
             Catch&nbsp;<span className="text-primary">Bus</span>
           </DialogTitle>
           <DialogDescription className="mt-2">
@@ -84,7 +84,7 @@ function GoogleLoginButton() {
     // TODO(auth): 구글 OAuth 연동
     <Button
       variant="secondary"
-      className="w-full border-[#747775] bg-white text-slate-700 hover:bg-slate-100"
+      className="w-full border-[#747775] bg-card text-foreground hover:bg-muted"
     >
       {/* TODO(brand): 구글 공식 G 로고 SVG */}
       Google로 시작하기

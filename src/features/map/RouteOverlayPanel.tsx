@@ -21,10 +21,10 @@ function getStatus(busCount: number, isLoading: boolean, isError: boolean) {
 }
 
 const DOT_TONE = {
-  error: 'bg-red-500',
-  loading: 'bg-slate-300',
-  live: 'animate-pulse bg-emerald-500',
-  idle: 'bg-slate-300',
+  error: 'bg-danger',
+  loading: 'bg-border',
+  live: 'animate-pulse bg-success',
+  idle: 'bg-border',
 };
 
 export function RouteOverlayPanel({
@@ -38,17 +38,17 @@ export function RouteOverlayPanel({
 
   return (
     <section
-      className="pointer-events-auto flex max-w-xs items-start gap-3 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-lg backdrop-blur"
+      className="pointer-events-auto flex max-w-xs items-start gap-3 rounded-2xl border border-border bg-card/95 p-3 shadow-lg backdrop-blur"
       aria-label={`지도에 표시 중인 노선 ${route.routeName}번`}
     >
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <RouteBadge routeName={route.routeName} routeTypeCode={route.routeTypeCode} />
-          <span className="truncate text-sm font-semibold text-slate-700">
+          <span className="truncate text-sm font-semibold text-foreground">
             {route.destinationName} 방면
           </span>
         </div>
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-500" role="status">
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground" role="status">
           <span
             className={`size-1.5 shrink-0 rounded-full ${DOT_TONE[status.tone]}`}
             aria-hidden="true"

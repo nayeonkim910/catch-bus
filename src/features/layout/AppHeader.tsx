@@ -7,10 +7,10 @@ import { useSelectionStore } from '@features/selection/selectionStore';
 export function AppHeader() {
   const selectStation = useSelectionStore((state) => state.selectStation);
   return (
-    <header className="relative z-40 flex h-(--header-h) justify-between gap-2 border-b-2 border-blue-200 p-2 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:top-0 lg:block lg:h-0 lg:border-0 lg:p-0">
+    <header className="relative z-40 flex h-(--header-h) justify-between gap-2 border-b-2 border-border p-2 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:top-0 lg:block lg:h-0 lg:border-0 lg:p-0">
       <div className="flex lg:contents">
         <a
-          className="flex self-stretch items-center px-3.5 text-xl font-extrabold tracking-[-1.2px] text-blue-950 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4.5 sm:text-[21px] lg:hidden"
+          className="flex self-stretch items-center px-3.5 text-xl font-extrabold tracking-[-1.2px] text-foreground no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4.5 sm:text-[21px] lg:hidden"
           href="#panel-map"
           aria-label="Catch Bus 홈"
         >
@@ -22,7 +22,7 @@ export function AppHeader() {
       </div>
 
       <nav
-        className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center lg:gap-3 lg:rounded-xl lg:bg-white lg:px-3 lg:shadow-lg"
+        className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center lg:gap-3 lg:rounded-xl lg:bg-card lg:px-3 lg:shadow-lg"
         aria-label="사용자 메뉴"
       >
         <LoginDialog>
