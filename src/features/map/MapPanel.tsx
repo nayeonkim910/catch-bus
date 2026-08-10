@@ -73,7 +73,7 @@ export function MapPanel() {
   const nearbyError = nearbyStations.isError ? '근처 정류장을 불러오지 못했습니다.' : null;
 
   return (
-    <main className="relative h-full min-h-0 min-w-0 overflow-hidden bg-slate-100" id="panel-map">
+    <main className="relative h-full min-h-0 min-w-0 overflow-hidden bg-muted" id="panel-map">
       <div ref={containerRef} className="h-full w-full" aria-label="버스 정류장 지도" />
 
       {/* 데스크톱은 상단 중앙을 검색바가 쓰므로, 노선 오버레이를 좌측 패널 너머 지도 하단으로 뺀다. */}
@@ -100,19 +100,19 @@ export function MapPanel() {
         </Button>
 
         {(location.errorMessage || nearbyError) && (
-          <p className="rounded-lg bg-white px-3 py-2 text-xs text-red-600 shadow" role="alert">
+          <p className="rounded-lg bg-card px-3 py-2 text-xs text-danger shadow" role="alert">
             {location.errorMessage ?? nearbyError}
           </p>
         )}
 
         {nearbyStations.isFetching && (
-          <p className="rounded-lg bg-white px-3 py-2 text-xs text-slate-600 shadow" role="status">
+          <p className="rounded-lg bg-card px-3 py-2 text-xs text-muted-foreground shadow" role="status">
             근처 정류장을 찾고 있습니다.
           </p>
         )}
 
         {!canShowStations && (
-          <p className="rounded-lg bg-white px-3 py-2 text-xs text-slate-600 shadow" role="status">
+          <p className="rounded-lg bg-card px-3 py-2 text-xs text-muted-foreground shadow" role="status">
             지도를 확대하면 정류장이 표시됩니다.
           </p>
         )}
@@ -120,7 +120,7 @@ export function MapPanel() {
 
       {mapError && (
         <div
-          className="absolute inset-0 z-20 flex items-center justify-center bg-slate-100 px-6 text-center text-sm text-slate-600"
+          className="absolute inset-0 z-20 flex items-center justify-center bg-muted px-6 text-center text-sm text-muted-foreground"
           role="alert"
         >
           {mapError}

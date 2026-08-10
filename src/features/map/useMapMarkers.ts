@@ -18,8 +18,10 @@ export function useCurrentLocationMarker(
 
     const position = new kakao.maps.LatLng(coordinates.latitude, coordinates.longitude);
     const markerElement = document.createElement('div');
+    // 카카오 지도 타일은 다크 모드가 없어 항상 밝다. 마커는 앱 테마를 따라가지 않고
+    // 프로젝트 primitive를 직접 참조해 항상 라이트 배색으로 고정한다.
     markerElement.className =
-      'h-4 w-4 rounded-full border-[3px] border-white bg-blue-600 shadow-[0_0_0_8px_rgb(37_99_235/20%)]';
+      'h-4 w-4 rounded-full border-[3px] border-white bg-[var(--blue-600)] shadow-[0_0_0_8px_rgb(37_99_235/20%)]';
 
     const overlay = new kakao.maps.CustomOverlay({
       position,

@@ -22,7 +22,7 @@ export function StationArrivalsPanel({ station }: StationArrivalsPanelProps) {
   return (
     <>
       <DetailsPanelHeader station={station} updatedAt={arrivals[0]?.updatedAt} />
-      <section className="hover-scrollbar min-h-0 flex-1 overflow-y-auto border-t border-slate-200/70 p-4 sm:p-5 lg:px-5 lg:py-4">
+      <section className="hover-scrollbar min-h-0 flex-1 overflow-y-auto border-t border-border/70 p-4 sm:p-5 lg:px-5 lg:py-4">
         {isPending ? (
           <LoadingArrivals />
         ) : isError ? (
@@ -45,7 +45,7 @@ function LoadingArrivals() {
     <div className="space-y-3" aria-live="polite" aria-label="도착정보를 불러오는 중">
       {[0, 1, 2].map((item) => (
         <div
-          className="h-36 animate-pulse rounded-xl border border-slate-200 bg-white"
+          className="h-36 animate-pulse rounded-xl border border-border bg-card"
           key={item}
         />
       ))}
@@ -55,8 +55,8 @@ function LoadingArrivals() {
 
 function ArrivalError({ message, onRetry }: { message: string | null; onRetry: () => void }) {
   return (
-    <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-center">
-      <p className="text-sm text-red-700" role="alert">
+    <div className="rounded-xl border border-danger bg-danger-muted p-5 text-center">
+      <p className="text-sm text-danger" role="alert">
         {message ?? '도착정보를 불러오지 못했습니다.'}
       </p>
       <Button variant="secondary" size="sm" className="mt-3" onClick={onRetry}>
@@ -68,7 +68,7 @@ function ArrivalError({ message, onRetry }: { message: string | null; onRetry: (
 
 function EmptyArrivals() {
   return (
-    <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+    <p className="rounded-xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
       도착 예정 버스가 없습니다.
     </p>
   );

@@ -19,12 +19,12 @@ export function DetailsContent({ station }: DetailsContentProps) {
 
   return (
     <Tabs defaultValue={defaultTab} className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-center gap-3 border-b border-slate-200/70 px-4 py-3 sm:px-5">
+      <div className="flex shrink-0 items-center gap-3 border-b border-border/70 px-4 py-3 sm:px-5">
         {/* 데스크톱에선 로고가 패널 헤더의 탭 왼쪽에 온다. 모바일은 AppHeader가 로고를 보여준다. */}
         <a
           href="#panel-map"
           aria-label="Catch Bus 홈"
-          className="hidden shrink-0 text-lg font-extrabold tracking-[-0.5px] text-blue-950 no-underline lg:inline-flex"
+          className="hidden shrink-0 text-lg font-extrabold tracking-[-0.5px] text-foreground no-underline lg:inline-flex"
         >
           Catch&nbsp;<span className="text-primary">Bus</span>
         </a>

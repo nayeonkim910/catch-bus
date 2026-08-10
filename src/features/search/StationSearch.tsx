@@ -52,14 +52,14 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
       ref={containerRef}
     >
       <form
-        className="flex h-10.5 items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 text-slate-700 shadow-[0_2px_8px_rgb(15_23_42/5%)] focus-within:border-primary focus-within:ring-2 focus-within:ring-blue-100 sm:h-11 sm:px-4 lg:h-12"
+        className="flex h-10.5 items-center gap-2 rounded-xl border border-input bg-card px-3 text-foreground shadow-[0_2px_8px_rgb(15_23_42/5%)] focus-within:border-primary focus-within:ring-2 focus-within:ring-blue-100 sm:h-11 sm:px-4 lg:h-12"
         onSubmit={handleSubmit}
         role="search"
       >
         <Search className="size-5 shrink-0" />
         <input
           aria-controls={isOpen ? 'station-search-results' : undefined}
-          className="min-w-0 flex-1 bg-transparent text-[13px] text-slate-900 outline-none placeholder:text-slate-400 sm:text-base"
+          className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground sm:text-base"
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === 'Escape') reset();
@@ -81,7 +81,7 @@ export function StationSearch({ onSelect, floating = false }: StationSearchProps
 
       {isOpen && (
         <div
-          className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-[min(420px,60vh)] overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10"
+          className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-[min(420px,60vh)] overflow-y-auto rounded-xl border border-border bg-card p-2 shadow-xl shadow-slate-900/10"
           id="station-search-results"
         >
           <StationSearchResults
