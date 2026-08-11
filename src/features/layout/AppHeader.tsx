@@ -22,11 +22,16 @@ export function AppHeader() {
       </div>
 
       <nav
-        className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center lg:gap-3 lg:rounded-xl lg:bg-card lg:px-3 lg:shadow-lg"
+        className="flex justify-end gap-2 px-2 lg:pointer-events-auto lg:absolute lg:top-4 lg:right-4 lg:h-12 lg:items-center"
         aria-label="사용자 메뉴"
       >
         <LoginDialog>
-          <Button variant="tertiary" size="icon" aria-label="내 계정">
+          <Button
+            variant="tertiary"
+            size="icon"
+            aria-label="내 계정"
+            className="lg:rounded-xl lg:bg-card lg:shadow-lg"
+          >
             <User className="size-5 shrink-0" />
           </Button>
         </LoginDialog>
