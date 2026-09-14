@@ -55,15 +55,15 @@ flowchart LR
 - 신뢰 경계 분리: 형식이 제각각인 공공 API 원본을 엣지 함수에서 검증/정규화해, 프론트는 일정한 형태의 데이터만 소비
 - 응답 형식 통일: 엣지 함수가 응답을 `{ data, meta }` 규격으로 감싸 클라이언트 처리를 단순화
 
-## 기술적으로 고민한 점
+## 설계 결정
 
 **1. 데이터 성격별 캐시 전략** ([`src/lib/busQueries.ts`](src/lib/busQueries.ts))
 
 도착 정보(30초), 실시간 차량 위치(10초), 노선 형상/경유 정류장(24시간)처럼 갱신 주기가 다른 데이터에 서로 다른 `staleTime`을 부여했습니다. 여러 즐겨찾기가 같은 정류장을 참조할 때는 `stationId`로 중복을 제거하고 `queryKey`를 공유해, 정류장당 한 번만 도착 정보를 조회합니다.
 
-**2. 경쟁 조건(race condition) 제거** ([`src/features/search/useStationSearch.ts`](src/features/search/useStationSearch.ts), [`src/lib/busQueries.ts`](src/lib/busQueries.ts))
+**2. 정류장 전환 시 오래된 요청 취소** ([`src/features/search/useStationSearch.ts`](src/features/search/useStationSearch.ts), [`src/lib/busQueries.ts`](src/lib/busQueries.ts))
 
-정류장을 빠르게 바꿔 선택하면 이전 요청의 응답이 최신 화면을 덮어쓸 수 있습니다. 조회 요청에 `AbortController` 기반 취소 신호를 걸어 오래된 요청을 취소하고, 취소된 응답은 화면에 반영하지 않도록 했습니다.
+정류장·검색어마다 `queryKey`가 분리돼, 늦게 도착한 이전 요청의 응답은 자기 캐시에 들어갈 뿐 현재 화면을 덮어쓰지 않습니다. 여기에 더해 전환 시 `signal`(AbortController)로 불필요해진 in-flight 요청을 취소해, 네트워크와 공공 API 호출 한도 낭비를 줄였습니다.
 
 **3. 폴링 자원 관리** ([`src/features/map/useBusLocations.ts`](src/features/map/useBusLocations.ts))
 
@@ -71,7 +71,7 @@ flowchart LR
 
 **4. 외부 API 방어적 처리** ([`supabase/functions/bus-api/gyeonggi/normalize.ts`](supabase/functions/bus-api/gyeonggi/normalize.ts))
 
-공공 API 응답을 그대로 믿지 않고 필드 단위로 검증(`requireString`/`requireId`/`requireNumber`)한 뒤, 이상값이면 `502 UPSTREAM_ERROR`로 격리해 깨진 데이터가 화면까지 전파되지 않도록 했습니다.
+공공 API 응답을 그대로 믿지 않고 필드 단위로 검증(`requireString`/`requireStringOrNumber`/`requireNumber`)한 뒤, 이상값이면 `502 UPSTREAM_ERROR`로 격리해 깨진 데이터가 화면까지 전파되지 않도록 했습니다.
 
 **5. 런타임에 맞춘 테스트 전략** ([`useFavoriteArrivals.test.ts`](src/features/favorites/useFavoriteArrivals.test.ts), [`normalize.test.ts`](supabase/functions/bus-api/gyeonggi/normalize.test.ts))
 
